@@ -8,12 +8,32 @@ import { User } from '../../models/user';
 @Injectable()
 export class AuthServiceProvider {
 
-  constructor(private afAuth: AngularFireAuth) { }
+  authState: any = null;
 
-  login(user: User) {
+  constructor(private afAuth: AngularFireAuth) {
+    this.afAuth.authState.subscribe((auth) => this.authState = auth);
+  }
+
+  get authenticated(): boolean {
+    return this.authState !== null;
+  }
+
+  // Returns current user data
+  get currentUser(): any {
+    return this.authenticated ? this.authState : null;
+  }
+
+  emailLogin(user: User) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
-      .then(userData => resolve(userData),
+      .then(_ => resolve(true),
+        err => reject({status: false, message: err}));
+    });
+  }
+
+  signOut() {
+    return new Promise((resolve, reject) => {
+      this.afAuth.auth.signOut().then(res => resolve(res),
         err => reject(err));
     });
   }

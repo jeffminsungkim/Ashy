@@ -7,6 +7,7 @@ import { ToastController } from 'ionic-angular';
 
 import { RegisterPage } from '../register/register';
 import { HomePage } from '../home/home';
+
 import { User } from '../../models/user';
 
 @IonicPage()
@@ -25,35 +26,35 @@ export class LoginPage {
     private authService: AuthServiceProvider) {
   }
 
-  // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad LoginPage');
-  //   this.afAuth.authState.subscribe(user => {
-  //     if (user && user.uid) {
-  //       this.navCtrl.setRoot(HomePage);
-  //     }
-  //   });
-  // }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad LoginPage');
+    // this.afAuth.authState.subscribe(user => {
+    //   if (user && user.uid) {
+    //     this.navCtrl.setRoot(HomePage);
+    //   }
+    // });
+    // if (this.authService.authenticated && this.authService.currentUser != null)
+    //   this.navCtrl.setRoot(HomePage);
+  }
 
-  // ionViewWillLoad() {
-  //   this.afAuth.authState.subscribe(user => {
-  //     if (user && user.uid && user.email) {
-  //       this.toast.create({
-  //         message: `Welcome to ChattyCherry, ${user.email}`,
-  //         duration: 3000
-  //       }).present();
-  //     } else {
-  //       this.toast.create({
-  //         message: `Could not find authentication details`,
-  //         duration: 3000
-  //       }).present();
-  //     }
-
-  //   });
-  // }
+  ionViewWillLoad() {
+    // if (this.authService.authenticated) {
+    //   this.toast.create({
+    //       message: `Welcome to ChattyCherry, ${this.authService.currentUser.email}`,
+    //       duration: 3000
+    //     }).present();
+    // } else {
+    //   this.toast.create({
+    //       message: `Could not find authentication details`,
+    //       duration: 3000
+    //     }).present();
+    // }
+  }
 
   login() {
-    this.authService.login(this.user).then((res) => {
-      this.navCtrl.setRoot(HomePage);
+    this.authService.emailLogin(this.user).then((res) => {
+      if (res)
+        this.navCtrl.setRoot(HomePage);
     })
     .catch((err) => {
       this.toast.create({

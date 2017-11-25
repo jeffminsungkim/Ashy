@@ -28,14 +28,25 @@
                     <div *ngIf="userPassword.errors?.required && userPassword.touched">Password is required</div>
 
                     <ion-item>
-                        <ion-label floating>User Name</ion-label>
-                        <ion-input type="text" [(ngModel)]="user.username" name="username" #userName="ngModel" required></ion-input>
+                        <ion-label floating>Display Name</ion-label>
+                        <ion-input type="text" [(ngModel)]="user.displayName" name="displayName" #displayName="ngModel" required></ion-input>
                     </ion-item>
 
-                    <div *ngIf="userName.errors?.required && userName.touched">Name is required</div>
+                    <div *ngIf="displayName.errors?.required && displayName.touched">Name is required</div>
+
+                    <ion-item>
+                        <ion-label>Gender</ion-label>
+                        <ion-select [(ngModel)]="user.gender" name="gender">
+                          <ion-option value="male">Male</ion-option>
+                          <ion-option value="female">Female</ion-option>
+                        </ion-select>
+                    </ion-item>
 
                     <button ion-button type="submit" value="Submit" round outline block>Sign Up</button>
                 </form>
+
+             
+
                 <button ion-button round outline block (click)="goBack()">Go Back</button>
             </ion-list>
         </ion-card-content>

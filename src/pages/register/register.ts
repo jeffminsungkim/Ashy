@@ -21,7 +21,8 @@ export class RegisterPage {
   user: User = {
     email: '',
     password: '',
-    username: ''
+    displayName: '',
+    gender: ''
   }
 
   constructor(
@@ -37,6 +38,7 @@ export class RegisterPage {
   }
 
   onSubmit({value, valid}: {value: User, valid: boolean}) {
+    console.log("register value", value);
     let toast = this.toastCtrl.create({
       duration: 3000,
       message: 'All fields are required.'
@@ -46,13 +48,18 @@ export class RegisterPage {
     } else {
       let loader = this.loadingCtrl.create({ content: 'Please wait. . .'});
       loader.present();
-      this.userService.register(value).then((res) => {
+
+      this.userService.emailSignUp(value).then((res) => {
+        if (res) 
+          this.navCtrl.setRoot(LoginPage);
         loader.dismiss();
-        console.log("DATA!!!",res);
-        this.navCtrl.setRoot(LoginPage);
       })
       .catch((err) => {
-        console.error(err);
+        loader.dismiss();
+        this.toastCtrl.create({
+          duration: 4000,
+          message: err
+        });
       });
       
     }
@@ -61,5 +68,4 @@ export class RegisterPage {
   goBack() {
     this.navCtrl.pop();
   }
-
 }
