@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
 import { ToastController } from 'ionic-angular';
 
 import { User } from '../../models/user';
@@ -20,7 +21,8 @@ export class LoginPage {
     public navParams: NavParams,
     private afAuth: AngularFireAuth,
     private toast: ToastController,
-    private authService: AuthServiceProvider) {
+    private authService: AuthServiceProvider,
+    private modalService: ModalServiceProvider) {
   }
 
   ionViewDidLoad() {
@@ -49,9 +51,13 @@ export class LoginPage {
   }
 
   login() {
-    this.authService.emailLogin(this.user).then((res) => {
-      if (res)
+    this.authService.emailLogin(this.user).then(userData => {
+      console.log("LOGIN USER DATA", userData);
+      if (this.authService.isUserEmailVerified)
         this.navCtrl.setRoot('HomePage');
+      else
+        this.modalService.showProfileModal();
+
     })
     .catch((err) => {
       this.toast.create({
