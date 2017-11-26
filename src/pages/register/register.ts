@@ -4,9 +4,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 
-import { LoginPage } from '../login/login';
-import { SettingPage } from '../setting/setting';
-
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 import { User } from '../../models/user';
@@ -51,7 +48,7 @@ export class RegisterPage {
 
       this.userService.emailSignUp(value).then((res) => {
         if (res) 
-          this.navCtrl.setRoot(LoginPage);
+          this.navCtrl.setRoot('LoginPage');
         loader.dismiss();
       })
       .catch((err) => {

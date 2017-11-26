@@ -11,27 +11,13 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment'
 
 import { MyApp } from './app.component';
-import { LoginPage } from '../pages/login/login';
-import { HomePage } from '../pages/home/home';
-import { RegisterPage } from '../pages/register/register';
-import { UserPage } from '../pages/user/user';
-import { ChatPage } from '../pages/chat/chat';
-import { SettingPage } from '../pages/setting/setting';
-import { ProfilePage } from '../pages/profile/profile';
 
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 
 @NgModule({
   declarations: [
-    MyApp,
-    LoginPage,
-    HomePage,
-    RegisterPage,
-    UserPage,
-    ChatPage,
-    SettingPage,
-    ProfilePage
+    MyApp
   ],
   imports: [
     BrowserModule,
@@ -44,14 +30,7 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    LoginPage,
-    HomePage,
-    RegisterPage,
-    UserPage,
-    ChatPage,
-    SettingPage,
-    ProfilePage
+    MyApp
   ],
   providers: [
     StatusBar,

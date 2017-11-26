@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
@@ -17,7 +17,8 @@ export class UserPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private userService: UserServiceProvider,
-    private authService: AuthServiceProvider) {
+    private authService: AuthServiceProvider,
+    private events: Events) {
 
   }
 
@@ -27,6 +28,14 @@ export class UserPage {
       this.users = users;
       console.log("UserPage", this.users);
     });
+  }
+
+  ionViewWillEnter() {
+
+  }
+
+  ionViewDidLeave() {
+
   }
 
 }

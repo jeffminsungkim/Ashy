@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
+import { IonicPage } from 'ionic-angular';
 
-import { UserPage } from '../user/user';
-import { ChatPage } from '../chat/chat';
-import { SettingPage } from '../setting/setting';
-
+@IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-  firstTab = UserPage;
-  secondTab = ChatPage
-  lastTab = SettingPage;
+  firstTab: string = 'UserPage';
+  secondTab: string = 'ChatPage';
+  lastTab: string = 'SettingPage';
 
   constructor() { }
 

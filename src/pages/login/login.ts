@@ -5,9 +5,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ToastController } from 'ionic-angular';
 
-import { RegisterPage } from '../register/register';
-import { HomePage } from '../home/home';
-
 import { User } from '../../models/user';
 
 @IonicPage()
@@ -54,7 +51,7 @@ export class LoginPage {
   login() {
     this.authService.emailLogin(this.user).then((res) => {
       if (res)
-        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.setRoot('HomePage');
     })
     .catch((err) => {
       this.toast.create({
@@ -65,6 +62,6 @@ export class LoginPage {
   }
 
   goToRegister() {
-    this.navCtrl.push(RegisterPage);
+    this.navCtrl.push('RegisterPage');
   }
 }
