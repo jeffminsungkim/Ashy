@@ -42,7 +42,7 @@
                         </ion-select>
                     </ion-item>
 
-                    <button ion-button type="submit" value="Submit" round outline block>Sign Up</button>
+                    <button ion-button type="submit" [disabled]="!user.email || !user.password" value="Submit" round outline block>Sign Up</button>
                 </form>
 
              

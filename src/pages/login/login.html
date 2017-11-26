@@ -6,12 +6,11 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="cherry">
     <ion-title>Welcome!</ion-title>
   </ion-navbar>
 
 </ion-header>
-
 
 <ion-content padding>
 <ion-grid>
@@ -28,7 +27,6 @@
             </ion-card-header>
             <ion-card-content>
                 <ion-list no lines>
-                   
                     <ion-item>
                         <ion-label floating>Email Address</ion-label>
                         <ion-input type="email" [(ngModel)]="user.email"></ion-input>
@@ -38,7 +36,7 @@
                         <ion-label floating>Password</ion-label>
                         <ion-input type="password" [(ngModel)]="user.password"></ion-input>
                     </ion-item>
-                    <button ion-button block (click)="login()">Sign In</button>
+                    <button ion-button block [disabled]="!user.email || !user.password" (click)="login()">Sign In</button>
                     <p>OR</p>
                     <button ion-button clear full color="light" (click)="goToRegister()">Don't have an account? Sign Up</button>
                 </ion-list>
