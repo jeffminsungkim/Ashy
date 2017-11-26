@@ -23,11 +23,24 @@ export class AuthServiceProvider {
     return this.authenticated ? this.authState : null;
   }
 
+  get isUserEmailVerified(): any {
+    return this.authState.emailVerified;
+  }
+
+   get currentUserObservable(): any {
+    return this.afAuth.authState
+  }
+
+  sendEmailVerification() {
+      this.currentUser.sendEmailVerification().then(() => {
+      console.log("Email Sent!!!!");
+    });
+  }
+
   emailLogin(user: User) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
-      .then(_ => resolve(true),
-        err => reject({status: false, message: err}));
+      .then(user => resolve(user), err => reject(err));
     });
   }
 
