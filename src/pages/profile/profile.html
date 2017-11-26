@@ -6,13 +6,26 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="cherry">
     <ion-title>Profile</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="closeModal()">
+            <ion-icon name="close"></ion-icon>
+        </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+    {{key}}
+    <ion-item>
+         <button ion-button icon-end (click)="requestEmailVerification()">
+            Send Email Verification<ion-icon name="ios-jet-outline"></ion-icon>
+        </button>
+    </ion-item>
+
 
 </ion-content>
