@@ -14,6 +14,10 @@ import { MyApp } from './app.component';
 
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
+import { ModalServiceProvider } from '../providers/modal-service/modal-service';
+import { ToastServiceProvider } from '../providers/toast-service/toast-service';
+import { LoadingServiceProvider } from '../providers/loading-service/loading-service';
+
 
 @NgModule({
   declarations: [
@@ -40,6 +44,9 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     AngularFireDatabaseModule,
     UserServiceProvider,
     AuthServiceProvider,
+    ModalServiceProvider,
+    ToastServiceProvider,
+    LoadingServiceProvider,
   ]
 })
 export class AppModule {}
