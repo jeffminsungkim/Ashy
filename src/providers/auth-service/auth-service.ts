@@ -23,6 +23,15 @@ export class AuthServiceProvider {
     return this.authenticated ? this.authState : null;
   }
 
+  // Returns current user UID
+  get currentUserId(): string {
+    return this.authenticated ? this.authState.uid : '';
+  }
+
+  get currentUserDisplayName(): string {
+    return this.authState['displayName'];
+  }
+
   get isUserEmailVerified(): any {
     return this.authState.emailVerified;
   }
@@ -32,15 +41,25 @@ export class AuthServiceProvider {
   }
 
   sendEmailVerification() {
-      this.currentUser.sendEmailVerification().then(() => {
-      console.log("Email Sent!!!!");
-    });
+    this.currentUser.sendEmailVerification();
   }
 
   emailLogin(user: User) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
-      .then(user => resolve(user), err => reject(err));
+      .then(user => resolve(user)).catch((error) => {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        if (errorCode === 'auth/invalid-email') {
+          reject({message: 'Email address is not valid.'});
+        } else if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
+          reject({message: 'Please double check your account.'});
+        } else if (errorCode === 'auth/user-disabled') {
+          reject({message: 'Your account is suspended.'});
+        } else {
+          reject(error);
+        }
+      });
     });
   }
 
