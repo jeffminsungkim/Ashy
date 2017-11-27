@@ -9,9 +9,11 @@ import { User } from '../../models/user';
 export class AuthServiceProvider {
 
   authState: any = null;
+  defaultProfileImgURL: string;
 
-  constructor(private afAuth: AngularFireAuth) {
+  constructor(private afAuth: AngularFireAuth, private afDB: AngularFireDatabase) {
     this.afAuth.authState.subscribe((auth) => this.authState = auth);
+    this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=c5c2eb63-9fa1-4259-bbc2-6089ca97c6af';
   }
 
   get authenticated(): boolean {
@@ -42,6 +44,26 @@ export class AuthServiceProvider {
 
   sendEmailVerification() {
     this.currentUser.sendEmailVerification();
+  }
+
+  emailSignUp(user: User) {
+    return new Promise((resolve, reject) => {
+      this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password).then((auth) => {
+        this.afAuth.auth.currentUser.updateProfile({
+          displayName: user.displayName,
+          photoURL: this.defaultProfileImgURL
+        }).then(() => {
+          this.afDB.object(`users/${auth.uid}`).update({
+          uid: auth.uid,
+          email: auth.email,
+          emailVerified: auth.emailVerified,
+          displayName: user.displayName,
+          gender: user.gender,
+          photoURL: this.defaultProfileImgURL
+        }).then(_ => resolve({status: true, message: `Signed up as ${auth.email}`}));
+      }).catch(err => reject({status: false, message: err}))
+      });
+    });
   }
 
   emailLogin(user: User) {
