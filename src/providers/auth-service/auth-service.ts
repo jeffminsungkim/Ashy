@@ -3,15 +3,21 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angular
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+import { ErrorDetectionServiceProvider } from '../../providers/error-detection-service/error-detection-service';
+
+import * as firebase from 'firebase/app';
+
 import { User } from '../../models/user';
 
 @Injectable()
 export class AuthServiceProvider {
+  private authState: any = null;
+  private defaultProfileImgURL: string;
 
-  authState: any = null;
-  defaultProfileImgURL: string;
-
-  constructor(private afAuth: AngularFireAuth, private afDB: AngularFireDatabase) {
+  constructor(
+    private afAuth: AngularFireAuth,
+     private afDB: AngularFireDatabase,
+     private errorDetectionService: ErrorDetectionServiceProvider) {
     this.afAuth.authState.subscribe((auth) => this.authState = auth);
     this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=c5c2eb63-9fa1-4259-bbc2-6089ca97c6af';
   }
@@ -28,10 +34,15 @@ export class AuthServiceProvider {
   // Returns current user UID
   get currentUserId(): string {
     return this.authenticated ? this.authState.uid : '';
+    // return this.authState.uid;
   }
 
   get currentUserDisplayName(): string {
     return this.authState['displayName'];
+  }
+
+  get currentUserEmail(): string {
+    return this.authState['email'];
   }
 
   get isUserEmailVerified(): any {
@@ -45,6 +56,13 @@ export class AuthServiceProvider {
   sendEmailVerification() {
     this.currentUser.sendEmailVerification();
   }
+
+  resetPassword(email: string) {
+    return new Promise((resolve, reject) => {
+      firebase.auth().sendPasswordResetEmail(email).then(_ => {resolve({status: true});
+    }).catch(err => reject(err));
+    });
+  } 
 
   emailSignUp(user: User) {
     return new Promise((resolve, reject) => {
@@ -61,7 +79,7 @@ export class AuthServiceProvider {
           gender: user.gender,
           photoURL: this.defaultProfileImgURL
         }).then(_ => resolve({status: true, message: `Signed up as ${auth.email}`}));
-      }).catch(err => reject({status: false, message: err}))
+      }).catch(err => reject(err));
       });
     });
   }
@@ -70,17 +88,8 @@ export class AuthServiceProvider {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
       .then(user => resolve(user)).catch((error) => {
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        if (errorCode === 'auth/invalid-email') {
-          reject({message: 'Email address is not valid.'});
-        } else if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
-          reject({message: 'Please double check your account.'});
-        } else if (errorCode === 'auth/user-disabled') {
-          reject({message: 'Your account is suspended.'});
-        } else {
-          reject(error);
-        }
+        let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
+        reject({message: errorMessage});
       });
     });
   }
