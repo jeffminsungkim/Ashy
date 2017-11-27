@@ -8,8 +8,8 @@ export class ModalServiceProvider {
 
   }
 
-  showProfileModal(userKey: string) {
-    let profileModal = this.modalCtrl.create('ProfilePage', {key: userKey});
+  showProfileModal() {
+    let profileModal = this.modalCtrl.create('ProfilePage');
     profileModal.present();
   }
 
