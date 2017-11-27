@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AngularFireAuth } from 'angularfire2/auth';
+import { ToastServiceProvider } from '../../providers/toast-service/toast-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
-import { ToastController } from 'ionic-angular';
 
 import { User } from '../../models/user';
 
@@ -20,7 +20,7 @@ export class LoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private afAuth: AngularFireAuth,
-    private toast: ToastController,
+    private toastService: ToastServiceProvider,
     private authService: AuthServiceProvider,
     private modalService: ModalServiceProvider) {
   }
@@ -51,19 +51,18 @@ export class LoginPage {
   }
 
   login() {
-    this.authService.emailLogin(this.user).then(userData => {
-      console.log("LOGIN USER DATA", userData);
-      if (this.authService.isUserEmailVerified)
+    this.authService.emailLogin(this.user).then((user: any) => {
+      console.log("LOGIN USER DATA", user);
+      if (this.authService.isUserEmailVerified){
         this.navCtrl.setRoot('HomePage');
-      else
+        this.toastService.show(`Signed in as ${user.email}`);
+      }
+      else{
         this.modalService.showProfileModal();
-
+      }
     })
     .catch((err) => {
-      this.toast.create({
-          message: err.message,
-          duration: 3000
-        }).present();
+      this.toastService.show(err.message);
     });
   }
 
