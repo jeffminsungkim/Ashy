@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastServiceProvider } from '../../providers/toast-service/toast-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
 
 import { User } from '../../models/user';
@@ -22,6 +23,7 @@ export class LoginPage {
     private afAuth: AngularFireAuth,
     private toastService: ToastServiceProvider,
     private authService: AuthServiceProvider,
+    private userService: UserServiceProvider,
     private modalService: ModalServiceProvider) {
   }
 
@@ -54,6 +56,7 @@ export class LoginPage {
     this.authService.emailLogin(this.user).then((user: any) => {
       console.log("LOGIN USER DATA", user);
       if (this.authService.isUserEmailVerified){
+        this.userService.updateEmailVerificationStatus();
         this.navCtrl.setRoot('HomePage');
         this.toastService.show(`Signed in as ${user.email}`);
       }
@@ -64,6 +67,10 @@ export class LoginPage {
     .catch((err) => {
       this.toastService.show(err.message);
     });
+  }
+
+  goToPasswordReset() {
+    this.navCtrl.push('PasswordResetPage');
   }
 
   goToRegister() {
