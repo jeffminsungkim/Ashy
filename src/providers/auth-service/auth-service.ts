@@ -16,8 +16,8 @@ export class AuthServiceProvider {
 
   constructor(
     private afAuth: AngularFireAuth,
-     private afDB: AngularFireDatabase,
-     private errorDetectionService: ErrorDetectionServiceProvider) {
+    private afDB: AngularFireDatabase,
+    private errorDetectionService: ErrorDetectionServiceProvider) {
     this.afAuth.authState.subscribe((auth) => this.authState = auth);
     this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=c5c2eb63-9fa1-4259-bbc2-6089ca97c6af';
   }
@@ -59,7 +59,7 @@ export class AuthServiceProvider {
 
   resetPassword(email: string) {
     return new Promise((resolve, reject) => {
-      firebase.auth().sendPasswordResetEmail(email).then(_ => {resolve({status: true});
+      firebase.auth().sendPasswordResetEmail(email).then(() => {resolve({status: true});
     }).catch(err => reject(err));
     });
   } 
@@ -78,9 +78,9 @@ export class AuthServiceProvider {
           displayName: user.displayName,
           gender: user.gender,
           photoURL: this.defaultProfileImgURL
-        }).then(_ => resolve({status: true, message: `Signed up as ${auth.email}`}));
-      }).catch(err => reject(err));
-      });
+        }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`})).catch(err => reject(err))
+        }).catch(err => reject(err))
+      }).catch(err => reject(err))
     });
   }
 
@@ -96,7 +96,7 @@ export class AuthServiceProvider {
 
   signOut() {
     return new Promise((resolve, reject) => {
-      this.afAuth.auth.signOut().then(res => resolve(res),
+      this.afAuth.auth.signOut().then(_ => resolve({email: this.currentUserEmail}),
         err => reject(err));
     });
   }
