@@ -14,10 +14,24 @@ export class AlertServiceProvider {
     private toastService: ToastServiceProvider,
     private errorDetectionService: ErrorDetectionServiceProvider) { }
 
+  presentErrorMessage(message: string) {
+    return this.alertCtrl.create({
+      title: "Oops! Be careful :(",
+      message: message,
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel'
+        }
+      ]
+    }).present();
+  }
+
   presentEmailIsSent(viewCtrl: ViewController) {
     return this.alertCtrl.create({
       title: 'Verification Email has sent!',
-      subTitle: 'Please confirm the verification link from your email account. This might take a few minutes.',
+      subTitle: 'Please confirm the verification link from your email account.',
+      message: 'Please wait this might take a few minutes. Try it again if you have not received the email link.',
       buttons: [
         {
           text: 'OK',
