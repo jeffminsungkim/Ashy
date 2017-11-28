@@ -12,8 +12,12 @@ export class ErrorDetectionServiceProvider {
         return 'Email must be a valid string.';
       else if (errorCode === 'auth/invalid-email')
         return 'Email address is not valid.';
+      else if (errorCode === 'auth/email-already-in-use')
+        return 'The email address is already in use by another account.';
       else if (errorCode === 'auth/user-not-found')
         return 'No user corresponding to the email address.';
+      else if (errorCode === 'auth/weak-password')
+        return 'Password should be at least 6 characters.';
       else if (errorCode === 'auth/wrong-password')
         return 'Please double check your account.';
       else if (errorCode === 'auth/user-disabled')
