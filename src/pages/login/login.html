@@ -12,21 +12,16 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content class="background" padding>
 <ion-grid>
     <ion-row>
-      <div class="row responsive-sm">
-        <div class="col">
-            <img class="cc-logo" src="assets/imgs/logo.png" alt="logo">
-        </div>
-          
-      </div>
         <ion-card>
             <ion-card-header>
                 Join us!
             </ion-card-header>
             <ion-card-content>
-                <ion-list no lines>
+                <ion-list list-inset>
+ 
                     <ion-item>
                         <ion-label floating>Email Address</ion-label>
                         <ion-input type="email" [(ngModel)]="user.email"></ion-input>
@@ -34,15 +29,18 @@
                     
                     <ion-item>
                         <ion-label floating>Password</ion-label>
-                        <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+                        <ion-input type="password" [(ngModel)]="user.password" (keyup.enter)="login()"></ion-input>
                     </ion-item>
-                 
+
+                     
+                    
                     <button ion-button block [disabled]="!user.email || !user.password" (click)="login()">Sign In</button>
                     <p>OR</p>
                     <button ion-button clear full color="light" (click)="goToRegister()">Don't have an account? Sign Up</button>
                     <ion-item>
                          <button ion-button outline full color="danger" (click)="goToPasswordReset()"><b>Forgot my password :(</b></button>
                     </ion-item>
+
                 </ion-list>
             </ion-card-content>
         </ion-card>

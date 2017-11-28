@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="cherry">
     <ion-title>Register</ion-title>
   </ion-navbar>
 
@@ -11,8 +11,8 @@
             Register
         </ion-card-header>
         <ion-card-content>
-            <ion-list no lines>
-                <form novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
+            <ion-list>
+                <form novalidate #f="ngForm" (ngSubmit)="onSubmit(f)" >
                     <ion-item>
                         <ion-label floating>Email Address</ion-label>
                         <ion-input type="email" [(ngModel)]="user.email" name="email" #userEmail="ngModel" required></ion-input>
@@ -28,13 +28,6 @@
                     <div *ngIf="userPassword.errors?.required && userPassword.touched">Password is required</div>
 
                     <ion-item>
-                        <ion-label floating>Display Name</ion-label>
-                        <ion-input type="text" [(ngModel)]="user.displayName" name="displayName" #displayName="ngModel" required></ion-input>
-                    </ion-item>
-
-                    <div *ngIf="displayName.errors?.required && displayName.touched">Name is required</div>
-
-                    <ion-item>
                         <ion-label>Gender</ion-label>
                         <ion-select [(ngModel)]="user.gender" name="gender">
                           <ion-option value="male">Male</ion-option>
@@ -42,12 +35,17 @@
                         </ion-select>
                     </ion-item>
 
+                    <ion-item>
+                        <ion-label floating>Display Name</ion-label>
+                        <ion-input type="text" [(ngModel)]="user.displayName" name="displayName" #displayName="ngModel" required></ion-input>
+                    </ion-item>
+
+                    <div *ngIf="displayName.errors?.required && displayName.touched">Name is required</div>
+                    <ion-input type="submit" style="display:none" (keyup.enter)="onSubmit(f)"></ion-input>
                     <button ion-button type="submit" [disabled]="!user.email || !user.password" value="Submit" round outline block>Sign Up</button>
                 </form>
 
-             
-
-                <button ion-button round outline block (click)="goBack()">Go Back</button>
+                <button ion-button round outline block (click)="backToRoot()">Go Back</button>
             </ion-list>
         </ion-card-content>
     </ion-card>
