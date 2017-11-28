@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastServiceProvider } from '../../providers/toast-service/toast-service';
+import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
@@ -22,13 +23,21 @@ export class LoginPage {
     public navParams: NavParams,
     private afAuth: AngularFireAuth,
     private toastService: ToastServiceProvider,
+    private alertService: AlertServiceProvider,
     private authService: AuthServiceProvider,
     private userService: UserServiceProvider,
     private modalService: ModalServiceProvider) {
   }
 
+  ionViewCanEnter() {
+    console.log('Runs before the view can enter. This can be used as a sort of "guard" in authenticated views where you need to check permissions before the view can enter');
+  }
+
+  ionViewCanLeave() {
+    console.log('Runs before the view can leave. This can be used as a sort of "guard" in authenticated views where you need to check permissions before the view can leave');
+  }
+
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
     // this.afAuth.authState.subscribe(user => {
     //   if (user && user.uid) {
     //     this.navCtrl.setRoot(HomePage);
@@ -52,8 +61,9 @@ export class LoginPage {
     // }
   }
 
-  login() {
-    this.authService.emailLogin(this.user).then((user: any) => {
+  async login() {
+    try {
+      const user: any = await this.authService.emailLogin(this.user);
       console.log("LOGIN USER DATA", user);
       if (this.authService.isUserEmailVerified){
         this.userService.updateEmailVerificationStatus();
@@ -63,10 +73,9 @@ export class LoginPage {
       else{
         this.modalService.showProfileModal();
       }
-    })
-    .catch((err) => {
-      this.toastService.show(err.message);
-    });
+    } catch (err) {
+      this.alertService.presentErrorMessage(err.message);
+    }
   }
 
   goToPasswordReset() {

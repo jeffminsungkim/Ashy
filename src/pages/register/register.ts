@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { ToastController } from 'ionic-angular';
-import { LoadingController } from 'ionic-angular';
-
-import { UserServiceProvider } from '../../providers/user-service/user-service';
+import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
+import { ToastServiceProvider } from '../../providers/toast-service/toast-service';
+import { LoadingServiceProvider } from '../../providers/loading-service/loading-service';
+import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
+import { ErrorDetectionServiceProvider } from '../../providers/error-detection-service/error-detection-service';
 
 import { User } from '../../models/user';
 
@@ -25,44 +26,41 @@ export class RegisterPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public toastCtrl: ToastController,
-    public loadingCtrl: LoadingController,
-    private userService: UserServiceProvider) {
+    private authService: AuthServiceProvider,
+    private toastService: ToastServiceProvider,
+    private loadingService: LoadingServiceProvider,
+    private modalService: ModalServiceProvider,
+    private errorDetectionService: ErrorDetectionServiceProvider) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterPage');
   }
 
-  onSubmit({value, valid}: {value: User, valid: boolean}) {
+  async onSubmit({value, valid}: {value: User, valid: boolean}) {
     console.log("register value", value);
-    let toast = this.toastCtrl.create({
-      duration: 3000,
-      message: 'All fields are required.'
-    });
     if (!valid) {
-      toast.present();
+      this.toastService.allFieldsRequired();
     } else {
-      let loader = this.loadingCtrl.create({ content: 'Please wait. . .'});
-      loader.present();
-
-      this.userService.emailSignUp(value).then((res) => {
-        if (res) 
+      this.loadingService.showWaitLoader();
+      try {
+        const res: any = await this.authService.emailSignUp(value);
+        console.log("Register onSubmit data:", res);
+        if (res) {
+          this.toastService.show(res.message);
+          this.modalService.showProfileModal();
           this.navCtrl.setRoot('LoginPage');
-        loader.dismiss();
-      })
-      .catch((err) => {
-        loader.dismiss();
-        this.toastCtrl.create({
-          duration: 4000,
-          message: err
-        });
-      });
-      
+        }
+      } catch (error) {
+        console.error(error);
+        this.loadingService.dismiss();
+        let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
+        this.toastService.show(errorMessage);
+      }
     }
   }
 
-  goBack() {
+  backToRoot() {
     this.navCtrl.pop();
   }
 }
