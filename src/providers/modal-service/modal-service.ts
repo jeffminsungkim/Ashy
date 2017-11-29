@@ -4,13 +4,8 @@ import { ModalController } from 'ionic-angular';
 @Injectable()
 export class ModalServiceProvider {
 
-  constructor(private modalCtrl: ModalController) {
+  constructor(private modalCtrl: ModalController) { }
 
-  }
-
-  showProfileModal() {
-    let profileModal = this.modalCtrl.create('ProfilePage');
-    profileModal.present();
-  }
+  showProfileModal(status: boolean) { this.modalCtrl.create('ProfilePage', { emailVerified: status }).present(); }
 
 }
