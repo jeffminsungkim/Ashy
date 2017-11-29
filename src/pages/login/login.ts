@@ -30,11 +30,11 @@ export class LoginPage {
   }
 
   ionViewCanEnter() {
-    console.log('Runs before the view can enter. This can be used as a sort of "guard" in authenticated views where you need to check permissions before the view can enter');
+    // console.log('Runs before the view can enter. This can be used as a sort of "guard" in authenticated views where you need to check permissions before the view can enter');
   }
 
   ionViewCanLeave() {
-    console.log('Runs before the view can leave. This can be used as a sort of "guard" in authenticated views where you need to check permissions before the view can leave');
+    // console.log('Runs before the view can leave. This can be used as a sort of "guard" in authenticated views where you need to check permissions before the view can leave');
   }
 
   ionViewDidLoad() {
@@ -65,13 +65,13 @@ export class LoginPage {
     try {
       const user: any = await this.authService.emailLogin(this.user);
       console.log("LOGIN USER DATA", user);
-      if (this.authService.isUserEmailVerified){
+      if (user.emailVerified){
         this.userService.updateEmailVerificationStatus();
         this.navCtrl.setRoot('HomePage');
         this.toastService.show(`Signed in as ${user.email}`);
       }
       else{
-        this.modalService.showProfileModal();
+        this.modalService.showProfileModal(user.emailVerified);
       }
     } catch (err) {
       this.alertService.presentErrorMessage(err.message);

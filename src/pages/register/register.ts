@@ -22,7 +22,7 @@ export class RegisterPage {
     displayName: '',
     gender: ''
   }
-
+  
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -48,7 +48,7 @@ export class RegisterPage {
         console.log("Register onSubmit data:", res);
         if (res) {
           this.toastService.show(res.message);
-          this.modalService.showProfileModal();
+          this.modalService.showProfileModal(res.emailVerified);
           this.navCtrl.setRoot('LoginPage');
         }
       } catch (error) {
