@@ -17,7 +17,8 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { ModalServiceProvider } from '../providers/modal-service/modal-service';
 import { ToastServiceProvider } from '../providers/toast-service/toast-service';
 import { LoadingServiceProvider } from '../providers/loading-service/loading-service';
-
+import { AlertServiceProvider } from '../providers/alert-service/alert-service';
+import { ErrorDetectionServiceProvider } from '../providers/error-detection-service/error-detection-service';
 
 @NgModule({
   declarations: [
@@ -29,8 +30,9 @@ import { LoadingServiceProvider } from '../providers/loading-service/loading-ser
     ReactiveFormsModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(environment.firebase, 'chattycherry'),
-    AngularFireAuthModule
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -39,14 +41,15 @@ import { LoadingServiceProvider } from '../providers/loading-service/loading-ser
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
     AngularFireDatabase,
-    AngularFireDatabaseModule,
     UserServiceProvider,
     AuthServiceProvider,
     ModalServiceProvider,
     ToastServiceProvider,
     LoadingServiceProvider,
+    AlertServiceProvider,
+    ErrorDetectionServiceProvider,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}
