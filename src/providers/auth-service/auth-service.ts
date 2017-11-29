@@ -19,7 +19,7 @@ export class AuthServiceProvider {
     private afDB: AngularFireDatabase,
     private errorDetectionService: ErrorDetectionServiceProvider) {
     this.afAuth.authState.subscribe((auth) => this.authState = auth);
-    this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=c5c2eb63-9fa1-4259-bbc2-6089ca97c6af';
+    this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=f85be639-9a1c-4c79-a28d-361171358a41';
   }
 
   get authenticated(): boolean {
@@ -78,7 +78,7 @@ export class AuthServiceProvider {
           displayName: user.displayName,
           gender: user.gender,
           photoURL: this.defaultProfileImgURL
-        }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`})).catch(err => reject(err))
+        }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`, emailVerified: this.isUserEmailVerified})).catch(err => reject(err))
         }).catch(err => reject(err))
       }).catch(err => reject(err))
     });
@@ -98,6 +98,12 @@ export class AuthServiceProvider {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.signOut().then(_ => resolve({email: this.currentUserEmail}),
         err => reject(err));
+    });
+  }
+
+  deleteAccount() {
+    return new Promise((resolve, reject) => {
+      this.afAuth.auth.currentUser.delete().then(_ => resolve({status: true})).catch(error => reject({status: false, message: error}));
     });
   }
 }
