@@ -5,27 +5,35 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar color="cherry">
     <ion-title>Profile</ion-title>
-    <ion-buttons end>
-        <button ion-button icon-only (click)="closeModal()">
+    
+    <ion-buttons left>
+        <button ion-button icon-only (click)="backToPreviousView()">
             <ion-icon name="close"></ion-icon>
         </button>
     </ion-buttons>
+    <ion-buttons right *ngIf="emailVerified">
+        <button ion-button>
+            Save
+        </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding>
 
-    {{key}}
-    <ion-item>
-         <button ion-button icon-end (click)="requestEmailVerification()">
-            Send Email Verification<ion-icon name="ios-jet-outline"></ion-icon>
-        </button>
-    </ion-item>
-
+    <ion-grid>
+        <ion-row align-items-center>
+            <ion-col>
+                <div><img src="{{avatar}}"></div>
+                <h2>{{displayName}}</h2>
+                <button ion-button icon-end *ngIf="emailVerified == false" (click)="requestEmailVerification()">
+                Send Verification Email<ion-icon name="md-send"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
 </ion-content>
