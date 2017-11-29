@@ -59,8 +59,8 @@ export class AlertServiceProvider {
 
   confirmSendPasswordResetEmail(email: string) {
     return this.alertCtrl.create({
-      title: 'Password Email has sent!',
-      subTitle: 'Please confirm the verification link from your email account. This might take a few minutes.',
+      title: 'Send Password Reset Email?',
+      message: 'Please confirm the verification link from your email account. This might take a few minutes.',
       buttons: [
         {
           text: 'Cancel',
@@ -72,18 +72,23 @@ export class AlertServiceProvider {
         {
           text: 'Send',
           handler: _ => {
-            console.log("Current User Email", this.authService.currentUserEmail);
-            this.authService.resetPassword(email).then((res: any) => {
-              console.log("Hi1");
-              if (res.status)
-                this.presentPasswordResetEmailIsSent();
-            }).catch((error) => {
-              let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
-              this.toastService.show(errorMessage);
-            });
+            this.sendPasswrodResetEmail(email);
           }
         }
       ]
     }).present();
   }
+
+  async sendPasswrodResetEmail(email: string) {
+    try {
+      const res: any = await this.authService.resetPassword(email);
+      if (res.status)
+        this.presentPasswordResetEmailIsSent();
+    } catch(error) {
+      console.log("error:", error);
+      let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
+      this.toastService.show(errorMessage);
+    }
+  }
+  
 }
