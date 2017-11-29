@@ -11,12 +11,26 @@
 </ion-header>
 <ion-content padding>
   <ion-list>
-    <ion-item class="text" *ngFor="let user of users">
+
+    <ion-list-header>Me</ion-list-header>
+    <ion-item (click)="changeStatusMessage()" *ngFor="let user of loggedInUser">
       <ion-avatar item-start>
         <img src="{{user.photoURL}}">
       </ion-avatar>
       <h2>{{user.displayName}}</h2>
       <p>I've had a pretty messed up day. If we just...</p>
+    </ion-item>
+
+     <ion-list-header>Friends</ion-list-header>
+    <ion-item class="text" *ngFor="let user of users">
+      <ion-avatar (click)="test()" item-start>
+        <img src="{{user.photoURL}}">
+      </ion-avatar>
+      <h2>{{user.displayName}}</h2>
+      <ion-item>
+          <p>I've had a pretty messed up day. If we just...</p>
+      </ion-item>
+      
     </ion-item>
   </ion-list>
 </ion-content>
