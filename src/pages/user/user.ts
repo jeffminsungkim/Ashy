@@ -28,8 +28,7 @@ export class UserPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserPage');
-    this.getLoggedInUser();
-    this.getVerifiedUsers();
+   
   }
 
   getVerifiedUsers() {
@@ -47,6 +46,10 @@ export class UserPage {
     });
   }
 
+  test() {
+
+  }
+
   changeStatusMessage() {
     console.log("changeStatusMessage() clicked!");
   }
@@ -57,6 +60,8 @@ export class UserPage {
 
   ionViewWillEnter() {
     // console.log('Runs when the page is about to enter and become the active page.');
+    this.getLoggedInUser();
+    this.getVerifiedUsers();
   }
 
   ionViewWillLeave() {
