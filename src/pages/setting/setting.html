@@ -25,7 +25,7 @@
 
             <button ion-item (click)="goToProfile()">
                 <ion-icon name="ios-person" item-start></ion-icon>
-                Profile
+                Edit Profile
             </button>
 
             <ion-item>
@@ -68,7 +68,7 @@
     </ion-item>
     <ion-item>
       <ion-icon name="sad" item-start color="danger"></ion-icon>
-      <button ion-button outline block item-end color="danger">Delete Account</button>
+      <button ion-button outline block item-end color="danger" (click)="deleteAccount()">Delete Account</button>
     </ion-item>
   </ion-list>
 

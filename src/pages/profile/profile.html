@@ -7,7 +7,6 @@
 <ion-header>
   <ion-navbar color="cherry">
     <ion-title>Profile</ion-title>
-    
     <ion-buttons left>
         <button ion-button icon-only (click)="backToPreviousView()">
             <ion-icon name="close"></ion-icon>
@@ -20,14 +19,16 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
-
 <ion-content padding>
-
     <ion-grid>
         <ion-row align-items-center>
+            <ion-col col-12>
+                <input type="file" id="file-input" *ngIf="emailVerified" (change)="detectFiles($event)">
+                <img src="{{avatar}}">
+            </ion-col>
             <ion-col>
-                <div><img src="{{avatar}}"></div>
+                <button ion-button color="secondary" *ngIf="emailVerified" (click)="uploadSingleFile()">Upload an image</button>
+                <button ion-button color="danger" *ngIf="emailVerified" (click)="deleteUploadFile()">Remove Photo</button>
                 <h2>{{displayName}}</h2>
                 <button ion-button icon-end *ngIf="emailVerified == false" (click)="requestEmailVerification()">
                 Send Verification Email<ion-icon name="md-send"></ion-icon>
@@ -35,5 +36,4 @@
             </ion-col>
         </ion-row>
     </ion-grid>
-
 </ion-content>

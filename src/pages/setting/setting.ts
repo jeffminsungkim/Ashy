@@ -5,6 +5,7 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { ToastServiceProvider } from '../../providers/toast-service/toast-service';
 import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
+import { UploadServiceProvider } from '../../providers/upload-service/upload-service';
 
 import { ProfilePage } from '../profile/profile';
 
@@ -22,8 +23,8 @@ export class SettingPage {
     private authService: AuthServiceProvider,
     private userService: UserServiceProvider,
     private toastService: ToastServiceProvider,
-    private modalService: ModalServiceProvider) {
-  }
+    private modalService: ModalServiceProvider,
+    private uploadService: UploadServiceProvider) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingPage');
@@ -35,8 +36,8 @@ export class SettingPage {
   }
 
   goToProfile() {
-    let emailVerified = true;
-    this.modalService.showProfileModal(emailVerified);
+    let validation = { emailVerified: true };
+    this.modalService.showProfileModal(validation);
   }
 
   async logout() {
@@ -49,6 +50,8 @@ export class SettingPage {
     // TODO: DELETE ACCOUNT FROM THE FOLLOWING CONDITION:
     // USER SHOULD TYPE THEIR EMAIL ACCOUNT IN TEXT INPUT
     // AND INPUT STRING MUST MATCH WITH THE USER'S EMAIL ACCOUNT. 
+    this.uploadService.deleteFileNode();
+    this.uploadService.deleteFileStorage();
     this.userService.deleteLoggedInUser();
     const res: any = await this.authService.deleteAccount();
     if (res.status) 
