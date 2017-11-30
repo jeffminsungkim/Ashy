@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ViewController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ToastServiceProvider } from '../../providers/toast-service/toast-service';
@@ -15,7 +15,7 @@ export class AlertServiceProvider {
     private errorDetectionService: ErrorDetectionServiceProvider) { }
 
   presentErrorMessage(message: string) {
-    return this.alertCtrl.create({
+    this.alertCtrl.create({
       title: "Oops! Be careful :(",
       message: message,
       buttons: [
@@ -27,47 +27,41 @@ export class AlertServiceProvider {
     }).present();
   }
 
-  presentEmailIsSent(viewCtrl: ViewController) {
-    return this.alertCtrl.create({
+  notifyVerificationEmailIsSent() {
+    this.alertCtrl.create({
       title: 'Verification Email has sent!',
       subTitle: 'Please confirm the verification link from your email account.',
       message: 'Please wait this might take a few minutes. Try it again if you have not received the email link.',
       buttons: [
         {
           text: 'OK',
-          role: 'cancel',
-          handler: _ => {
-            viewCtrl.dismiss();
-          }
+          role: 'cancel'
         }
       ]
     }).present();
   }
 
-  presentPasswordResetEmailIsSent() {
-    return this.alertCtrl.create({
+  notifyPasswordResetEmailIsSent() {
+    this.alertCtrl.create({
       title: 'Verification Email has sent!',
       subTitle: 'Please confirm the verification link from your email account. This might take a few minutes.',
       buttons: [
         {
           text: 'OK',
-          role: 'cancel',
+          role: 'cancel'
         }
       ]
     }).present();
   }
 
   confirmSendPasswordResetEmail(email: string) {
-    return this.alertCtrl.create({
+    this.alertCtrl.create({
       title: 'Send Password Reset Email?',
       message: 'Please confirm the verification link from your email account. This might take a few minutes.',
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel',
-          handler: _ => {
-            console.log("Cancel!");
-          }
+          role: 'cancel'
         },
         {
           text: 'Send',
@@ -83,7 +77,7 @@ export class AlertServiceProvider {
     try {
       const res: any = await this.authService.resetPassword(email);
       if (res.status)
-        this.presentPasswordResetEmailIsSent();
+        this.notifyPasswordResetEmailIsSent();
     } catch(error) {
       console.log("error:", error);
       let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);

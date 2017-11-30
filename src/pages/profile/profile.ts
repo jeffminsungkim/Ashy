@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
@@ -15,7 +15,6 @@ import { User } from '../../models/User';
   templateUrl: 'profile.html',
 })
 export class ProfilePage {
-  user = {} as User;
   avatar: string;
   displayName: string;
   user$: Observable<any>;
@@ -24,7 +23,6 @@ export class ProfilePage {
   constructor(
     public navParams: NavParams,
     public navCtrl: NavController,
-    private viewCtrl: ViewController,
     private authService: AuthServiceProvider,
     private userService: UserServiceProvider,
     private alertService: AlertServiceProvider) {
@@ -40,7 +38,7 @@ export class ProfilePage {
 
   requestEmailVerification() {
     this.authService.sendEmailVerification();
-    this.alertService.presentEmailIsSent(this.viewCtrl);
+    this.alertService.notifyVerificationEmailIsSent();
   }
 
   backToPreviousView() {
