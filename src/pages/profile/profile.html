@@ -24,8 +24,11 @@
         <ion-row align-items-center>
             <ion-col col-12>
                 <input type="file" id="file-input" *ngIf="emailVerified" (change)="detectFiles($event)">
-                <img src="{{avatar}}">
+                <img *ngIf="previewImage;then previewImg else customImg">
+                <ng-template #previewImg><img src="{{previewImage}}"></ng-template>
+                <ng-template #customImg><img src="{{avatar}}"></ng-template>
             </ion-col>
+
             <ion-col>
                 <button ion-button color="secondary" *ngIf="emailVerified" (click)="uploadSingleFile()">Upload an image</button>
                 <button ion-button color="danger" *ngIf="emailVerified" (click)="deleteUploadFile()">Remove Photo</button>

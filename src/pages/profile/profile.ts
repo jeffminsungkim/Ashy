@@ -26,6 +26,8 @@ export class ProfilePage {
   private isUrlEqualsToPlaceholder: boolean;
   private selectedFile: FileList;
   private currentUpload: Upload;
+  private previewImage: any;
+  private user: any;
 
   constructor(
     public navParams: NavParams,
@@ -47,8 +49,7 @@ export class ProfilePage {
 
   ionViewWillEnter() {
     console.log("Profile Page WillEnter()");
-    // console.log('Runs when the page is about to enter and become the active page.');
-    this.subscription = this.userService.getLoggedInUser().subscribe(currentUser => {
+    this.subscription = this.userService.getLoggedInUser().subscribe((currentUser: any) => {
       for (let user of currentUser) {
         this.avatar = user.photoURL;
         this.displayName = user.displayName;
@@ -58,15 +59,33 @@ export class ProfilePage {
 
   ionViewDidLeave() {
     console.log("Profile Page DidLeave()");
+    // this.subscription.unsubscribe();
+  }
+
+  ionViewWillLeave() {
+    console.log('Runs when the page is about to leave and no longer be the active page.');
     this.subscription.unsubscribe();
   }
 
   detectFiles(event) {
    this.selectedFile = event.target.files;
+   if (this.selectedFile) {
+     let reader = new FileReader();
+     reader.onload = (event: any) => {
+       this.previewImage = event.target.result;
+        console.log("result:",this.previewImage );
+     }
+     reader.readAsDataURL(event.target.files[0]);
+   }
  }
 
   deleteUploadFile() {
-    this.uploadService.deleteUpload();
+    if (this.selectedFile) {
+      this.previewImage = this.avatar;
+    } else {
+      this.uploadService.deleteUpload();
+    }
+    
   }
 
   uploadSingleFile() {
