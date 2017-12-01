@@ -19,6 +19,7 @@ import { ToastServiceProvider } from '../providers/toast-service/toast-service';
 import { LoadingServiceProvider } from '../providers/loading-service/loading-service';
 import { AlertServiceProvider } from '../providers/alert-service/alert-service';
 import { ErrorDetectionServiceProvider } from '../providers/error-detection-service/error-detection-service';
+import { UploadServiceProvider } from '../providers/upload-service/upload-service';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ErrorDetectionServiceProvider } from '../providers/error-detection-serv
     LoadingServiceProvider,
     AlertServiceProvider,
     ErrorDetectionServiceProvider,
+    UploadServiceProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
