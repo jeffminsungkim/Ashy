@@ -48,8 +48,8 @@ export class RegisterPage {
         console.log("Register onSubmit data:", res);
         if (res) {
           this.toastService.show(res.message);
-          this.modalService.showProfileModal(res.emailVerified);
-          this.navCtrl.setRoot('LoginPage');
+          let emailAuthStatus = { emailVerified: res.emailVerified };
+          this.modalService.showProfileModal(emailAuthStatus);
         }
       } catch (error) {
         console.error(error);
