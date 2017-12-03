@@ -3,11 +3,13 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { NgProgressModule } from 'ngx-progressbar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+
 import { environment } from '../environments/environment'
 
 import { MyApp } from './app.component';
@@ -21,19 +23,21 @@ import { AlertServiceProvider } from '../providers/alert-service/alert-service';
 import { ErrorDetectionServiceProvider } from '../providers/error-detection-service/error-detection-service';
 import { UploadServiceProvider } from '../providers/upload-service/upload-service';
 
+
 @NgModule({
   declarations: [
     MyApp
   ],
   imports: [
     BrowserModule,
+    NgProgressModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFireDatabaseModule,
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

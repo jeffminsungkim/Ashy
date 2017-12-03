@@ -3,8 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ToastServiceProvider } from '../../providers/toast-service/toast-service';
+import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
 import { LoadingServiceProvider } from '../../providers/loading-service/loading-service';
-import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
 import { ErrorDetectionServiceProvider } from '../../providers/error-detection-service/error-detection-service';
 
 import { User } from '../../models/user';
@@ -28,8 +28,8 @@ export class RegisterPage {
     public navParams: NavParams,
     private authService: AuthServiceProvider,
     private toastService: ToastServiceProvider,
+    private alertService: AlertServiceProvider,
     private loadingService: LoadingServiceProvider,
-    private modalService: ModalServiceProvider,
     private errorDetectionService: ErrorDetectionServiceProvider) {
   }
 
@@ -48,8 +48,9 @@ export class RegisterPage {
         console.log("Register onSubmit data:", res);
         if (res) {
           this.toastService.show(res.message);
-          let emailAuthStatus = { emailVerified: res.emailVerified };
-          this.modalService.showProfileModal(emailAuthStatus);
+          this.authService.signOut();
+          this.navCtrl.pop();
+          this.alertService.notifyToCheckVerificationEmail();
         }
       } catch (error) {
         console.error(error);
