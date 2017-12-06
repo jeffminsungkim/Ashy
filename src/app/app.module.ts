@@ -7,6 +7,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 
 import { AngularFireModule } from 'angularfire2';
@@ -62,7 +63,8 @@ import { UploadServiceProvider } from '../providers/upload-service/upload-servic
     UploadServiceProvider,
     NativePageTransitions,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    {provide: Camera, useClass: CameraMock}
+    Camera,
+    File
   ]
 })
 export class AppModule {}
