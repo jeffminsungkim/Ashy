@@ -9,7 +9,7 @@ export class ToastServiceProvider {
     this.fieldRequiredMessage = 'All fields are required.';
   }
 
-  show(message: string, duration: number = 3000) {
+  show(message: string, duration: number = 2000) {
     return this.toastCtrl.create({
       message,
       duration,
