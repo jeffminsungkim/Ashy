@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Friends</ion-title>
+    <ion-buttons right>
+        <button ion-button>
+            <i class="fa fa-user-plus fa-2x" color="danger" aria-hidden="true"></i>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+
+    <ion-list>
+        <ion-list-header>Me</ion-list-header>
+        <ion-item (click)="viewUserProfile()">
+            <ion-avatar item-start>
+                <img [src]="avatar">
+            </ion-avatar>
+            <h2>{{displayName}}</h2>
+            <p>{{statusMessage}}</p>
+        </ion-item>
+    </ion-list>
+
+    <ion-list>
+        <ion-list-header>Friends</ion-list-header>
+        <ion-item-sliding *ngFor="let user of friends">
+            <ion-item>
+                <ion-avatar (click)="test()" item-start>
+                    <img [src]="user.photoURL">
+                </ion-avatar>
+                <h2>{{user.displayName}}</h2>
+                <p>I've had a pretty messed up day. If we just...</p>
+            </ion-item>
+             <ion-item-options side="right">
+                <button ion-button color="dark" (click)="favorite(item)"><ion-icon name="trash"></ion-icon>Delete</button>
+                <button ion-button color="danger" (click)="share(item)"><ion-icon name="hand"></ion-icon>Block</button>
+            </ion-item-options>
+            <ion-item-options side="left">
+                <button ion-button color="cherry" (click)="unread(item)"><ion-icon name="star"></ion-icon></button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+
+</ion-content>
