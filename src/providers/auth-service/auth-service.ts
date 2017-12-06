@@ -76,12 +76,10 @@ export class AuthServiceProvider {
           this.afDB.object(`users/${auth.uid}`).update({
           uid: auth.uid,
           email: auth.email,
-          emailVerified: auth.emailVerified,
           displayName: user.displayName,
-          gender: user.gender,
           photoURL: this.defaultProfileImgURL,
           currentActiveStatus: false
-        }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`, emailVerified: this.isUserEmailVerified})).catch(err => reject(err))
+        }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`})).catch(err => reject(err))
         }).catch(err => reject(err))
       }).catch(err => reject(err))
     });
