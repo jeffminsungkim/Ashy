@@ -1,0 +1,94 @@
+<ion-header>
+
+  <ion-navbar color="cherry">
+    <ion-title>Edit Profile</ion-title>
+     <ion-buttons left>
+        <button ion-button (click)="closeModal()">
+            Close
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <ion-row align-items-center>
+        <ion-col col-12>
+            <input type="file" id="file-input" showWhen="core" (change)="detectFiles($event)">
+            <img *ngIf="previewImage;then previewImg else customImg">
+            <ng-template #previewImg><img [src]="previewImage" (click)="presentActionSheet()"></ng-template>
+            <ng-template #customImg><img [src]="avatar" (click)="presentActionSheet()"></ng-template>
+        </ion-col>
+
+        <ion-col col-12>
+            <button ion-button clear color="dark" (click)="changeDisplayName()">
+                <h3>{{displayName}}</h3>
+            </button>
+        </ion-col>
+    </ion-row>
+
+<ion-row class="section-b">
+    <ion-list>
+        <button ion-item>
+          <ion-icon name='quote' item-start></ion-icon>
+          Status Message
+          <ion-note item-end>
+            Edit
+          </ion-note>
+        </button>
+
+        <button ion-item>
+          <ion-icon name='star' item-start></ion-icon>
+          Interest
+          <ion-note item-end>
+            Edit
+          </ion-note>
+        </button>
+
+        <ion-item>
+          <ion-toggle checked="false"></ion-toggle>
+          <ion-label>
+            Hide Interests
+          </ion-label>
+          <ion-icon name='eye' item-start></ion-icon>
+        </ion-item>
+
+
+        <button ion-item (click)="editUsername()">
+           <ion-icon ios="ios-finger-print" md="md-finger-print" item-start></ion-icon>
+            Username
+          <ion-note *ngIf="username == null" item-end>
+            Create Username
+          </ion-note>
+          <ion-note *ngIf="username != null" item-end>
+            {{username}}
+          </ion-note>
+        </button>
+
+        <ion-item>
+          <ion-toggle checked="false"></ion-toggle>
+          <ion-label>
+            Hide Username
+          </ion-label>
+          <ion-icon name='eye' item-start></ion-icon>
+        </ion-item>
+
+        <ion-item class="gender" *ngIf="gender == null">
+            <ion-icon ios="ios-female" md="md-female" item-start></ion-icon>
+            Gender
+             <button ion-button #genderMale item-end (click)="selectMale()">Male</button>
+             <button ion-button #genderFemale color="pink-accent-2" item-end (click)="selectFemale()">Female</button>
+        </ion-item>
+
+        <ion-item *ngIf="gender != null">
+            <ion-icon ios="ios-female" md="md-female" item-start></ion-icon>
+            Gender
+             <button ion-button #finalGender [disabled]="gender != null" color="dark" item-end>{{gender}}</button>
+        </ion-item>
+   
+    </ion-list>
+</ion-row>
+
+</ion-content>
