@@ -41,6 +41,7 @@ export class LoginPage {
         this.userService.updateEmailVerificationStatus();
       }
       else {
+        this.authService.sendEmailVerification();
         this.authService.signOut();
         this.alertService.notifyToCheckVerificationEmail();
       }

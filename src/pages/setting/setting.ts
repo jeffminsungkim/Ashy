@@ -13,6 +13,7 @@ import { UploadServiceProvider } from '../../providers/upload-service/upload-ser
   templateUrl: 'setting.html',
 })
 export class SettingPage {
+  private username: string;
 
   constructor(
     public navCtrl: NavController,
@@ -21,19 +22,22 @@ export class SettingPage {
     private userService: UserServiceProvider,
     private toastService: ToastServiceProvider,
     private modalService: ModalServiceProvider,
-    private uploadService: UploadServiceProvider) { }
+    private uploadService: UploadServiceProvider) {
+
+    this.username = 'chattycherry';
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingPage');
   }
 
 
-  goToProfile() {
-    let validation = { emailVerified: true };
-    this.modalService.showProfileModal(validation);
+  goToProfileDetail() {
+    this.modalService.showProfileDetailModal();
   }
 
   async logout() {
+    this.userService.updateCurrentActiveStatusTo(false);
     const user: any = await this.authService.signOut();
     this.toastService.show(`Signed out as ${user.email}`);
   }

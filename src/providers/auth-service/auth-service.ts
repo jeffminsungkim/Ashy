@@ -79,7 +79,8 @@ export class AuthServiceProvider {
           emailVerified: auth.emailVerified,
           displayName: user.displayName,
           gender: user.gender,
-          photoURL: this.defaultProfileImgURL
+          photoURL: this.defaultProfileImgURL,
+          currentActiveStatus: false
         }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`, emailVerified: this.isUserEmailVerified})).catch(err => reject(err))
         }).catch(err => reject(err))
       }).catch(err => reject(err))
