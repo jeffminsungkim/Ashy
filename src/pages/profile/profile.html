@@ -4,39 +4,45 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
-  <ion-navbar color="cherry">
-    <ion-title>Profile</ion-title>
+<ion-header no-border>
+  <ion-navbar transparent>
     <ion-buttons left>
-        <button ion-button icon-only (click)="backToPreviousView()">
-            <ion-icon name="close"></ion-icon>
-        </button>
-    </ion-buttons>
-    <ion-buttons right *ngIf="emailVerified">
-        <button ion-button>
-            Save
+        <button ion-button color="cherry" (click)="backToPreviousView()">
+            <i class="fa fa-times fa-2x" aria-hidden="true"></i>
         </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <ion-grid>
+
+    <ng-progress [minimum]="0.1" [maximum]="1" [color]="'red'" [speed]="currentUpload?.progress" [thick]="true" [showSpinner]="true"></ng-progress>
+    <ion-grid class="section-a">
         <ion-row align-items-center>
             <ion-col col-12>
-                <input type="file" id="file-input" *ngIf="emailVerified" (change)="detectFiles($event)">
+                <input type="file" id="file-input" showWhen="core" (change)="detectFiles($event)">
                 <img *ngIf="previewImage;then previewImg else customImg">
-                <ng-template #previewImg><img src="{{previewImage}}"></ng-template>
-                <ng-template #customImg><img src="{{avatar}}"></ng-template>
+                <ng-template #previewImg><img [src]="previewImage"></ng-template>
+                <ng-template #customImg><img [src]="avatar" (click)="showOriginalImage()"></ng-template>
             </ion-col>
 
-            <ion-col>
-                <button ion-button color="secondary" *ngIf="emailVerified" (click)="uploadSingleFile()">Upload an image</button>
-                <button ion-button color="danger" *ngIf="emailVerified" (click)="deleteUploadFile()">Remove Photo</button>
-                <h2>{{displayName}}</h2>
-                <button ion-button icon-end *ngIf="emailVerified == false" (click)="requestEmailVerification()">
-                Send Verification Email<ion-icon name="md-send"></ion-icon>
+            <ion-col col-12>
+                <button ion-button color="secondary" showWhen="core" (click)="uploadSingleFile()">Upload an image</button>
+                <button ion-button color="danger" showWhen="core" (click)="deleteUploadFile()">Remove Photo</button>
+            </ion-col>
+
+            <ion-col col-12>
+                <h3>{{displayName}}</h3>
+                <p>Friends 488</p>
+                <p class="interest">#아이오닉 #개발 #채팅 #독서 #맛집탐방</p>
+            </ion-col>
+
+            <ion-col col-12>
+                <button ion-button outline small color="dark" (click)="editProfile()" icon-end>
+                    Edit Profile
+                    <ion-icon ios="ios-color-wand" md="md-color-wand"></ion-icon>
                 </button>
             </ion-col>
         </ion-row>
     </ion-grid>
+
 </ion-content>
