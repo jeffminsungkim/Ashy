@@ -7,7 +7,7 @@ import { IonicPage } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  firstTab: string = 'UserPage';
+  firstTab: string = 'FriendPage';
   secondTab: string = 'ChatPage';
   lastTab: string = 'SettingPage';
 
