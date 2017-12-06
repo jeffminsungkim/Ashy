@@ -13,19 +13,44 @@
 </ion-header>
 
 <ion-content padding class="outer-content">
-    <ion-list>
+     <ion-list>
          <ion-list-header>
-          Account Settings
-          <button ion-button icon-only item-end clear>
-            <ion-icon name="cog"></ion-icon>
-          </button>
+          APPNAME
         </ion-list-header>
 
          <ion-item-group>
+            <ion-item>
+                <ion-icon ios="ios-information-circle" md="md-information-circle" item-start></ion-icon>
+                Version
+            </ion-item>
+        </ion-item-group>
+    </ion-list>
 
-            <button ion-item (click)="goToProfile()">
+    <ion-list>
+         <ion-list-header>
+          ACCOUNT
+        </ion-list-header>
+    
+         <ion-item-group>
+            <ion-item>
+                <ion-icon ios="ios-finger-print" md="md-finger-print" item-start></ion-icon>
+                Username
+                <ion-note *ngIf="username != null" item-end>
+                    {{username}}
+                </ion-note>
+                <ion-note *ngIf="username == null" item-end>
+                    Username is not set
+                </ion-note>
+            </ion-item>
+
+            <button ion-item (click)="goToProfileDetail()">
                 <ion-icon name="ios-person" item-start></ion-icon>
                 Edit Profile
+            </button>
+
+            <button ion-item>
+                <ion-icon ios="ios-notifications" md="md-notifications" item-start></ion-icon>
+                Notifications
             </button>
 
             <ion-item>
@@ -33,44 +58,59 @@
                 <ion-label>Airplane Mode</ion-label>
                 <ion-toggle color="secondary"></ion-toggle>
             </ion-item>
-
-            <button ion-item>
-                <ion-icon name="star" item-start></ion-icon>
-                Sample Item
-            </button>
         </ion-item-group>
     </ion-list>
 
     <ion-list radio-group>
         <ion-list-header>
-          <ion-icon item-start name="chatboxes"></ion-icon>
-          Chat Settings
+          CHAT
         </ion-list-header>
-
+        <ion-item-group>
+            <button ion-item>
+                 <ion-icon ios="ios-people" md="md-people" item-start></ion-icon>
+                Friends
+            </button>
+        <ion-item-divider>
+           Accept Invitation Requests
+        </ion-item-divider>
         <ion-item>
           <ion-label color="dark">Always</ion-label>
           <ion-radio value="always" checked></ion-radio>
         </ion-item>
         <ion-item>
-          <ion-label color="dark">Only while phone is locked</ion-label>
+          <ion-label color="danger">Never</ion-label>
           <ion-radio value="locked"></ion-radio>
         </ion-item>
+        </ion-item-group>
     </ion-list>
 
-     <ion-list>
-    <ion-list-header>
-      Danger Zone
-    </ion-list-header>
+    <ion-list>
+         <ion-item-group>
+            <button ion-item>
+                <ion-icon ios="ios-flame" md="md-flame" item-start></ion-icon>
+                Support
+            </button>
+            <button ion-item>
+                <ion-icon ios="ios-color-wand" md="md-color-wand" item-start></ion-icon>
+                Leave us a Review
+            </button>
+        </ion-item-group>
+    </ion-list>
 
-    <ion-item>
-      <ion-icon name="log-out" item-start color="secondary"></ion-icon>
-      <button ion-button outline block item-end color="secondary" (click)="logout()">Log out</button>
-    </ion-item>
-    <ion-item>
-      <ion-icon name="sad" item-start color="danger"></ion-icon>
-      <button ion-button outline block item-end color="danger" (click)="deleteAccount()">Delete Account</button>
-    </ion-item>
-  </ion-list>
+    <ion-list>
+        <ion-list-header>
+            DANGER ZONE
+        </ion-list-header>
+        <ion-item-group>
+            <ion-item>
+                <ion-icon name="log-out" item-start color="secondary"></ion-icon>
+                <button ion-button outline block item-end color="secondary" (click)="logout()">SIGN OUT</button>
+            </ion-item>
+            <ion-item>
+                <ion-icon name="logo-freebsd-devil" item-start color="danger"></ion-icon>
+                <button ion-button outline block item-end color="danger" (click)="deleteAccount()">DELETE ACCOUNT</button>
+            </ion-item>
+        </ion-item-group>
+    </ion-list>
 
-   
 </ion-content>
