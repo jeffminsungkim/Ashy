@@ -1,0 +1,26 @@
+page-username {
+
+    align-content: center;
+    margin-bottom: 150px;
+    display: block;
+    justify-content: center;
+    text-align: center;
+
+    p {
+        font-weight: bold;
+        font-size: 1.7rem;
+        color: #000;
+    }
+
+    p.isAvailable {
+        font-weight: bold;
+        font-size: 1.7rem;
+        color: #1de9b6;
+    }
+
+    p.isNotAvailable {
+        font-weight: bold;
+        font-size: 1.7rem;
+        color: #f50057;
+    }
+}
