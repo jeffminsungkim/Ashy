@@ -59,24 +59,22 @@ export class FriendPage {
     this.modalService.showProfileModal();
   }
 
-  ionViewDidEnter() {
-    // console.log('Runs when the page has fully entered and is now the active page. This event will fire, whether it was the first load or a cached page.');
-  }
-
   ionViewWillEnter() {
-    // console.log('Runs when the page is about to enter and become the active page.');
+    // Runs when the page is about to enter and become the active page.;
     this.getUserProfile();
     // this.getFriendsList();
   }
 
-  ionViewWillLeave() {
-    // console.log('Runs when the page is about to leave and no longer be the active page.');
-    // this.subscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   if (this.subscription !== undefined) {
+  //     this.subscription.unsubscribe();
+  //     console.log("friends ngOnDestroy");
+  //   }
+  // }
 
-  ionViewWillUnload() {
-    // Runs when the page is about to be destroyed and have its elements removed.
+  ionViewWillLeave() {
     this.subscription.unsubscribe();
+    console.log("friends ionViewWillLeave");
   }
 
   ionViewDidLeave() {
