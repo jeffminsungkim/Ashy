@@ -6,6 +6,8 @@ export class ModalServiceProvider {
 
   constructor(private modalCtrl: ModalController) { }
 
-  showProfileModal(status: boolean) { this.modalCtrl.create('ProfilePage', { emailVerified: status }).present(); }
+  showProfileModal() { this.modalCtrl.create('ProfilePage').present(); }
+
+  showProfileDetailModal() { this.modalCtrl.create('ProfileDetailPage').present(); }
 
 }
