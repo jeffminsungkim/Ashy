@@ -7,7 +7,10 @@ export class LoadingServiceProvider {
 
   constructor(private loadingCtrl: LoadingController) { }
 
-  show(message: string) { this.loadingCtrl.create({ content: message}).present(); }
+  show(message: string) {
+    this.loader = this.loadingCtrl.create({ content: message});
+    this.loader.present();
+  }
 
   showWaitLoader() {
     this.loader = this.loadingCtrl.create({ content: 'Please wait...'});
