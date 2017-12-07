@@ -4,7 +4,7 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angular
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/take';
 
 import { AuthServiceProvider } from '../auth-service/auth-service';
 
@@ -17,7 +17,6 @@ export class UserServiceProvider {
   private authState: any = null;
   private usersNode: string;
   private defaultProfileImgURL: string;
-  private currentUser: User;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -33,7 +32,6 @@ export class UserServiceProvider {
     // this.users$ = this.usersRef.snapshotChanges().map(changes => {
     //   return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
     // });
-
   }
 
   get authenticated(): boolean {
@@ -61,7 +59,17 @@ export class UserServiceProvider {
     return this.authState['photoURL'];
   }
 
-  getUsers() { return this.users$; }
+  // determineUserSentFriendRequestToCertainParty(followingUserUID: string) {
+  //   let usersRef = this.afDB.list('friend-requests/', ref => ref.orderByChild(followingUserUID));
+  //   this.users$ = usersRef.snapshotChanges().map(changes => {
+  //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+  //   });
+  //   return this.users$;
+  // }
+
+  determineUserSentFriendRequestToCertainParty(followingUserUID: string) {
+    return this.afDB.list(`friend-requests/${followingUserUID}`, ref => ref.orderByChild('sender').equalTo(this.currentUserId)).valueChanges();
+  }
 
   // getVerifiedUsers() {
   //   let usersRef = this.afDB.list(this.usersNode, ref => ref.orderByChild('emailVerified').equalTo(true));
@@ -134,7 +142,6 @@ export class UserServiceProvider {
   }
 
   checkUsername(username: string) {
-    let forbiddenChars = '.$[]#/'; //contains the forbidden characters
     username = username.toLowerCase();
     return this.afDB.object(`usernames/${username}`).valueChanges();
   }
@@ -149,5 +156,34 @@ export class UserServiceProvider {
   removeDeprecatedUsername(username: string) {
     this.afDB.object(`usernames/${username}`).remove();
   }
+
+  getMatchedUser(UID: string) {
+    return this.afDB.object(`users/${UID}`).valueChanges();
+  }
+
+  sendFriendRequest(recipient: string, sender: User) {
+    let senderInfo = {
+      sender: sender.uid,
+      username: sender.username,
+      photoURL: sender.photoURL,
+      timestamp: Date.now(),
+      message: 'wants to be friend with you.'
+    }
+    return new Promise((resolve, reject) => {
+      this.afDB.list(`friend-requests/${recipient}`).push(senderInfo).then(() => {
+        resolve({'status': true, 'message': 'Friend request has sent.'});
+      }, error => reject({'status': false, 'message': error}));
+    });
+  }
+
+  fetchFriendRequest() {
+    return this.afDB.list(`friend-requests/${this.currentUserId}`).valueChanges();
+  }
+
+
+
+
+
+
 
 }

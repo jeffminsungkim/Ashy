@@ -5,14 +5,88 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>Notification</ion-title>
+  <ion-navbar no-border-bottom>
+    <ion-title>Notifications</ion-title>
   </ion-navbar>
-
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="segment">
+      <ion-segment-button value="friends">
+        Friend Requests
+      </ion-segment-button>
+      <ion-segment-button value="groupchats">
+        Chat Invitations
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
-
-
 <ion-content padding>
-
+  <div [ngSwitch]="segment">
+    <ion-list *ngSwitchCase="'friends'">
+      <ion-list-header>
+        Today
+      </ion-list-header>
+      <ion-item-sliding>
+        <ion-item *ngFor="let user of sender">
+          <ion-avatar item-start>
+            <img [src]="user.photoURL">
+          </ion-avatar>
+          <h2>{{user.username}}</h2>
+          <p>{{user.message}}</p>
+          <ion-note item-end>{{user.timestamp | date:'shortTime'}}</ion-note>
+        </ion-item>
+        <ion-item-options>
+          <button ion-button color="secondary" icon-start>
+            <ion-icon name="ios-more"></ion-icon>
+            Accept
+          </button>
+          <button ion-button color="danger" icon-start>
+            <ion-icon name="text"></ion-icon>
+            Reject
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+      <ion-list-header>
+        Missing
+      </ion-list-header>
+      <ion-item-sliding>
+        <ion-item>
+          <ion-avatar item-start>
+            <img [src]="">
+          </ion-avatar>
+          <h2>Test2</h2>
+          <ion-note item-end>4:43 pm</ion-note>
+        </ion-item>
+        <ion-item-options>
+          <button ion-button color="secondary" icon-start>
+            <ion-icon name="ios-more"></ion-icon>
+            Accept
+          </button>
+          <button ion-button color="danger" icon-start>
+            <ion-icon name="text"></ion-icon>
+            Reject
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-list *ngSwitchCase="'groupchats'">
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img [src]="">
+        </ion-thumbnail>
+        <h2>Test1-1</h2>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img [src]="">
+        </ion-thumbnail>
+        <h2>Test1-2</h2>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img [src]="">
+        </ion-thumbnail>
+        <h2>Test1-3</h2>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
