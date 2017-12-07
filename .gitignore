@@ -34,3 +34,7 @@ $RECYCLE.BIN/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+
+# Custom
+
+Firebase-Rules.json
