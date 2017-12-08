@@ -35,7 +35,7 @@
           <ion-note item-end>{{user.timestamp | date:'shortTime'}}</ion-note>
         </ion-item>
         <ion-item-options>
-          <button ion-button color="secondary" icon-start>
+          <button ion-button color="secondary" (click)="accpetFriendRequest(user)" icon-start>
             <ion-icon name="md-checkmark"></ion-icon>
             Accept
           </button>

@@ -6,8 +6,9 @@ import { ReversePipe } from 'ngx-pipes';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/take';
 
-
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+
+import { User } from '../../models/user';
 
 @IonicPage()
 @Component({
@@ -23,6 +24,7 @@ export class NotificationPage implements OnDestroy {
   private sender: any[];
   private message: string;
   private uid: string;
+  private user: User;
 
   constructor(
     public navCtrl: NavController,
@@ -39,6 +41,14 @@ export class NotificationPage implements OnDestroy {
 
   ionViewDidEnter() {
     this.getRequestFromUser();
+    this.getUser();
+  }
+
+  getUser() {
+    this.userService.getCurrentUser().take(1).subscribe((user: any) => {
+     this.user = user; 
+     console.log("NOTIFICATION:", this.user);
+   });
   }
 
   getRequestFromUser() {
@@ -47,22 +57,22 @@ export class NotificationPage implements OnDestroy {
       this.sender = req;
       this.message = req.message;
       for (let sender of req)
-        this.uid = sender.senderUID;
+        this.uid = sender.uid;
       console.log("UID@@", this.uid);
       if (this.uid !== this.userService.currentUserId && this.uid !== undefined)
-        this.events.publish('totalRequests:arrived', this.uid, req.length);
+        this.events.publish('totalRequests:arrived', req.length);
     });
   }
 
-  accpetFriendRequest(userInfo) {
-
-    this.userService.acceptFriendRequest(userInfo.senderUID);
+  accpetFriendRequest(requestSenderInfo) {
+    console.log("noti:", requestSenderInfo);
+    this.userService.acceptFriendRequest(requestSenderInfo, this.user);
   }
 
-  declineFriendRequest(userInfo) {
-    console.log("userinfo!!!!!", userInfo);
-    console.log("sender!!!!", userInfo.senderUID);
-    this.userService.rejectFriendRequest(userInfo.senderUID);
+  declineFriendRequest(requestSenderInfo) {
+    console.log("userinfo!!!!!", requestSenderInfo);
+    console.log("sender!!!!", requestSenderInfo.uid);
+    this.userService.rejectFriendRequest(requestSenderInfo.uid);
   }
 
   ngOnDestroy() {
