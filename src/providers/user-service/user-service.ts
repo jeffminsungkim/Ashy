@@ -69,7 +69,7 @@ export class UserServiceProvider {
   // }
 
   determineUserSentFriendRequestToCertainParty(followingUserUID: string) {
-    return this.afDB.list(`friend-requests/${followingUserUID}`, ref => ref.orderByChild('sender').equalTo(this.currentUserId)).valueChanges();
+    return this.afDB.list(`friend-requests/${followingUserUID}`, ref => ref.orderByChild('uid').equalTo(this.currentUserId)).valueChanges();
   }
 
   // getVerifiedUsers() {
@@ -107,6 +107,10 @@ export class UserServiceProvider {
 
   getUserActiveStatus(): Observable<any> {
     return this.afDB.object(`users/${this.currentUserId}/currentActiveStatus`).valueChanges();
+  }
+
+  getMyFriendList() {
+    return this.afDB.list(`friends/${this.currentUserId}`).valueChanges();
   }
 
   // getLoggedInUser() {
@@ -172,9 +176,12 @@ export class UserServiceProvider {
 
   sendFriendRequest(recipient: string, sender: User) {
     let senderInfo = {
-      sender: sender.uid,
+      uid: sender.uid,
       username: sender.username,
       photoURL: sender.photoURL,
+      email: sender.email,
+      displayName: sender.displayName,
+      statusMessage: sender.statusMessage,
       timestamp: Date.now(),
       message: 'wants to be friend with you.'
     }
@@ -189,16 +196,44 @@ export class UserServiceProvider {
     return this.afDB.list(`friend-requests/${this.currentUserId}`).valueChanges();
   }
 
+  acceptFriendRequest(sender: User, user: User) {
+    let acceptedUserInfo = {
+      uid: sender.uid,
+      email: sender.email,
+      displayName: sender.displayName,
+      username: sender.username,
+      photoURL: sender.photoURL,
+      statusMessage: sender.statusMessage
+    }
+    console.log('userInfo accept friend request:', acceptedUserInfo);
+    this.afDB.list(`friends/${this.currentUserId}`).push(acceptedUserInfo);
+    this.afDB.list(`friends/${sender.uid}`).push(user);
+    this.removeCompletedFriendRequest(sender.uid);
+  }
+
   rejectFriendRequest(UID: string) {
-    this.afDB.list(`friend-requests/${this.currentUserId}`, ref => ref.orderByChild('sender').equalTo(UID)).query.once('value', (snapshot) => {
+    this.removeCompletedFriendRequest(UID);
+  }
+
+  removeCompletedFriendRequest(UID: string) {
+    const endpoint = `friend-requests/${this.currentUserId}`;
+    this.removeRequestedUserFromGivenPath(UID, endpoint);
+  }
+
+  removeUserFromFriendList(UID: string) {
+    const endpoint = `friends/${this.currentUserId}`;
+    this.removeRequestedUserFromGivenPath(UID, endpoint);
+  }
+
+  private removeRequestedUserFromGivenPath(UID: string, path: string) {
+    this.afDB.list(path, ref => ref.orderByChild('uid').equalTo(UID)).query.once('value', (snapshot) => {
       console.log("RESULTS", snapshot);
       let values = snapshot.val();
       console.log("values", values);
       let key = Object.keys(values);
       console.log("KEYS", key);
-      this.afDB.list(`friend-requests/${this.currentUserId}`).remove(key[0]);
+      this.afDB.list(path).remove(key[0]);
     });
-  }
-
+  } 
 
 }
