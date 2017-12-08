@@ -36,11 +36,8 @@ export class LoginPage {
 
   async login() {
     try {
-      const user: any = await this.authService.emailLogin(this.user);
-      if (user.emailVerified) {
-        this.userService.updateEmailVerificationStatus();
-      }
-      else {
+      await this.authService.emailLogin(this.user);
+      if (!this.userService.currentUserEmailVerified) {
         this.authService.sendEmailVerification();
         this.authService.signOut();
         this.alertService.notifyToCheckVerificationEmail();
