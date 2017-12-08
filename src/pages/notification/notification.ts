@@ -22,6 +22,7 @@ export class NotificationPage implements OnDestroy {
   private requestArriavalTime: any;
   private sender: any[];
   private message: string;
+  private uid: string;
 
   constructor(
     public navCtrl: NavController,
@@ -36,25 +37,32 @@ export class NotificationPage implements OnDestroy {
     console.log('ionViewDidLoad NotificationPage');
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     this.getRequestFromUser();
   }
 
   getRequestFromUser() {
     this.subscription = this.userService.fetchFriendRequest().subscribe((req: any) => {
-      this.events.publish('totalRequests:arrived', req.length);
       this.reversePipe.transform(req);
       this.sender = req;
       this.message = req.message;
-      console.log('type', typeof this.sender);
-      console.log('sender', this.sender);
+      for (let sender of req)
+        this.uid = sender.senderUID;
+      console.log("UID@@", this.uid);
+      if (this.uid !== this.userService.currentUserId && this.uid !== undefined)
+        this.events.publish('totalRequests:arrived', this.uid, req.length);
     });
+  }
+
+  accpetFriendRequest(userInfo) {
+
+    this.userService.acceptFriendRequest(userInfo.senderUID);
   }
 
   declineFriendRequest(userInfo) {
     console.log("userinfo!!!!!", userInfo);
-    console.log("sender!!!!", userInfo.sender);
-    this.userService.rejectFriendRequest(userInfo.sender);
+    console.log("sender!!!!", userInfo.senderUID);
+    this.userService.rejectFriendRequest(userInfo.senderUID);
   }
 
   ngOnDestroy() {

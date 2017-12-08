@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, Events } from 'ionic-angular';
+
+import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 @IonicPage()
 @Component({
@@ -9,8 +11,17 @@ import { IonicPage } from 'ionic-angular';
 export class HomePage {
   firstTab: string = 'FriendPage';
   secondTab: string = 'ChatPage';
+  thirdTab: string = 'NotificationPage';
   lastTab: string = 'SettingPage';
+  totalRequests: string;
 
-  constructor() { }
-
+  constructor(public events: Events, private userService: UserServiceProvider) {
+    this.events.subscribe('totalRequests:arrived', (senderUID, totalRequests) => {
+      console.log("FROM UID:", senderUID);
+      if (totalRequests > 0)
+        this.totalRequests = totalRequests;
+      else
+        this.totalRequests = '';
+    });
+  }
 }
