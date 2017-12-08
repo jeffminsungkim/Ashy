@@ -6,9 +6,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 
-import { User } from '../../models/user';
-
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+
+import { User } from '../../models/user';
 
 @IonicPage()
 @Component({
