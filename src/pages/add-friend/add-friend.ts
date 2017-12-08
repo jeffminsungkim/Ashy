@@ -17,18 +17,15 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 })
 export class AddFriendPage implements OnDestroy {
   private subscription: Subscription;
-  private subscriptionBucket: Subscription[];
   private avatar: string;
   private displayName: string;
   private recipientUid: string;
   private usernameText: string;
   private isUserExists: boolean;
+  private isUserAllowedToSendRequest: boolean = true;
   private matchedUserExists: boolean = false;
   private matchedWithCurrentUser;
-  private isUserAllowedToSendRequest: boolean = true;
-  private username: string;
   private user$: Observable<any>;
-
   private user: User;
 
   constructor(
@@ -50,11 +47,11 @@ export class AddFriendPage implements OnDestroy {
   }
 
   findUserWithUsername() {
-    let subscription: any;
-    let sub: any;
+    let subscription: Subscription;
+    let sub: Subscription;
     let forbiddenChars = '.$[]#/'; //contains the forbidden characters CONDITION NEEDS TO BE IMPLEMENTED
 
-    subscription = this.userService.checkUsername(this.usernameText).take(1).subscribe((uid: any) => {
+    this.userService.checkUsername(this.usernameText).take(1).subscribe((uid: any) => {
     console.log("uid", uid);
     if (uid === null)
       this.isUserExists = false;
@@ -62,7 +59,7 @@ export class AddFriendPage implements OnDestroy {
       this.isUserExists = true;
 
     if (this.isUserExists && this.usernameText != '') {
-      sub = this.userService.getMatchedUser(uid).take(1).subscribe((user: any) => {
+      this.userService.getMatchedUser(uid).take(1).subscribe((user: any) => {
       console.log("MATCHED USER:", user);
       this.verifyUserSentRequestOrNot(user.uid);
       this.avatar = user.photoURL;
@@ -78,25 +75,24 @@ export class AddFriendPage implements OnDestroy {
     }
     this.matchedUserExists = false;
   });
-    // this.subscription.add(subscription);
-    // this.subscription.add(sub);
   }
 
   sendFriendRequest() {
     this.userService.sendFriendRequest(this.recipientUid, this.user).then((res: any) => {
-      if (res.status)
+      if (res.status) 
         this.isUserAllowedToSendRequest = false;
     });
   }
 
   verifyUserSentRequestOrNot(uid: string) {
-    this.userService.determineUserSentFriendRequestToCertainParty(uid).subscribe(user => {
-      console.log("user@@@@@@", user);
+    let sub = this.userService.determineUserSentFriendRequestToCertainParty(uid).subscribe(user => {
+      console.log("Add Friend Verify Requests", user);
       if (user.length > 0)
         this.isUserAllowedToSendRequest = false;
       else
         this.isUserAllowedToSendRequest = true;
     });
+    this.subscription.add(sub);
   }
 
   backToPreviousView() {
