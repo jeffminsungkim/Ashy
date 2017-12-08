@@ -16,8 +16,7 @@ export class HomePage {
   totalRequests: string;
 
   constructor(public events: Events, private userService: UserServiceProvider) {
-    this.events.subscribe('totalRequests:arrived', (senderUID, totalRequests) => {
-      console.log("FROM UID:", senderUID);
+    this.events.subscribe('totalRequests:arrived', (totalRequests) => {
       if (totalRequests > 0)
         this.totalRequests = totalRequests;
       else

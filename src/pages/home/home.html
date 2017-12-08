@@ -1,6 +1,6 @@
 <ion-tabs>
-    <ion-tab [root]="firstTab" tabTitle="Friends" tabIcon="ios-people"></ion-tab>
+    <ion-tab [root]="firstTab" tabTitle="Friends" tabIcon="ios-people" tabBadgeStyle="danger" tabBadge="{{newFriends}}"></ion-tab>
     <ion-tab [root]="secondTab" tabTitle="Chats" tabIcon="ios-chatbubbles"></ion-tab>
-    <ion-tab [root]="thirdTab" tabTitle="Notifications" tabIcon="ios-notifications" tabBadge="{{totalRequests}}"></ion-tab>
+    <ion-tab [root]="thirdTab" tabTitle="Notifications" tabIcon="ios-notifications" tabBadgeStyle="danger" tabBadge="{{totalRequests}}"></ion-tab>
     <ion-tab [root]="lastTab" tabTitle="Settings" tabIcon="ios-settings"></ion-tab>
 </ion-tabs>
