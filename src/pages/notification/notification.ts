@@ -1,8 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+
+import { ReversePipe } from 'ngx-pipes';
 
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/take';
+
 
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 
@@ -10,6 +13,7 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 @Component({
   selector: 'page-notification',
   templateUrl: 'notification.html',
+  providers: [ReversePipe]
 })
 export class NotificationPage implements OnDestroy {
   private subscription: Subscription;
@@ -22,7 +26,9 @@ export class NotificationPage implements OnDestroy {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private userService: UserServiceProvider) {
+    public events: Events,
+    private userService: UserServiceProvider,
+    private reversePipe: ReversePipe) {
     this.segment = 'friends';
   }
 
@@ -36,12 +42,19 @@ export class NotificationPage implements OnDestroy {
 
   getRequestFromUser() {
     this.subscription = this.userService.fetchFriendRequest().subscribe((req: any) => {
-      console.log("REQUESTS", req);
+      this.events.publish('totalRequests:arrived', req.length);
+      this.reversePipe.transform(req);
       this.sender = req;
       this.message = req.message;
       console.log('type', typeof this.sender);
       console.log('sender', this.sender);
     });
+  }
+
+  declineFriendRequest(userInfo) {
+    console.log("userinfo!!!!!", userInfo);
+    console.log("sender!!!!", userInfo.sender);
+    this.userService.rejectFriendRequest(userInfo.sender);
   }
 
   ngOnDestroy() {

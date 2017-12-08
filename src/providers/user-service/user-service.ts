@@ -17,6 +17,7 @@ export class UserServiceProvider {
   private authState: any = null;
   private usersNode: string;
   private defaultProfileImgURL: string;
+  private user$: any;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -87,6 +88,14 @@ export class UserServiceProvider {
   getCurrentUser() {
     return this.afDB.object(`users/${this.currentUserId}`).valueChanges();
   }
+
+  // getCurrentUser() {
+  //   let userRef = this.afDB.list(`users/`, ref => ref.orderByKey().equalTo(this.currentUserId));
+  //   this.user$ = userRef.snapshotChanges().map(changes => {
+  //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+  //   });
+  //   return this.user$;
+  // }
 
   getCurrentUsername() {
     return this.afDB.object(`users/${this.currentUserId}/username`).valueChanges();
@@ -180,10 +189,16 @@ export class UserServiceProvider {
     return this.afDB.list(`friend-requests/${this.currentUserId}`).valueChanges();
   }
 
-
-
-
-
+  rejectFriendRequest(UID: string) {
+    this.afDB.list(`friend-requests/${this.currentUserId}`, ref => ref.orderByChild('sender').equalTo(UID)).query.once('value', (snapshot) => {
+      console.log("RESULTS", snapshot);
+      let values = snapshot.val();
+      console.log("values", values);
+      let key = Object.keys(values);
+      console.log("KEYS", key);
+      this.afDB.list(`friend-requests/${this.currentUserId}`).remove(key[0]);
+    });
+  }
 
 
 }

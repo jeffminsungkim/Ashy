@@ -25,23 +25,23 @@
       <ion-list-header>
         Today
       </ion-list-header>
-      <ion-item-sliding>
-        <ion-item *ngFor="let user of sender">
+      <ion-item-sliding *ngFor="let user of sender">
+        <ion-item>
           <ion-avatar item-start>
             <img [src]="user.photoURL">
           </ion-avatar>
-          <h2>{{user.username}}</h2>
+          <h2>@{{user.username}}</h2>
           <p>{{user.message}}</p>
           <ion-note item-end>{{user.timestamp | date:'shortTime'}}</ion-note>
         </ion-item>
         <ion-item-options>
           <button ion-button color="secondary" icon-start>
-            <ion-icon name="ios-more"></ion-icon>
+            <ion-icon name="md-checkmark"></ion-icon>
             Accept
           </button>
-          <button ion-button color="danger" icon-start>
-            <ion-icon name="text"></ion-icon>
-            Reject
+          <button ion-button color="danger" (click)="declineFriendRequest(user)" icon-start>
+             <ion-icon ios="ios-hand" md="md-hand"></ion-icon>
+            Decline
           </button>
         </ion-item-options>
       </ion-item-sliding>
