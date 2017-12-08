@@ -10,4 +10,6 @@ export class ModalServiceProvider {
 
   showProfileDetailModal() { this.modalCtrl.create('ProfileDetailPage').present(); }
 
+  showAddFriendModal() { this.modalCtrl.create('AddFriendPage').present(); }
+
 }
