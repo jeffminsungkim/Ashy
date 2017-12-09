@@ -2,9 +2,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
 
 import { AuthServiceProvider } from '../auth-service/auth-service';
 
@@ -26,7 +26,13 @@ export class UserServiceProvider {
 
 
     this.usersNode = 'users/';
-    this.afAuth.authState.subscribe((auth) => this.authState = auth);
+    this.afAuth.authState.do(user => {
+      this.authState = user;
+      if (user) {
+        this.updateOnConnect();
+        this.updateOnDisconnect();
+      }
+    }).subscribe();
     this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=f85be639-9a1c-4c79-a28d-361171358a41';
     this.usersRef = this.afDB.list<User>(this.usersNode);
     // this.usersRef = this.afDB.list<User>('users');
@@ -144,9 +150,27 @@ export class UserServiceProvider {
     }
   }
 
-  updateCurrentActiveStatusTo(isActive: boolean) {
-    let activeStatus = { currentActiveStatus: isActive }
+  updateCurrentActiveStatusTo(status: string) {
+    let activeStatus = { currentActiveStatus: status }
     this.afDB.object(`users/${this.currentUserId}`).update(activeStatus).catch(error => console.error('Update CurrentActiveStatus Fails',error));
+  }
+
+  // Updates status when connection to Firebase starts
+  updateOnConnect() {
+    return this.afDB.object('.info/connected').valueChanges()
+                    .do(connected => {
+                      console.log("UPDATEONCONNECT", connected);
+                      let status = connected ? 'online' : 'offline'
+                      this.updateCurrentActiveStatusTo(status)
+                    })
+                    .subscribe()
+  }
+
+  // Updates status when connection to Firebase ends
+  updateOnDisconnect() {
+    firebase.database().ref().child(`users/${this.currentUserId}`)
+            .onDisconnect()
+            .update({currentActiveStatus: 'offline'});
   }
 
   updateGender(selectedGender: string) {
@@ -234,6 +258,7 @@ export class UserServiceProvider {
       console.log("KEYS", key);
       this.afDB.list(path).remove(key[0]);
     });
-  } 
+  }
+
 
 }
