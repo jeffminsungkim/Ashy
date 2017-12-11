@@ -29,7 +29,7 @@ export class MyApp {
            userService.getUserActiveStatus().take(1).subscribe(status => {
              if (status === 'online') {
                toastService.show(`Signed in as ${user.email}`);
-               userService.updateCurrentActiveStatusTo('online');
+               userService.updateCurrentUserActiveStatusTo('online');
              }
            });
           this.rootPage = 'HomePage';
