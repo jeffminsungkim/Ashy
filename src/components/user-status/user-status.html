@@ -1,0 +1,16 @@
+<!-- Generated template for the UserStatusComponent component -->
+<span [ngSwitch]="status">
+    <span *ngSwitchCase="'online'" class="status-online">
+      <i class="fa fa-smile-o fa-2x" aria-hidden="true"></i>
+      <p>Online</p>
+    </span>
+
+    <span *ngSwitchCase="'offline'" class="status-offline">
+      <i class="fa fa-meh-o fa-2x" aria-hidden="true"></i>
+      <p>Offline</p>
+    </span>
+    <span *ngSwitchCase="'signout'" class="status-signout">
+      <i class="fa fa-frown-o fa-2x" aria-hidden="true"></i>
+      <p>Logout</p>
+    </span>
+</span>

@@ -1,0 +1,29 @@
+user-status {
+
+    .status-online {
+        color: #00e676;
+        font-size: 1.2em;
+        p {
+            color: #00e676;
+            font-size: 0.7em;
+        }
+    }
+
+    .status-offline {
+        color: #ffd600;
+        font-size: 1.2em;
+        p {
+            color: #ffd600;
+            font-size: 0.7em;
+        }
+    }
+
+    .status-signout {
+        color: #ff1744;
+        font-size: 1.2em;
+        p {
+            color: #ff1744;
+            font-size: 0.7em;
+        }
+    }
+}
