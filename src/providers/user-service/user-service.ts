@@ -260,7 +260,7 @@ export class UserServiceProvider {
 
   removeCompletedFriendRequest(UID: string) {
     const endpoint = `friend-requests/${this.currentUserId}`;
-    this.afDB.list(endpoint).snapshotChanges().take(1).subscribe((snapshot) => {
+    this.afDB.list(endpoint, ref => ref.orderByChild('uid').equalTo(UID)).snapshotChanges().take(1).subscribe((snapshot) => {
       snapshot.map(requester => {
         console.log('key', requester.key);
         this.afDB.list(endpoint).remove(requester.key);
