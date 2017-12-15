@@ -80,7 +80,7 @@ export class AuthServiceProvider {
           photoURL: this.defaultProfileImgURL,
           statusMessage: '',
           username: '',
-          currentActiveStatus: false
+          currentActiveStatus: 'signout'
         }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`})).catch(err => reject(err))
         }).catch(err => reject(err))
       }).catch(err => reject(err))
