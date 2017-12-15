@@ -5,6 +5,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/switchMap';
 
 import { AuthServiceProvider } from '../auth-service/auth-service';
 
@@ -18,6 +20,8 @@ export class UserServiceProvider {
   private usersNode: string;
   private defaultProfileImgURL: string;
   private user$: any;
+  private friendsListRef$: AngularFireList<any>;
+  private friends$: Observable<any[]>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -35,10 +39,6 @@ export class UserServiceProvider {
     }).subscribe();
     this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=f85be639-9a1c-4c79-a28d-361171358a41';
     this.usersRef = this.afDB.list<User>(this.usersNode);
-    // this.usersRef = this.afDB.list<User>('users');
-    // this.users$ = this.usersRef.snapshotChanges().map(changes => {
-    //   return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    // });
   }
 
   get authenticated(): boolean {
@@ -78,15 +78,6 @@ export class UserServiceProvider {
     return this.afDB.list(`friend-requests/${followingUserUID}`, ref => ref.orderByChild('uid').equalTo(this.currentUserId)).valueChanges();
   }
 
-  // getVerifiedUsers() {
-  //   let usersRef = this.afDB.list(this.usersNode, ref => ref.orderByChild('emailVerified').equalTo(true));
-  //   this.users$ = usersRef.snapshotChanges().map(changes => {
-  //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-  //   });
-
-  //   return this.users$;
-  // }
-
   getCurrentUserProfilePhoto() {
     return this.afDB.object(`profilepics/${this.currentUserId}`).valueChanges();
   }
@@ -107,21 +98,21 @@ export class UserServiceProvider {
     return this.afDB.object(`users/${this.currentUserId}/username`).valueChanges();
   }
 
-  // getUserActiveStatus(): Observable<any> {
-  //   return this.afDB.list(`users/${this.currentUserId}`, ref => ref.orderByKey().equalTo('displayName')).valueChanges();
-  // }
-
   getUserActiveStatus(): Observable<any> {
     return this.afDB.object(`users/${this.currentUserId}/currentActiveStatus`).valueChanges();
   }
 
-  getMyFriendList() {
-    return this.afDB.list(`friends/${this.currentUserId}`).valueChanges();
+  getMyFriendsKey() {
+    this.friendsListRef$ = this.afDB.list(`friends/${this.currentUserId}`);
+    this.friends$ = this.friendsListRef$.snapshotChanges().map(changes => {
+      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    });
+    return this.friends$;
   }
 
-  // getLoggedInUser() {
-  //   return this.afDB.list(this.usersNode, ref => ref.orderByKey().equalTo(this.currentUserId)).valueChanges();
-  // }
+  getFriends(uid: any) {
+    return this.afDB.object(`users/${uid}`).valueChanges();
+  }
 
   deleteLoggedInUser() {
     let endpoint = this.usersNode + this.currentUserId;
@@ -150,18 +141,31 @@ export class UserServiceProvider {
     }
   }
 
-  updateCurrentActiveStatusTo(status: string) {
+  updateCurrentUserActiveStatusTo(status: string) {
     let activeStatus = { currentActiveStatus: status }
-    this.afDB.object(`users/${this.currentUserId}`).update(activeStatus).catch(error => console.error('Update CurrentActiveStatus Fails',error));
+    this.afDB.object(`users/${this.currentUserId}`).update(activeStatus).catch(error => console.error('Update CurrentActiveStatus in users node Fails',error));
   }
+
+  // updateFriendActiveStatusTo(status: string) {
+  //   let activeStatus = { currentActiveStatus: status }
+  //   console.log("stats1:", status);
+  //   this.afDB.list(`friends/${this.currentUserId}`).snapshotChanges().subscribe(snapshot => {
+  //     console.log('snapshot', snapshot);
+  //     let updateObj = {};
+  //     snapshot.forEach(friend => {
+  //       console.log("stats2:", status);
+  //       updateObj[`friends/${friend.key}/${this.currentUserId}`] = activeStatus;
+  //     });
+  //     firebase.database().ref().update(updateObj);
+  //   });
+  // }
 
   // Updates status when connection to Firebase starts
   updateOnConnect() {
     return this.afDB.object('.info/connected').valueChanges()
                     .do(connected => {
-                      console.log("UPDATEONCONNECT", connected);
                       let status = connected ? 'online' : 'offline'
-                      this.updateCurrentActiveStatusTo(status)
+                      this.updateCurrentUserActiveStatusTo(status)
                     })
                     .subscribe()
   }
@@ -183,11 +187,17 @@ export class UserServiceProvider {
     return this.afDB.object(`usernames/${username}`).valueChanges();
   }
 
+  // updateUsername(username: string) {
+  //   let data = {};
+  //   data[username] = this.currentUserId;
+  //   this.afDB.object(`users/${this.currentUserId}`).update({'username': username});
+  //   this.afDB.object(`usernames`).update(data);
+  // }
   updateUsername(username: string) {
-    let data = {};
-    data[username] = this.currentUserId;
-    this.afDB.object(`users/${this.currentUserId}`).update({'username': username});
-    this.afDB.object(`usernames`).update(data);
+    let updateUsername = {};
+    updateUsername[`usernames/${username}`] = this.currentUserId; 
+    updateUsername[`users/${this.currentUserId}/username`] = username;
+    firebase.database().ref().update(updateUsername);
   }
 
   removeDeprecatedUsername(username: string) {
@@ -201,11 +211,9 @@ export class UserServiceProvider {
   sendFriendRequest(recipient: string, sender: User) {
     let senderInfo = {
       uid: sender.uid,
-      username: sender.username,
-      photoURL: sender.photoURL,
-      email: sender.email,
       displayName: sender.displayName,
-      statusMessage: sender.statusMessage,
+      photoURL: sender.photoURL,
+      username: sender.username,
       timestamp: Date.now(),
       message: 'wants to be friend with you.'
     }
@@ -221,17 +229,28 @@ export class UserServiceProvider {
   }
 
   acceptFriendRequest(sender: User, user: User) {
-    let acceptedUserInfo = {
-      uid: sender.uid,
-      email: sender.email,
-      displayName: sender.displayName,
-      username: sender.username,
-      photoURL: sender.photoURL,
-      statusMessage: sender.statusMessage
-    }
-    console.log('userInfo accept friend request:', acceptedUserInfo);
-    this.afDB.list(`friends/${this.currentUserId}`).push(acceptedUserInfo);
-    this.afDB.list(`friends/${sender.uid}`).push(user);
+    // let acceptedUserInfo = {
+    //   uid: sender.uid,
+    //   displayName: sender.displayName,
+    //   photoURL: sender.photoURL,
+    //   statusMessage: sender.statusMessage,
+    //   username: sender.username,
+    //   currentActiveStatus: sender.currentActiveStatus
+    // }
+
+    // let accepterInfo = {
+    //   uid: user.uid,
+    //   displayName: user.displayName,
+    //   photoURL: user.photoURL,
+    //   statusMessage: user.statusMessage,
+    //   username: user.username,
+    //   currentActiveStatus: user.currentActiveStatus
+    // }
+
+    this.afDB.list(`friends/${this.currentUserId}`).set(sender.uid, true);
+    this.afDB.list(`friends/${sender.uid}`).set(user.uid, true);
+    // this.afDB.list(`friends/${this.currentUserId}`).set(sender.uid, acceptedUserInfo);
+    // this.afDB.list(`friends/${sender.uid}`).set(user.uid, accepterInfo);
     this.removeCompletedFriendRequest(sender.uid);
   }
 
@@ -241,23 +260,16 @@ export class UserServiceProvider {
 
   removeCompletedFriendRequest(UID: string) {
     const endpoint = `friend-requests/${this.currentUserId}`;
-    this.removeRequestedUserFromGivenPath(UID, endpoint);
+    this.afDB.list(endpoint).snapshotChanges().take(1).subscribe((snapshot) => {
+      snapshot.map(requester => {
+        console.log('key', requester.key);
+        this.afDB.list(endpoint).remove(requester.key);
+      });
+    });
   }
 
   removeUserFromFriendList(UID: string) {
-    const endpoint = `friends/${this.currentUserId}`;
-    this.removeRequestedUserFromGivenPath(UID, endpoint);
-  }
-
-  private removeRequestedUserFromGivenPath(UID: string, path: string) {
-    this.afDB.list(path, ref => ref.orderByChild('uid').equalTo(UID)).query.once('value', (snapshot) => {
-      console.log("RESULTS", snapshot);
-      let values = snapshot.val();
-      console.log("values", values);
-      let key = Object.keys(values);
-      console.log("KEYS", key);
-      this.afDB.list(path).remove(key[0]);
-    });
+    this.afDB.list(`friends/${this.currentUserId}`).remove(UID);
   }
 
 

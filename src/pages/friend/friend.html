@@ -18,21 +18,23 @@
             </ion-avatar>
             <h2>{{displayName}}</h2>
             <p>{{statusMessage}}</p>
+            <ion-note item-end><user-status [status]="myStatus"></user-status></ion-note>
         </ion-item>
     </ion-list>
 
     <ion-list>
         <ion-list-header>Friends</ion-list-header>
-        <ion-item-sliding *ngFor="let user of friends">
+        <ion-item-sliding *ngFor="let user of friends$ | async">
             <ion-item>
                 <ion-avatar (click)="showOriginalAvatarImage()" item-start>
                     <img [src]="user.photoURL">
                 </ion-avatar>
                 <h2>{{user.displayName}}</h2>
-                <p>I've had a pretty messed up day. If we just...</p>
+                <p>{{user.statusMessage}}</p>
+                <ion-note item-end><user-status [status]="user.currentActiveStatus"></user-status></ion-note>
             </ion-item>
              <ion-item-options side="right">
-                <button ion-button color="dark" (click)="favorite(item)"><ion-icon name="trash"></ion-icon>Delete</button>
+                <button ion-button color="dark" (click)="deleteUserFromFriendList(user)"><ion-icon name="trash"></ion-icon>Delete</button>
                 <button ion-button color="danger" (click)="share(item)"><ion-icon name="hand"></ion-icon>Block</button>
             </ion-item-options>
             <ion-item-options side="left">

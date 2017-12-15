@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
-import 'rxjs/add/operator/take'
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
+import 'rxjs/add/operator/take'
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/combineLatest';
 
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
@@ -17,12 +22,12 @@ import { ModalServiceProvider } from '../../providers/modal-service/modal-servic
 export class FriendPage {
 
   private subscription: Subscription;
-  // private loggedInUser: Observable<any[]>;
-  private currentUser: any[];
   private avatar: string;
   private displayName: string;
   private statusMessage: string;
-  private friends: any[];
+  private myStatus: string;
+  private friends$: Observable<any[]>;
+  private friends: any = [];
   private uid: string;
 
   constructor(
@@ -31,7 +36,9 @@ export class FriendPage {
     public events: Events,
     private userService: UserServiceProvider,
     private authService: AuthServiceProvider,
-    private modalService: ModalServiceProvider) {}
+    private modalService: ModalServiceProvider) {
+
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserPage');
@@ -39,12 +46,11 @@ export class FriendPage {
 
   getRequestFromUser() {
     this.subscription = this.userService.fetchFriendRequest().subscribe((req: any) => {
-      console.log("REQUEST@@:", req);
       for (let sender of req)
-        this.uid = sender.senderUID;
-      console.log("UID@@", this.uid);
+        this.uid = sender.uid;
+      console.log("GET REQUEST FROM FOLLOWING UID", this.uid);
       if (this.uid !== this.userService.currentUserId && this.uid !== undefined)
-        this.events.publish('totalRequests:arrived', this.uid, req.length);
+        this.events.publish('totalRequests:arrived', req.length);
     });
   }
 
@@ -52,33 +58,37 @@ export class FriendPage {
     // Runs when the page is about to enter and become the active page.;
     this.getUserProfile();
     this.getRequestFromUser();
-    // this.getFriendsList();
+    this.getMyFriendList();
   }
 
-  // getFriendsList() {
-  //   const subscription = this.userService.getVerifiedUsers().take(1).subscribe(users => {
-  //     this.friends = users;
-  //     console.log("UserPage", this.friends);
-  //   });
-  //   this.subscription.add(subscription);
-  // }
-
-  getUserProfile() {
-    this.subscription = this.userService.getCurrentUser().take(1).subscribe((user: any) => {
-      console.log("Current user:", user);
-      this.avatar = user.photoURL;
-      this.displayName = user.displayName;
-      this.statusMessage = "I've had a pretty messed up day. If we just...";
+  getMyFriendList() {
+    this.friends$ = this.userService.getMyFriendsKey().switchMap(data => {
+      return Observable.combineLatest(data.map(friend => this.userService.getFriends(friend.key)));
     });
   }
 
-  // getUserProfile() {
-  //   this.subscription = this.userService.getCurrentUser().take(1).subscribe((user: any) => {
-  //     console.log("Current user:", user);
-  //     this.currentUser = user;
-  //     this.statusMessage = "I've had a pretty messed up day. If we just...";
+  // getMyFriendList() {
+  //   this.userService.getMyFriendsKey().switchMap(data => {
+  //     return Observable.combineLatest(data.map(friend => this.userService.getFriends(friend.key)));
+  //   }).subscribe(friends => {
+  //       this.friends = friends;
   //   });
   // }
+
+  getUserProfile() {
+    this.userService.getCurrentUser().subscribe((user: any) => {
+      console.log("Current user:", user);
+      this.avatar = user.photoURL;
+      this.displayName = user.displayName;
+      this.statusMessage = user.statusMessage;
+      this.myStatus = user.currentActiveStatus;
+    });
+  }
+
+  deleteUserFromFriendList(user) {
+    this.userService.removeUserFromFriendList(user.uid);
+    this.getMyFriendList();
+  }
 
   showOriginalAvatarImage() {
     console.log("showOriginalAvatarImage()");
@@ -91,8 +101,6 @@ export class FriendPage {
   viewUserProfile() {
     this.modalService.showProfileModal();
   }
-
-
 
   // ngOnDestroy() {
   //   if (this.subscription !== undefined) {
