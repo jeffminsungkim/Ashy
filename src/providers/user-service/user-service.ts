@@ -82,17 +82,17 @@ export class UserServiceProvider {
     return this.afDB.object(`profilepics/${this.currentUserId}`).valueChanges();
   }
 
-  getCurrentUser() {
+  getCurrentUserObject() {
     return this.afDB.object(`users/${this.currentUserId}`).valueChanges();
   }
 
-  // getCurrentUser() {
-  //   let userRef = this.afDB.list(`users/`, ref => ref.orderByKey().equalTo(this.currentUserId));
-  //   this.user$ = userRef.snapshotChanges().map(changes => {
-  //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-  //   });
-  //   return this.user$;
-  // }
+  getCurrentUser() {
+    let userRef = this.afDB.list(`users/`, ref => ref.orderByKey().equalTo(this.currentUserId));
+    this.user$ = userRef.snapshotChanges().map(changes => {
+      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+    });
+    return this.user$;
+  }
 
   getCurrentUsername() {
     return this.afDB.object(`users/${this.currentUserId}/username`).valueChanges();
@@ -179,6 +179,7 @@ export class UserServiceProvider {
 
   updateGender(selectedGender: string) {
     let gender = { gender: selectedGender }
+    console.log('selected gender', selectedGender);
     this.afDB.object(`users/${this.currentUserId}`).update(gender).catch(error => console.error('Update Gender Fails', error));
   }
 

@@ -41,7 +41,7 @@ export class AddFriendPage implements OnDestroy {
   }
 
   getUser() {
-    this.subscription = this.userService.getCurrentUser().subscribe((user: any) => {
+    this.subscription = this.userService.getCurrentUserObject().subscribe((user: any) => {
       this.user = user;
    });
   }

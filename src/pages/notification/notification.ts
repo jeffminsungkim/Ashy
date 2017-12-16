@@ -45,7 +45,7 @@ export class NotificationPage implements OnDestroy {
   }
 
   getUser() {
-    this.userService.getCurrentUser().take(1).subscribe((user: any) => {
+    this.userService.getCurrentUserObject().take(1).subscribe((user: any) => {
      this.user = user; 
      console.log("NOTIFICATION:", this.user);
    });
@@ -65,13 +65,10 @@ export class NotificationPage implements OnDestroy {
   }
 
   accpetFriendRequest(requestSenderInfo) {
-    console.log("noti:", requestSenderInfo);
     this.userService.acceptFriendRequest(requestSenderInfo, this.user);
   }
 
   declineFriendRequest(requestSenderInfo) {
-    console.log("userinfo!!!!!", requestSenderInfo);
-    console.log("sender!!!!", requestSenderInfo.uid);
     this.userService.rejectFriendRequest(requestSenderInfo.uid);
   }
 

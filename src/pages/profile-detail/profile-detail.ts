@@ -24,7 +24,6 @@ export class ProfileDetailPage implements OnDestroy {
   private displayName: string;
   private username: string;
   private gender: string;
-  private user: any[];
 
   @ViewChild('genderMale', {read: ElementRef}) maleButton;
   @ViewChild('genderFemale', {read: ElementRef}) femaleButton;
@@ -56,7 +55,7 @@ export class ProfileDetailPage implements OnDestroy {
   }
 
   getUserProfile() {
-    this.subscription = this.userService.getCurrentUser().subscribe((user: any) => {
+    this.subscription = this.userService.getCurrentUserObject().subscribe((user: any) => {
       console.log("Current user:", user);
       this.avatar = user.photoURL;
       this.displayName = user.displayName;
