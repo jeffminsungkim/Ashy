@@ -26,8 +26,7 @@ page-profile {
     }
 
     .section-a {
-        display: flex;
-        flex-direction: column;
+        display: relative;
         justify-content: center;
         align-content: center;
         text-align: center;
@@ -35,14 +34,11 @@ page-profile {
         p.statusMessage {
             font-size: 3rem;
             color: #fff;
-            display: block;
         }
     }
 
     .section-b {
-        padding-top: 40px;
-        display: flex;
-        flex-direction: column;
+        display: relative;
         justify-content: center;
         align-content: center;
         text-align: center;

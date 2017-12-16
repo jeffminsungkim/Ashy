@@ -1,5 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, App, NavParams, NavController, ActionSheetController, Tabs } from 'ionic-angular';
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 
@@ -12,7 +12,6 @@ import { UploadServiceProvider } from '../../providers/upload-service/upload-ser
 import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
 
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 
 import { User } from '../../models/User';
 import { Upload } from '../../models/upload';
@@ -22,8 +21,7 @@ import { Upload } from '../../models/upload';
   selector: 'page-profile',
   templateUrl: 'profile.html',
 })
-export class ProfilePage implements OnDestroy {
-  private subscription: Subscription;
+export class ProfilePage {
   private user: User;
   private currentUser: string;
   private avatar: string;
@@ -32,6 +30,7 @@ export class ProfilePage implements OnDestroy {
   private previewImage: any;
 
   constructor(
+    private app: App,
     public navParams: NavParams,
     public navCtrl: NavController,
     private nativePageTransitions: NativePageTransitions,
@@ -55,27 +54,20 @@ export class ProfilePage implements OnDestroy {
     this.statusMessage = this.user.statusMessage;
   }
 
-  ngOnDestroy() {
-    if (this.subscription !== undefined) {
-      this.subscription.unsubscribe();
-      console.log("Profile ngOnDestroy");
-    }
-  }
-
   showOriginalImage() {
     console.log("showOriginalImage()");
   }
   
   openChatRoom() {
-
-  }
-
-  editProfile() {
-    this.modalService.showProfileDetailModal();
-  }
-
-  backToPreviousView() {
     this.navCtrl.pop();
+    const tabsNav = this.app.getNavByIdOrName('appTabs') as Tabs;
+    tabsNav.select(1);
+    this.navCtrl.setRoot('FriendChatPage', {user: this.user});
+
   }
+
+  editProfile() { this.modalService.showProfileDetailModal(); }
+
+  backToPreviousView() { this.navCtrl.pop(); }
 
 }
