@@ -28,14 +28,6 @@
                     <div *ngIf="userPassword.errors?.required && userPassword.touched">Password is required</div>
 
                     <ion-item>
-                        <ion-label>Gender</ion-label>
-                        <ion-select [(ngModel)]="user.gender" name="gender">
-                          <ion-option value="male">Male</ion-option>
-                          <ion-option value="female">Female</ion-option>
-                        </ion-select>
-                    </ion-item>
-
-                    <ion-item>
                         <ion-label floating>Display Name</ion-label>
                         <ion-input type="text" [(ngModel)]="user.displayName" name="displayName" #displayName="ngModel" required></ion-input>
                     </ion-item>

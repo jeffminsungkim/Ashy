@@ -20,7 +20,12 @@ export class RegisterPage {
     email: '',
     password: '',
     displayName: '',
-    gender: ''
+    gender: '',
+    photoURL: '',
+    username: '',
+    statusMessage: '',
+    currentActiveStatus: '',
+    uid: ''
   }
   
   constructor(
