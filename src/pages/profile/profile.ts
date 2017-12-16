@@ -24,8 +24,11 @@ import { Upload } from '../../models/upload';
 })
 export class ProfilePage implements OnDestroy {
   private subscription: Subscription;
+  private user: User;
+  private currentUser: string;
   private avatar: string;
   private displayName: string;
+  private statusMessage: string;
   private previewImage: any;
 
   constructor(
@@ -38,20 +41,18 @@ export class ProfilePage implements OnDestroy {
     private alertService: AlertServiceProvider,
     private uploadService: UploadServiceProvider,
     private modalService: ModalServiceProvider) {
+
+    this.user = this.navParams.get('user');
+    console.log('profile', this.user);
   }
 
   ionViewDidLoad() {
     console.log("Profile Page DidLoad()");
     // this.user$ = this.authService.currentUserObservable.subscribe((user) => console.log("IAM USER!", user));
-    this.avatar = this.userService.currentUserPhotoURL;
-    this.displayName = this.userService.currentUserDisplayName;
-  }
-
-  ionViewWillEnter() {
-    this.subscription = this.userService.getCurrentUser().subscribe((user: any) => {
-      this.avatar = user.photoURL;
-      this.displayName = user.displayName;
-    });
+    this.currentUser = this.userService.currentUserId;
+    this.avatar = this.user.photoURL;
+    this.displayName = this.user.displayName;
+    this.statusMessage = this.user.statusMessage;
   }
 
   ngOnDestroy() {
@@ -63,9 +64,12 @@ export class ProfilePage implements OnDestroy {
 
   showOriginalImage() {
     console.log("showOriginalImage()");
-
   }
   
+  openChatRoom() {
+
+  }
+
   editProfile() {
     this.modalService.showProfileDetailModal();
   }

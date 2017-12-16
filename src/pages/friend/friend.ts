@@ -14,6 +14,8 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
 
+import { User } from '../../models/user';
+
 @IonicPage()
 @Component({
   selector: 'page-friend',
@@ -22,12 +24,8 @@ import { ModalServiceProvider } from '../../providers/modal-service/modal-servic
 export class FriendPage {
 
   private subscription: Subscription;
-  private avatar: string;
-  private displayName: string;
-  private statusMessage: string;
-  private myStatus: string;
   private friends$: Observable<any[]>;
-  private friends: any = [];
+  private me$: Observable<any[]>;
   private uid: string;
 
   constructor(
@@ -36,13 +34,9 @@ export class FriendPage {
     public events: Events,
     private userService: UserServiceProvider,
     private authService: AuthServiceProvider,
-    private modalService: ModalServiceProvider) {
+    private modalService: ModalServiceProvider) { }
 
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad UserPage');
-  }
+  ionViewDidLoad() { }
 
   getRequestFromUser() {
     this.subscription = this.userService.fetchFriendRequest().subscribe((req: any) => {
@@ -67,22 +61,8 @@ export class FriendPage {
     });
   }
 
-  // getMyFriendList() {
-  //   this.userService.getMyFriendsKey().switchMap(data => {
-  //     return Observable.combineLatest(data.map(friend => this.userService.getFriends(friend.key)));
-  //   }).subscribe(friends => {
-  //       this.friends = friends;
-  //   });
-  // }
-
   getUserProfile() {
-    this.userService.getCurrentUser().subscribe((user: any) => {
-      console.log("Current user:", user);
-      this.avatar = user.photoURL;
-      this.displayName = user.displayName;
-      this.statusMessage = user.statusMessage;
-      this.myStatus = user.currentActiveStatus;
-    });
+    this.me$ = this.userService.getCurrentUser();
   }
 
   deleteUserFromFriendList(user) {
@@ -98,8 +78,8 @@ export class FriendPage {
     this.modalService.showAddFriendModal();
   }
 
-  viewUserProfile() {
-    this.modalService.showProfileModal();
+  viewUserProfile(user: User) {
+    this.modalService.showProfileModal(user);
   }
 
   // ngOnDestroy() {

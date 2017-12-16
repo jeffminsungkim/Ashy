@@ -12,20 +12,20 @@
 
     <ion-list>
         <ion-list-header>Me</ion-list-header>
-        <ion-item (click)="viewUserProfile()">
+        <ion-item *ngFor="let user of me$ | async" (click)="viewUserProfile(user)">
             <ion-avatar item-start>
-                <img [src]="avatar">
+                <img [src]="user.photoURL">
             </ion-avatar>
-            <h2>{{displayName}}</h2>
-            <p>{{statusMessage}}</p>
-            <ion-note item-end><user-status [status]="myStatus"></user-status></ion-note>
+            <h2>{{user.displayName}}</h2>
+            <p>{{user.statusMessage}}</p>
+            <ion-note item-end><user-status [status]="user.currentActiveStatus"></user-status></ion-note>
         </ion-item>
     </ion-list>
 
     <ion-list>
         <ion-list-header>Friends</ion-list-header>
         <ion-item-sliding *ngFor="let user of friends$ | async">
-            <ion-item>
+            <ion-item (click)="viewUserProfile(user)">
                 <ion-avatar (click)="showOriginalAvatarImage()" item-start>
                     <img [src]="user.photoURL">
                 </ion-avatar>

@@ -16,8 +16,14 @@
 <ion-content padding>
 
     <ng-progress [minimum]="0.1" [maximum]="1" [color]="'red'" [speed]="currentUpload?.progress" [thick]="true" [showSpinner]="true"></ng-progress>
-    <ion-grid class="section-a">
-        <ion-row align-items-center>
+    <ion-grid>
+        <ion-row align-items-center class="section-a">
+            <ion-col col-12 *ngIf="statusMessage">
+                <p class="statusMessage">{{statusMessage}}</p>
+            </ion-col>
+        </ion-row>
+
+        <ion-row align-items-center class="section-b">
             <ion-col col-12>
                 <input type="file" id="file-input" showWhen="core" (change)="detectFiles($event)">
                 <img *ngIf="previewImage;then previewImg else customImg">
@@ -31,15 +37,21 @@
             </ion-col>
 
             <ion-col col-12>
-                <h3>{{displayName}}</h3>
+                <h2>{{displayName}}</h2>
                 <p>Friends 488</p>
                 <p class="interest">#아이오닉 #개발 #채팅 #독서 #맛집탐방</p>
             </ion-col>
 
-            <ion-col col-12>
-                <button ion-button outline small color="dark" (click)="editProfile()" icon-end>
+            <ion-col col-12 *ngIf="currentUser === user.uid">
+                <button ion-button outline round color="dark" (click)="editProfile()" icon-end>
                     Edit Profile
                     <ion-icon ios="ios-color-wand" md="md-color-wand"></ion-icon>
+                </button>
+            </ion-col>
+            <ion-col col-12 *ngIf="currentUser !== user.uid">
+                <button ion-button outline round color="primary" (click)="openChatRoom()" icon-end>
+                    Chat
+                    <ion-icon name="ios-chatbubbles"></ion-icon>
                 </button>
             </ion-col>
         </ion-row>

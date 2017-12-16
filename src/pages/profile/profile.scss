@@ -26,27 +26,38 @@ page-profile {
     }
 
     .section-a {
-        align-content: center;
-        margin-top: 140px;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-content: center;
         text-align: center;
 
-        p.interest {
-            font-weight: bold;
-            font-size: 1.4rem;
-            color: #1de9b6;
-        }
-
-        p {
-            font-weight: bold;
-            font-size: 1.5rem;
-            color: #000;
+        p.statusMessage {
+            font-size: 3rem;
+            color: #fff;
+            display: block;
         }
     }
 
-    
+    .section-b {
+        padding-top: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        text-align: center;
+
+        p {
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+        p.interest {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #1de9b6;
+        }
+    }
 
     .ng-progress {
         margin-top: 60px;
