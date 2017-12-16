@@ -66,6 +66,7 @@ export class NotificationPage implements OnDestroy {
 
   accpetFriendRequest(requestSenderInfo) {
     this.userService.acceptFriendRequest(requestSenderInfo, this.user);
+    this.events.publish('newFriend:added', 1);
   }
 
   declineFriendRequest(requestSenderInfo) {
