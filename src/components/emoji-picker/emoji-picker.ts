@@ -16,32 +16,32 @@ export const EMOJI_PICKER_VALUE_ACCESSOR: any = {
 })
 export class EmojiPickerComponent implements ControlValueAccessor {
 
-  emojiArr = [];
+  private emojiBucket: string[] = [];
 
-  _content: string;
-  _onChanged: Function;
-  _onTouched: Function;
+  private content: string;
+  private onChanged: Function;
+  private onTouched: Function;
 
   constructor(private emojiService: EmojiServiceProvider) {
-    this.emojiArr = this.emojiService.getEmojis();
+    this.emojiBucket = this.emojiService.getEmojis();
   }
 
   writeValue(obj: any): void {
-    this._content = obj;
+    this.content = obj;
   }
 
   registerOnChange(fn: any): void {
-    this._onChanged = fn;
-    this.setValue(this._content);
+    this.onChanged = fn;
+    this.setValue(this.content);
   }
 
   registerOnTouched(fn: any): void {
-    this._onTouched = fn;
+    this.onTouched = fn;
   }
 
   private setValue(val: any): any {
-    this._content += val;
-    if (this._content) 
-      this._onChanged(this._content);
+    this.content += val;
+    if (this.content) 
+      this.onChanged(this.content);
   }
 }
