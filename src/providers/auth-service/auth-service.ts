@@ -11,6 +11,7 @@ import { User } from '../../models/user';
 
 @Injectable()
 export class AuthServiceProvider {
+  
   private authState: any = null;
   private defaultProfileImgURL: string;
 
@@ -31,27 +32,10 @@ export class AuthServiceProvider {
     return this.authenticated ? this.authState : null;
   }
 
-  // Returns current user UID
-  get currentUserId(): string {
-    return this.authenticated ? this.authState.uid : '';
-    // return this.authState.uid;
-  }
-
-  get currentUserDisplayName(): string {
-    return this.authState['displayName'];
-  }
-
   get currentUserEmail(): string {
     return this.authState['email'];
   }
 
-  get isUserEmailVerified(): any {
-    return this.authState.emailVerified;
-  }
-
-   get currentUserObservable(): any {
-    return this.afAuth.authState
-  }
 
   sendEmailVerification() {
     this.currentUser.sendEmailVerification();
