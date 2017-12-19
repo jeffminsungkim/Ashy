@@ -11,7 +11,7 @@ import { User } from '../../models/user';
 @Injectable()
 export class ChatServiceProvider {
 
-  private currentUserId: string;
+  private toId: any;
 
   constructor(
     private afDB: AngularFireDatabase,
@@ -26,16 +26,15 @@ export class ChatServiceProvider {
   createNewChatRoom(pusher: User, listener: User, message: string) {
     const roomId = this.utilityService.combineUserIdsToGenerateHashKey(pusher.uid, listener.uid);
     let chatMeta = {};
-    chatMeta[`friendChats/${roomId}/roomid`] = roomId;
-    chatMeta[`friendChats/${roomId}/lastMessage`] = message;
+    chatMeta[`friendChats/${roomId}/${pusher.uid}/lastMessage`] = message;
+    chatMeta[`friendChats/${roomId}/${pusher.uid}/photoURL`] = pusher.photoURL;
+    chatMeta[`friendChats/${roomId}/${pusher.uid}/timestamp`] = Date.now();
+    chatMeta[`friendChats/${roomId}/${listener.uid}/lastMessage`] = message;
+    chatMeta[`friendChats/${roomId}/${listener.uid}/photoURL`] = listener.photoURL;
+    chatMeta[`friendChats/${roomId}/${listener.uid}/timestamp`] = Date.now();
     // chatMeta[`${roomId}/unreadMessage`] = 1;
-    chatMeta[`friendChats/${roomId}/timestamp`] = Date.now();
-    chatMeta[`friendChats/${roomId}/photoURL/`] = pusher.photoURL;
-    chatMeta[`friendChats/${roomId}/photoURL/`] = listener.photoURL;
-    chatMeta[`memberFriendChatrooms/${pusher.uid}/${roomId}`] = true;
-    chatMeta[`memberFriendChatrooms/${listener.uid}/${roomId}`] = true;
-    // chatMeta[`${roomId}/members/${pusher.uid}`] = true;
-    // chatMeta[`${roomId}/members/${listener.uid}`] = true;
+    chatMeta[`memberFriendChatrooms/${pusher.uid}/${roomId}`] = listener.uid;
+    chatMeta[`memberFriendChatrooms/${listener.uid}/${roomId}`] = pusher.uid;
     // this.afDB.list('/').update('friendChats/', chatMeta);
     firebase.database().ref().update(chatMeta);
   }
@@ -54,12 +53,14 @@ export class ChatServiceProvider {
 
   }
 
-  pushMessage(message: string, roomId: string) {
+  pushMessage(message: string, roomId: string, pusher: User, listener: User) {
     let chat = {};
     chat[`messages/${roomId}/${this.userService.currentUserId}/message`] = message;
     chat[`messages/${roomId}/${this.userService.currentUserId}/timestamp`] = Date.now();
-    chat[`friendChats/${roomId}/lastMessage`] = message;
-    chat[`friendChats/${roomId}/timestamp`] = Date.now();
+    chat[`friendChats/${roomId}/${pusher.uid}/lastMessage`] = message;
+    chat[`friendChats/${roomId}/${listener.uid}/lastMessage`] = message;
+    chat[`friendChats/${roomId}/${pusher.uid}/timestamp`] = Date.now();
+    chat[`friendChats/${roomId}/${listener.uid}/timestamp`] = Date.now();
     firebase.database().ref().update(chat);
   }
 
@@ -71,17 +72,24 @@ export class ChatServiceProvider {
     return chat$;
   }
 
+  // fetchChatRoomsKeys() {
+  //   let chatRoomRef$ = this.afDB.list(`memberFriendChatrooms/${this.userService.currentUserId}`);
+  //   let chat$ = chatRoomRef$.snapshotChanges().map(changes => {
+  //     return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+  //   });
+  //   return chat$;
+  // }
+
   fetchChatRoomsKeys() {
-    let chatRoomRef$ = this.afDB.list(`memberFriendChatrooms/${this.userService.currentUserId}`);
-    let chat$ = chatRoomRef$.snapshotChanges().map(changes => {
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
-    return chat$;
+    return this.afDB.list(`memberFriendChatrooms/${this.userService.currentUserId}`).snapshotChanges();
   }
 
-  fetchFriendChatRooms(roomId: string) {
-    return this.afDB.object(`friendChats/${roomId}`).valueChanges();
+
+  fetchFriendChatRooms(roomId: string, uid: string) {
+    // return this.afDB.object(`friendChats/${roomId}`).valueChanges();
+    return this.afDB.object(`friendChats/${roomId}/${uid}`).valueChanges();
   }
+
 
 
 

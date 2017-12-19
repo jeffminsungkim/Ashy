@@ -5,40 +5,33 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
     <ion-title>Chats</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
-    <ion-list>
-  <ion-item-sliding>
-    <ion-item>
-      <ion-avatar item-start>
-        <img src="img/slimer.png">
-      </ion-avatar>
-      <h2>Slimer</h2>
-    </ion-item>
-    <ion-item-options side="left">
-      <button ion-button color="primary">
-        <ion-icon name="text"></ion-icon>
-        Text
-      </button>
-      <button ion-button color="secondary">
-        <ion-icon name="call"></ion-icon>
-        Call
-      </button>
-    </ion-item-options>
-    <ion-item-options side="right">
-      <button ion-button color="primary">
-        <ion-icon name="mail"></ion-icon>
-        Email
-      </button>
-    </ion-item-options>
-  </ion-item-sliding>
-</ion-list>
-
+  <ion-list *ngFor="let chat of friendChats$ | async">
+    <ion-item-sliding *ngIf="friendChats$ !== null">
+      <ion-item (click)="enterChatRoom()">
+        <ion-avatar item-start>
+          <img [src]="chat.photoURL">
+        </ion-avatar>
+        <h2>{{chat.lastMessage}}</h2>
+        <ion-note item-end>{{chat.timestamp | date:'shortTime'}}</ion-note>
+        <ion-badge color="danger" item-end>{{chat.unreadMessage}}</ion-badge>
+      </ion-item>
+      <ion-item-options side="left">
+        <button ion-button color="secondary">
+          <ion-icon name="call"></ion-icon>
+          Test
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right">
+        <button ion-button color="danger">
+          Destroy
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
