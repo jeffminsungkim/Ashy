@@ -17,21 +17,22 @@ import { User } from '../../models/user';
   providers: [ReversePipe]
 })
 export class NotificationPage implements OnDestroy {
-  private subscription: Subscription;
-  private segment: string;
-  private avatar: string;
-  private requestArriavalTime: any;
-  private sender: any[];
-  private message: string;
-  private uid: string;
-  private user: User;
+
+  subscription: Subscription;
+  segment: string;
+  avatar: string;
+  requestArriavalTime: any;
+  sender: any[];
+  message: string;
+  uid: string;
+  user: User;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
-    private userService: UserServiceProvider,
-    private reversePipe: ReversePipe) {
+    public userService: UserServiceProvider,
+    public reversePipe: ReversePipe) {
     this.segment = 'friends';
   }
 

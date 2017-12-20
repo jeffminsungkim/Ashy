@@ -9,10 +9,10 @@ import { ErrorDetectionServiceProvider } from '../error-detection-service/error-
 export class AlertServiceProvider {
 
   constructor(
-    private alertCtrl: AlertController,
-    private authService: AuthServiceProvider,
-    private toastService: ToastServiceProvider,
-    private errorDetectionService: ErrorDetectionServiceProvider) { }
+    public alertCtrl: AlertController,
+    public authService: AuthServiceProvider,
+    public toastService: ToastServiceProvider,
+    public errorDetectionService: ErrorDetectionServiceProvider) { }
 
   notifyErrorMessage(message: string) {
     this.alertCtrl.create({

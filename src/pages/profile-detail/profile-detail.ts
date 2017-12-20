@@ -18,18 +18,18 @@ import { Upload } from '../../models/upload';
   templateUrl: 'profile-detail.html',
 })
 export class ProfileDetailPage implements OnDestroy {
-  private subscription: Subscription;
-  private previewImage: any;
-  private avatar: string;
-  private displayName: string;
-  private username: string;
-  private gender: string;
+  subscription: Subscription;
+  previewImage: any;
+  avatar: string;
+  displayName: string;
+  username: string;
+  gender: string;
 
   @ViewChild('genderMale', {read: ElementRef}) maleButton;
   @ViewChild('genderFemale', {read: ElementRef}) femaleButton;
 
-  private selectedFile: FileList;
-  private currentUpload: Upload;
+  selectedFile: FileList;
+  currentUpload: Upload;
 
   cameraOptions: CameraOptions = {
     quality: 100,
@@ -45,11 +45,11 @@ export class ProfileDetailPage implements OnDestroy {
     public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController,
     public viewCtrl: ViewController,
-    private renderer: Renderer,
-    private camera: Camera,
-    private userService: UserServiceProvider,
-    private uploadService: UploadServiceProvider,
-    private loadingService: LoadingServiceProvider) {
+    public renderer: Renderer,
+    public camera: Camera,
+    public userService: UserServiceProvider,
+    public uploadService: UploadServiceProvider,
+    public loadingService: LoadingServiceProvider) {
 
     this.getUserProfile();
   }

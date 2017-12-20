@@ -3,9 +3,10 @@ import { LoadingController } from 'ionic-angular';
 
 @Injectable()
 export class LoadingServiceProvider {
+
   loader: any;
 
-  constructor(private loadingCtrl: LoadingController) { }
+  constructor(public loadingCtrl: LoadingController) { }
 
   show(message: string) {
     this.loader = this.loadingCtrl.create({ content: message});

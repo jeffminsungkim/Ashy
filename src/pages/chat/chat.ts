@@ -14,12 +14,12 @@ import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
 })
 export class ChatPage {
 
-  private friendChats$: Observable<any[]>;
+  friendChats$: Observable<any[]>;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private chatService: ChatServiceProvider) {}
+    public chatService: ChatServiceProvider) {}
 
   ionViewWillEnter() {
     this.displayListOfChatRooms();
@@ -31,8 +31,8 @@ export class ChatPage {
     });
   }
 
-  enterChatRoom() {
-
+  enterChatRoom(chat: any) {
+    console.log('enter chat room:', chat);
   }
 
 }

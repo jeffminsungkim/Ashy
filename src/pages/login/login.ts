@@ -15,16 +15,17 @@ import { User } from '../../models/user';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  
   user = {} as User;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private alertService: AlertServiceProvider,
-    private toastService: ToastServiceProvider,
-    private authService: AuthServiceProvider,
-    private userService: UserServiceProvider,
-    private modalService: ModalServiceProvider) { }
+    public alertService: AlertServiceProvider,
+    public toastService: ToastServiceProvider,
+    public authService: AuthServiceProvider,
+    public userService: UserServiceProvider,
+    public modalService: ModalServiceProvider) { }
 
   ionViewCanEnter() {
     // console.log('Runs before the view can enter. This can be used as a sort of "guard" in authenticated views where you need to check permissions before the view can enter');

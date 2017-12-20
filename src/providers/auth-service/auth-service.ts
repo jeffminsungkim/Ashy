@@ -12,13 +12,13 @@ import { User } from '../../models/user';
 @Injectable()
 export class AuthServiceProvider {
   
-  private authState: any = null;
-  private defaultProfileImgURL: string;
+  authState: any = null;
+  defaultProfileImgURL: string;
 
   constructor(
-    private afAuth: AngularFireAuth,
-    private afDB: AngularFireDatabase,
-    private errorDetectionService: ErrorDetectionServiceProvider) {
+    public afAuth: AngularFireAuth,
+    public afDB: AngularFireDatabase,
+    public errorDetectionService: ErrorDetectionServiceProvider) {
     this.afAuth.authState.subscribe((auth) => this.authState = auth);
     this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=f85be639-9a1c-4c79-a28d-361171358a41';
   }

@@ -9,12 +9,13 @@ import { AlertServiceProvider } from '../../providers/alert-service/alert-servic
   templateUrl: 'password-reset.html',
 })
 export class PasswordResetPage {
+
   email: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private alertService: AlertServiceProvider) { }
+    public alertService: AlertServiceProvider) { }
 
   ionViewDidLoad() {
 

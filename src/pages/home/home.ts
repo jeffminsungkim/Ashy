@@ -20,7 +20,7 @@ export class HomePage {
   newFriends: string;
   addedFriend: number = 0;
 
-  constructor(public events: Events, private userService: UserServiceProvider) {
+  constructor(public events: Events, public userService: UserServiceProvider) {
 
 
     this.events.subscribe('totalRequests:arrived', (totalRequests) => {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, App, NavParams, NavController, ActionSheetController, Tabs } from 'ionic-angular';
+import { IonicPage, App, NavParams, NavController, Events, ActionSheetController, Tabs } from 'ionic-angular';
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 
@@ -10,6 +10,7 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
 import { UploadServiceProvider } from '../../providers/upload-service/upload-service';
 import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
+import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -22,26 +23,28 @@ import { Upload } from '../../models/upload';
   templateUrl: 'profile.html',
 })
 export class ProfilePage {
-  private user: User;
-  private currentUser: string;
-  private avatar: string;
-  private displayName: string;
-  private statusMessage: string;
-  private previewImage: any;
+  user: User;
+  currentUser: string;
+  avatar: string;
+  displayName: string;
+  statusMessage: string;
+  previewImage: any;
 
   constructor(
-    private app: App,
+    public app: App,
     public navParams: NavParams,
     public navCtrl: NavController,
-    private nativePageTransitions: NativePageTransitions,
-    private ngProgress: NgProgress,
-    private authService: AuthServiceProvider,
-    private userService: UserServiceProvider,
-    private alertService: AlertServiceProvider,
-    private uploadService: UploadServiceProvider,
-    private modalService: ModalServiceProvider) {
+    public events: Events,
+    public nativePageTransitions: NativePageTransitions,
+    public ngProgress: NgProgress,
+    public authService: AuthServiceProvider,
+    public userService: UserServiceProvider,
+    public alertService: AlertServiceProvider,
+    public uploadService: UploadServiceProvider,
+    public modalService: ModalServiceProvider,
+    public chatService: ChatServiceProvider) {
 
-    this.user = this.navParams.get('user');
+    this.user = this.navParams.get('listener');
     console.log('profile', this.user);
   }
 
@@ -62,8 +65,8 @@ export class ProfilePage {
     this.navCtrl.pop();
     const tabsNav = this.app.getNavByIdOrName('appTabs') as Tabs;
     tabsNav.select(1);
-    this.navCtrl.setRoot('FriendChatPage', {user: this.user});
-
+    // this.navCtrl.setRoot('FriendChatPage', {listener: this.user});
+    this.modalService.openFriendChatRoomModal(this.user);
   }
 
   editProfile() { this.modalService.showProfileDetailModal(); }

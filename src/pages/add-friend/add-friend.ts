@@ -16,22 +16,22 @@ import { User } from '../../models/user';
   templateUrl: 'add-friend.html',
 })
 export class AddFriendPage implements OnDestroy {
-  private subscription: Subscription;
-  private avatar: string;
-  private displayName: string;
-  private recipientUid: string;
-  private usernameText: string;
-  private isUserExists: boolean;
-  private isUserAllowedToSendRequest: boolean = true;
-  private matchedUserExists: boolean = false;
-  private matchedWithCurrentUser;
-  private user$: Observable<any>;
-  private user: User;
+  subscription: Subscription;
+  avatar: string;
+  displayName: string;
+  recipientUid: string;
+  usernameText: string;
+  isUserExists: boolean;
+  isUserAllowedToSendRequest: boolean = true;
+  matchedUserExists: boolean = false;
+  matchedWithCurrentUser;
+  user$: Observable<any>;
+  user: User;
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    private userService: UserServiceProvider) {
+    public userService: UserServiceProvider) {
 
     // this.user$ = this.userService.getCurrentUsername();
   }

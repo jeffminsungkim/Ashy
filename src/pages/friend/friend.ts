@@ -23,18 +23,18 @@ import { User } from '../../models/user';
 })
 export class FriendPage {
 
-  private subscription: Subscription;
-  private friends$: Observable<any[]>;
-  private me$: Observable<any[]>;
-  private uid: string;
+  subscription: Subscription;
+  friends$: Observable<any[]>;
+  me$: Observable<any[]>;
+  uid: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
-    private userService: UserServiceProvider,
-    private authService: AuthServiceProvider,
-    private modalService: ModalServiceProvider) { }
+    public userService: UserServiceProvider,
+    public authService: AuthServiceProvider,
+    public modalService: ModalServiceProvider) { }
 
   ionViewDidLoad() { }
 

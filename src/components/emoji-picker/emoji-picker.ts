@@ -16,13 +16,12 @@ export const EMOJI_PICKER_VALUE_ACCESSOR: any = {
 })
 export class EmojiPickerComponent implements ControlValueAccessor {
 
-  private emojiBucket: string[] = [];
+  emojiBucket: string[] = [];
+  content: string;
+  onChanged: Function;
+  onTouched: Function;
 
-  private content: string;
-  private onChanged: Function;
-  private onTouched: Function;
-
-  constructor(private emojiService: EmojiServiceProvider) {
+  constructor(public emojiService: EmojiServiceProvider) {
     this.emojiBucket = this.emojiService.getEmojis();
   }
 
@@ -39,7 +38,7 @@ export class EmojiPickerComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  private setValue(val: any): any {
+  setValue(val: any): any {
     this.content += val;
     if (this.content) 
       this.onChanged(this.content);

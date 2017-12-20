@@ -3,9 +3,10 @@ import { ToastController } from 'ionic-angular';
 
 @Injectable()
 export class ToastServiceProvider {
+
   fieldRequiredMessage: string;
 
-  constructor(private toastCtrl: ToastController) {
+  constructor(public toastCtrl: ToastController) {
     this.fieldRequiredMessage = 'All fields are required.';
   }
 

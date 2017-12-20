@@ -6,7 +6,6 @@ import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/switchMap';
 
 import { AuthServiceProvider } from '../auth-service/auth-service';
 
@@ -14,19 +13,20 @@ import { User } from '../../models/user';
 
 @Injectable()
 export class UserServiceProvider {
-  private usersRef: AngularFireList<any>;
-  private users$: Observable<User[]>;
-  private authState: any = null;
-  private usersNode: string;
-  private defaultProfileImgURL: string;
-  private user$: any;
-  private friendsListRef$: AngularFireList<any>;
-  private friends$: Observable<any[]>;
+  
+  authState: any = null;
+  usersRef: AngularFireList<any>;
+  users$: Observable<User[]>;
+  usersNode: string;
+  defaultProfileImgURL: string;
+  user$: any;
+  friendsListRef$: AngularFireList<any>;
+  friends$: Observable<any[]>;
 
   constructor(
-    private afAuth: AngularFireAuth,
-    private afDB: AngularFireDatabase,
-    private authService: AuthServiceProvider) {
+    public afAuth: AngularFireAuth,
+    public afDB: AngularFireDatabase,
+    public authService: AuthServiceProvider) {
 
 
     this.usersNode = 'users/';
@@ -64,6 +64,10 @@ export class UserServiceProvider {
 
   get currentUserPhotoURL(): string {
     return this.authState['photoURL'];
+  }
+
+  get isUserEmailVerified(): any {
+    return this.authState.emailVerified;
   }
 
   // determineUserSentFriendRequestToCertainParty(followingUserUID: string) {
@@ -135,7 +139,7 @@ export class UserServiceProvider {
     // TODO: RUN THIS FUNCTION ONLY ONCE.
     if (!this.currentUserEmailVerified) {
       let endpoint = this.usersNode + this.currentUserId;
-      let emailVerified = { emailVerified: this.authService.isUserEmailVerified }
+      let emailVerified = { emailVerified: this.isUserEmailVerified }
       this.afDB.object(endpoint).update(emailVerified).catch(error => console.error('Update User',error));
       console.log("updated email verification status");
     }

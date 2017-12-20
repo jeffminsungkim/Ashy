@@ -31,11 +31,11 @@ export class RegisterPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private authService: AuthServiceProvider,
-    private toastService: ToastServiceProvider,
-    private alertService: AlertServiceProvider,
-    private loadingService: LoadingServiceProvider,
-    private errorDetectionService: ErrorDetectionServiceProvider) {
+    public authService: AuthServiceProvider,
+    public toastService: ToastServiceProvider,
+    public alertService: AlertServiceProvider,
+    public loadingService: LoadingServiceProvider,
+    public errorDetectionService: ErrorDetectionServiceProvider) {
   }
 
   ionViewDidLoad() {

@@ -12,17 +12,17 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
   templateUrl: 'username.html',
 })
 export class UsernamePage implements OnDestroy {
-  private subscription: Subscription;
-  private currentUsername: string;
-  private usernameText: string;
-  private isUsernameAvailable: boolean;
-  private usernameNotValid: boolean = true;
-  private hasSetUsername: boolean = false;
+  subscription: Subscription;
+  currentUsername: string;
+  usernameText: string;
+  isUsernameAvailable: boolean;
+  usernameNotValid: boolean = true;
+  hasSetUsername: boolean = false;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private userService: UserServiceProvider) {
+    public userService: UserServiceProvider) {
 
     this.currentUsername = this.navParams.get('username');
   }
@@ -35,26 +35,34 @@ export class UsernamePage implements OnDestroy {
   }
 
   checkUsername() {
-    let re = /^[a-z0-9]+$/i;
-    let validUsername = this.usernameText.match(re);
-    console.log("VALID USERNAME:", validUsername);
+    // let re = /^[a-z0-9]+$/i;
+    // let validUsername = this.usernameText.match(re);
+    // if (validUsername === null) {
+    //   this.usernameNotValid = true;
+    //   console.log("WRONG", this.usernameText);
+    // } else {
+    //   if (this.usernameText.length > 4 && this.usernameText.length !== 0) {
+    //     this.usernameNotValid = false;
+    //     console.log("GOOD", this.usernameText);
+    //   }
+    // }
 
-    if (validUsername === null) {
+    if (this.usernameText.length < 5 || this.isUsernameAvailable == false) {
       this.usernameNotValid = true;
       console.log("WRONG", this.usernameText);
     } else {
-      if (this.usernameText.length > 4 && this.usernameText.length !== 0) {
+      if (this.usernameText.length > 4 || this.usernameText.length !== 0 || !this.isUsernameAvailable) {
         this.usernameNotValid = false;
         console.log("GOOD", this.usernameText);
       }
     }
     
     this.subscription = this.userService.checkUsername(this.usernameText).take(1).subscribe(username => {
+      console.log("uid:", username);
       if (username === null)
         this.isUsernameAvailable = true;
       else
         this.isUsernameAvailable = false;
-        
     });
   }
 
