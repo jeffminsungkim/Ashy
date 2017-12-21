@@ -27,6 +27,19 @@ export class AlertServiceProvider {
     }).present();
   }
 
+  notifyCommingSoon(message: string) {
+    this.alertCtrl.create({
+      title: `${message}`,
+      message: `${message} feature is comming soon.`,
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel'
+        }
+      ]
+    }).present();
+  }
+
   notifyToCheckVerificationEmail() {
     this.alertCtrl.create({
       title: 'Verify your account',
