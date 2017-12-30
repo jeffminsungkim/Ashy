@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Keyboard } from '@ionic-native/keyboard';
+
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastServiceProvider } from '../providers/toast-service/toast-service';
 import { UserServiceProvider } from '../providers/user-service/user-service';
@@ -15,9 +17,10 @@ export class MyApp {
   rootPage: string;
 
   constructor(
-    platform: Platform, 
-    statusBar: StatusBar, 
-    splashScreen: SplashScreen, 
+    platform: Platform,
+    statusBar: StatusBar,
+    splashScreen: SplashScreen,
+    keyboard: Keyboard,
     afAuth: AngularFireAuth,
     toastService: ToastServiceProvider,
     userService: UserServiceProvider) {
@@ -43,6 +46,8 @@ export class MyApp {
       console.log('Platform ready from', readySource);
       statusBar.styleDefault();
       splashScreen.hide();
+      if (platform.is('ios'))
+        keyboard.disableScroll(true);
     });
   }
 }
