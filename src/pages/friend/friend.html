@@ -14,7 +14,7 @@
         <ion-list-header>Me</ion-list-header>
         <ion-item *ngFor="let user of me$ | async" (click)="viewUserProfile(user)">
             <ion-avatar item-start>
-                <img [src]="user.photoURL">
+                <img-loader [src]="user.photoURL"></img-loader>
             </ion-avatar>
             <h2>{{user.displayName}}</h2>
             <p>{{user.statusMessage}}</p>
@@ -27,7 +27,7 @@
         <ion-item-sliding *ngFor="let user of friends$ | async">
             <ion-item (click)="viewUserProfile(user)">
                 <ion-avatar (click)="showOriginalAvatarImage()" item-start>
-                    <img [src]="user.photoURL">
+                    <img-loader [src]="user.photoURL" [spinner]="true"></img-loader>
                 </ion-avatar>
                 <h2>{{user.displayName}}</h2>
                 <p>{{user.statusMessage}}</p>

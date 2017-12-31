@@ -3,6 +3,7 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
+import { ImageLoaderConfig } from 'ionic-image-loader';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastServiceProvider } from '../providers/toast-service/toast-service';
@@ -23,7 +24,8 @@ export class MyApp {
     keyboard: Keyboard,
     afAuth: AngularFireAuth,
     toastService: ToastServiceProvider,
-    userService: UserServiceProvider) {
+    userService: UserServiceProvider,
+    imageLoaderConfig: ImageLoaderConfig) {
 
     platform.ready().then((readySource) => {
       afAuth.auth.onAuthStateChanged(user => {
@@ -46,6 +48,9 @@ export class MyApp {
       console.log('Platform ready from', readySource);
       statusBar.styleDefault();
       splashScreen.hide();
+      imageLoaderConfig.enableSpinner(false);
+      imageLoaderConfig.useImageTag(true);
+      imageLoaderConfig.setMaximumCacheSize(20 * 1024 * 1024); // set max size to 20MB
       if (platform.is('ios'))
         keyboard.disableScroll(true);
     });

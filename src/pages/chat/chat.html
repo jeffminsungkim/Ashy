@@ -13,9 +13,9 @@
 <ion-content padding>
   <ion-list *ngFor="let chat of friendChats$ | async">
     <ion-item-sliding *ngIf="friendChats$ !== null">
-      <ion-item (click)="enterChatRoom()">
+      <ion-item (click)="enterChatRoom(chat)">
         <ion-avatar item-start>
-          <img [src]="chat.photoURL">
+          <img-loader [src]="chat.photoURL"></img-loader>
         </ion-avatar>
         <h2>{{chat.lastMessage}}</h2>
         <ion-note item-end>{{chat.timestamp | date:'shortTime'}}</ion-note>
