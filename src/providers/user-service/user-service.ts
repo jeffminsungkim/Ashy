@@ -6,6 +6,7 @@ import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/do';
 
 import { AuthServiceProvider } from '../auth-service/auth-service';
 
