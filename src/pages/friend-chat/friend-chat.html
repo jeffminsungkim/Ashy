@@ -8,13 +8,13 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content fixed scrollDownOnLoad="true" (tap)="contentMouseDown($event)">
+<ion-content fixed scrollDownOnLoad="true" (tap)="contentMouseDown()">
     <div class="message-wrap">
         <div *ngFor="let msg of history"
              class="message"
              [class.left]="msg.uid === toUser.uid"
              [class.right]="msg.uid === fromUser.uid">
-            <img-loader class="user-img" [src]="msg.photoURL"></img-loader>
+            <img class="user-img" [src]="msg.photoURL">
             <div class="msg-detail">
                 <div class="msg-info">
                     <p>{{msg.displayName}}&nbsp;&nbsp;&nbsp;{{msg.timestamp | date:'shortTime'}}</p>
@@ -27,22 +27,21 @@
         </div>
     </div>
 </ion-content>
-<ion-footer no-border (touchstart)="footerTouchStart($event)">
+<ion-footer no-border>
     <ion-toolbar>
                 <textarea 
-                        (ngModelChange)="textAreaChange()" 
+                        (ngModelChange)="changeTextAreaHeight()" 
                         rows="1"
                         fz-elastic
                         [(ngModel)]="message"
-                        (keyup.enter)="sendMessage()"
+                        (keyup.enter)="newLine()"
                         (focus)="onFocus()">
                 </textarea>
 
-             <ion-buttons right>
-            <button [disabled]="!message"  item-right class="send-button" (touchstart)="touchSendButton($event)">
-                Send
-            </button>
+            <ion-buttons right>
+                <button [disabled]="!message" item-right class="send-button" (touchend)="touchSendButton($event)">
+                    Send
+                </button>
             </ion-buttons>
-
-</ion-toolbar>
+    </ion-toolbar>
 </ion-footer>

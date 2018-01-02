@@ -1,9 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, ViewController, NavParams, Content, TextInput } from 'ionic-angular';
+import { Component, ViewChild, Renderer } from '@angular/core';
+import { IonicPage, NavController, ViewController, NavParams, Platform, Content, TextInput, FabContainer } from 'ionic-angular';
+import { Keyboard } from '@ionic-native/keyboard';
+
+import { Subscription } from 'rxjs/Subscription';
 
 import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { UtilityServiceProvider } from '../../providers/utility-service/utility-service';
+import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
 
 import { User } from '../../models/User';
 
@@ -15,99 +19,191 @@ import { User } from '../../models/User';
 export class FriendChatPage {
 
   @ViewChild(Content) content: Content;
-  @ViewChild('chat_input') messageInput: TextInput;
 
+  subscription: Subscription;
+  keyboardHideSub: Subscription;
+  keybaordShowSub: Subscription;
+  inputElement: any;
+  textareaHeight: any;
+  initialTextAreaHeight: any;
+  scrollContentElement: any;
+  footerElement: any;
+  millis: number = 200;
   fromUser: User;
   toUser: User;
   roomId: string;
-  message: string;
-  showEmojiPicker: boolean = false;
+  message: string = '';
+  history: object[] = [];
 
   constructor(
     public navCtrl: NavController,
     public viewCtrl: ViewController,
     public navParams: NavParams,
+    public platform: Platform,
+    public renderer: Renderer,
+    public keyboard: Keyboard,
     public chatService: ChatServiceProvider,
     public userService: UserServiceProvider,
-    public utilityService: UtilityServiceProvider) {
+    public utilityService: UtilityServiceProvider,
+    public alertService: AlertServiceProvider) {
 
     this.toUser = this.navParams.get('listener');
     this.getCurrentUser();
   }
 
+  ionViewDidLoad() {
+
+    if (this.platform.is('ios'))
+      this.addKeyboardListeners();
+    
+    this.scrollContentElement = this.content.getScrollElement();
+    this.footerElement = document.getElementsByTagName('page-friend-chat')[0].getElementsByTagName('ion-footer')[0];
+    this.inputElement = document.getElementsByTagName('page-friend-chat')[0].getElementsByTagName('textarea')[0];
+
+    this.footerElement.style.cssText = this.footerElement.style.cssText + "transition: all " + this.millis + "ms; -webkit-transition: all " +
+      this.millis + "ms; -webkit-transition-timing-function: ease-out; transition-timing-function: ease-out;"
+
+    this.scrollContentElement.style.cssText = this.scrollContentElement.style.cssText + "transition: all " + this.millis + "ms; -webkit-transition: all " +
+      this.millis + "ms; -webkit-transition-timing-function: ease-out; transition-timing-function: ease-out;"
+
+    this.textareaHeight = Number(this.inputElement.style.height.replace('px', ''));
+    this.initialTextAreaHeight = this.textareaHeight;
+
+    this.updateScroll(500);
+  }
+
   ionViewDidEnter() {
     this.roomId = this.utilityService.combineUserIdsToGenerateHashKey(this.fromUser.uid, this.toUser.uid);
     this.retrieveRoomHistroy();
+    this.inspectNewMessage();
   }
 
   getCurrentUser() {
     this.userService.getCurrentUserObject().take(1).subscribe((user: User) => {
       this.fromUser = user;
     });
+  }
 
+  inspectNewMessage() {
+    this.subscription = this.chatService.isNewMessageArrived(this.roomId).subscribe(_ => this.updateScroll(250));
   }
 
   retrieveRoomHistroy() {
     console.log('room id', this.roomId);
+    console.log('from User', this.fromUser);
+    console.log('to User', this.toUser);
+    this.chatService.fetchChatHistory(this.roomId).subscribe(data => {
+      this.history = data;
+    });
   }
 
-  createRoomOnceIfNotExists(message: string) {
-    this.chatService.checkRoomsLookup(this.roomId).take(1).subscribe(snapshot => {
-      console.log('snap', snapshot);
-      if (snapshot.length < 1) {
-        this.chatService.createNewChatRoom(this.roomId, this.fromUser, this.toUser, message);
-        // this.chatService.pushNewMessage(message, this.roomId, this.fromUser, this.toUser);
-        console.log('CRATE ROOM');
-        }
-      });
+  contentMouseDown() {
+    this.inputElement.blur();
+  }
+
+  onFocus() {
+    if (this.platform.is('android')) {
+      this.content.resize();
+      this.updateScroll(250);
+    }
+  }
+
+
+  touchSendButton(event) {
+    event.preventDefault();
+    event.stopPropagation(); // Stops event bubbling
+    this.sendMessage();
+  }
+
+  changeTextAreaHeight() {
+    let newHeight = Number(this.inputElement.style.height.replace('px', ''));
+    if (newHeight !== this.textareaHeight && newHeight < 71) {
+      let diffHeight = newHeight - this.textareaHeight;
+      this.textareaHeight = newHeight;
+      let marginBottom = Number(this.scrollContentElement.style.marginBottom.replace('px', '')) + diffHeight;
+      this.renderer.setElementStyle(this.scrollContentElement, 'marginBottom', marginBottom + 'px');
+      this.updateScroll(250);
+    }
+  }
+
+  resetTextAreaHeight() {
+    let currentHeight = this.scrollContentElement.style.marginBottom.replace('px', '');
+    let newHeight = currentHeight - this.textareaHeight + this.initialTextAreaHeight;
+    this.renderer.setElementStyle(this.scrollContentElement, 'marginBottom', newHeight + 'px');
+    this.updateScroll(250);
+    this.textareaHeight = this.initialTextAreaHeight;
+    this.renderer.setElementStyle(this.inputElement, 'height', this.initialTextAreaHeight + 'px');
   }
 
   sendMessage() {
     if (!this.message.trim()) return;
 
-    this.chatService.fromUser(this.fromUser);
-    this.chatService.toUser(this.toUser);
+    this.chatService.createNewChatRoom(this.roomId, this.fromUser, this.toUser, this.message);
+    this.chatService.pushMessage(this.message, this.roomId, this.fromUser, this.toUser);
+    this.message = '';
+    this.resetTextAreaHeight();
 
-    this.createRoomOnceIfNotExists(this.message);
+    // this.chatService.isUserAlreadyMemberOfRoom(this.roomId).take(1).subscribe(res => {
+    //   console.log('data', res);
+    //   console.log('data', res[0].key);
+    //   if (res.length > 0) {
+    //     this.chatService.pushMessage(this.message, res[0].key, this.fromUser, this.toUser);
+    //     this.message = '';
+    //     console.log('sendMessage()');
+    //   } 
+    // });
+  }
 
-    this.chatService.isUserAlreadyMemberOfRoom(this.roomId).take(1).subscribe(res => {
-      console.log('data', res);
-      console.log('data', res[0].key);
-      if (res.length > 0) {
-        console.log('message:', this.message);
-        this.chatService.pushMessage(this.message, res[0].key, this.fromUser, this.toUser);
-        this.message = '';
-      } 
+  // attchFiles() {
+  //   this.alertService.notifyCommingSoon('File Attachment');
+  //   this.fabContainer.close();
+  // }
+
+  // inspectInputChanges() {
+  //   console.log('User is typing...', this.message);
+  //   if (!this.utilityService.isStringContainsWhiteSpaceOnly(this.message) && this.message !== '')
+  //     this.isUserTyping = true;
+  //   else
+  //     this.isUserTyping = false;
+  // }
+
+  updateScroll(timeout: number) {
+    setTimeout(() => {
+      this.content.scrollToBottom();
+    }, timeout)
+  }
+
+  ionViewWillLeave() {
+    this.subscription.unsubscribe();
+  }
+
+  addKeyboardListeners() {
+    this.keyboardHideSub = this.keyboard.onKeyboardHide().subscribe(() => {
+      let marginBottom = this.textareaHeight - this.initialTextAreaHeight + 44;
+      this.renderer.setElementStyle(this.scrollContentElement, 'marginBottom', marginBottom + 'px');
+      this.renderer.setElementStyle(this.footerElement, 'marginBottom', '0px')
     });
 
-    if (!this.showEmojiPicker)
-      this.messageInput.setFocus();
-
+    this.keybaordShowSub = this.keyboard.onKeyboardShow().subscribe((e) => {
+      let newHeight = (e['keyboardHeight']) + this.textareaHeight - this.initialTextAreaHeight;
+      let marginBottom = newHeight + 44 + 'px';
+      this.renderer.setElementStyle(this.scrollContentElement, 'marginBottom', marginBottom);
+      this.renderer.setElementStyle(this.footerElement, 'marginBottom', e['keyboardHeight'] + 'px');
+      this.updateScroll(250);
+    });
   }
 
-  switchEmojiPicker() {
-    this.showEmojiPicker = !this.showEmojiPicker;
-    if (!this.showEmojiPicker)
-      this.messageInput.setFocus();
-        
-    this.content.resize();
-    this.scrollToBottom();
+  removeKeyboardListeners() {
+    this.keyboardHideSub.unsubscribe();
+    this.keybaordShowSub.unsubscribe();
   }
 
-  onFocus() {
-    this.showEmojiPicker = false;
-    this.content.resize();
-    this.scrollToBottom();
+  backToPreviousView() {
+    this.inputElement.blur();
+    this.navCtrl.pop().then(_ => {
+      if (this.platform.is('ios'))
+        this.removeKeyboardListeners();
+    });
   }
-
-  scrollToBottom() {
-    setTimeout(() => {
-      if (this.content.scrollToBottom) {
-        this.content.scrollToBottom();
-      }
-    }, 400)
-  }
-
-  backToPreviousView() { this.viewCtrl.dismiss(); }
 
 }
