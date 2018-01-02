@@ -22,7 +22,6 @@ export class HomePage {
 
   constructor(public events: Events, public userService: UserServiceProvider) {
 
-
     this.events.subscribe('totalRequests:arrived', (totalRequests) => {
       if (totalRequests > 0)
         this.totalRequests = totalRequests;
