@@ -12,12 +12,13 @@
 
 <ion-content padding>
   <ion-list *ngFor="let chat of friendChats$ | async">
-    <ion-item-sliding *ngIf="friendChats$ !== null">
+    <ion-item-sliding *ngIf="chat">
       <ion-item (click)="enterChatRoom(chat)">
         <ion-avatar item-start>
           <img-loader [src]="chat.photoURL"></img-loader>
         </ion-avatar>
-        <h2>{{chat.lastMessage}}</h2>
+        <h2>{{chat.displayName}}</h2>
+        <p>{{chat.lastMessage}}</p>
         <ion-note item-end>{{chat.timestamp | date:'shortTime'}}</ion-note>
         <ion-badge color="danger" item-end>{{chat.unreadMessage}}</ion-badge>
       </ion-item>
@@ -28,8 +29,8 @@
         </button>
       </ion-item-options>
       <ion-item-options side="right">
-        <button ion-button color="danger">
-          Destroy
+        <button ion-button color="danger" (click)="destroyChatroom(chat)">
+          Remove
         </button>
       </ion-item-options>
     </ion-item-sliding>
