@@ -6,6 +6,9 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/combineLatest';
 
 import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
+import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
+
+import { User } from '../../models/User';
 
 @IonicPage()
 @Component({
@@ -15,11 +18,13 @@ import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
 export class ChatPage {
 
   friendChats$: Observable<any[]>;
+  toUser: User;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public chatService: ChatServiceProvider) {}
+    public chatService: ChatServiceProvider,
+    public modalService: ModalServiceProvider) {}
 
   ionViewWillEnter() {
     this.displayListOfChatRooms();
@@ -33,6 +38,12 @@ export class ChatPage {
 
   enterChatRoom(chat: any) {
     console.log('enter chat room:', chat);
+    this.modalService.openFriendChatRoomModal(chat.roomId, chat);
+  }
+
+  destroyChatroom(chat: any) {
+    console.log('Destroy chat room:', chat);
+    this.chatService.removeFriendChat(chat.roomId, chat.uid);
   }
 
 }
