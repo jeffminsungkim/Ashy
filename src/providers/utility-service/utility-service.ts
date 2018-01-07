@@ -14,4 +14,7 @@ export class UtilityServiceProvider {
     return sha256(roomId);
   }
 
+  isStringContainsWhiteSpaceOnly(str: string) : boolean {
+    return (!str.trim().length) ? true : false;
+  }
 }
