@@ -1,9 +1,9 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { AlertServiceProvider } from '../providers/alert-service/alert-service';
-import { ChatServiceProvider } from '../providers/chat-service/chat-service';
+import { LoadingServiceProvider } from '../providers/loading-service/loading-service';
 import { ModalServiceProvider } from '../providers/modal-service/modal-service';
 import { ToastServiceProvider } from '../providers/toast-service/toast-service';
-import { UserServiceProvider } from '../providers/user-service/user-service';
+import { UtilityServiceProvider } from '../providers/utility-service/utility-service';
 
 
 @NgModule({
@@ -18,10 +18,10 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [
         AlertServiceProvider,
-        ChatServiceProvider,
+        LoadingServiceProvider,
         ModalServiceProvider,
         ToastServiceProvider,
-        UserServiceProvider
+        UtilityServiceProvider
       ]
     };
   }
