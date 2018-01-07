@@ -3,10 +3,9 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 
-import { UserServiceProvider } from '../user-service/user-service';
-import { UtilityServiceProvider } from '../utility-service/utility-service';
-
-import { User } from '../../models/user';
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
+import { User } from '@ashy-models/user';
 
 @Injectable()
 export class ChatServiceProvider {
@@ -23,35 +22,36 @@ export class ChatServiceProvider {
 
   createNewChatRoom(roomId: string, fromUser: User, toUser: User, message: string) {
     let chatMeta = {};
-    chatMeta[`friendChats/${roomId}/${fromUser.uid}/lastMessage`] = message;
-    chatMeta[`friendChats/${roomId}/${fromUser.uid}/roomId`] = roomId;
-    chatMeta[`friendChats/${roomId}/${fromUser.uid}/photoURL`] = fromUser.photoURL;
-    chatMeta[`friendChats/${roomId}/${fromUser.uid}/timestamp`] = firebase.database.ServerValue.TIMESTAMP;
-    chatMeta[`friendChats/${roomId}/${toUser.uid}/lastMessage`] = message;
-    chatMeta[`friendChats/${roomId}/${toUser.uid}/roomId`] = roomId;
-    chatMeta[`friendChats/${roomId}/${toUser.uid}/photoURL`] = toUser.photoURL;
-    chatMeta[`friendChats/${roomId}/${toUser.uid}/timestamp`] = firebase.database.ServerValue.TIMESTAMP;
-    chatMeta[`friendChats/${roomId}/createdAt`] = firebase.database.ServerValue.TIMESTAMP;
-    // chatMeta[`${roomId}/unreadMessage`] = 1;
     chatMeta[`memberFriendChatrooms/${fromUser.uid}/${roomId}`] = toUser.uid;
     chatMeta[`memberFriendChatrooms/${toUser.uid}/${roomId}`] = fromUser.uid;
+    chatMeta[`friendChatrooms/${roomId}/createdAt`] = firebase.database.ServerValue.TIMESTAMP;
     // this.afDB.list('/').update('friendChats/', chatMeta);
     firebase.database().ref().update(chatMeta);
   }
 
-  pushMessage(message: string, roomId: string, pusher: User, listener: User) {
+  pushMessage(message: string, roomId: string, fromUser: User, toUser: User) {
     let chat = {};
     let messageObj = {
       message: message,
       timestamp: Date.now(),
-      uid: pusher.uid,
-      photoURL: pusher.photoURL,
-      displayName: pusher.displayName
+      uid: fromUser.uid,
+      photoURL: fromUser.photoURL,
+      displayName: fromUser.displayName
     };
-    chat[`friendChats/${roomId}/${pusher.uid}/lastMessage`] = message;
-    chat[`friendChats/${roomId}/${listener.uid}/lastMessage`] = message;
-    chat[`friendChats/${roomId}/${pusher.uid}/timestamp`] = firebase.database.ServerValue.TIMESTAMP;
-    chat[`friendChats/${roomId}/${listener.uid}/timestamp`] = firebase.database.ServerValue.TIMESTAMP;
+    chat[`friendChats/${roomId}/${fromUser.uid}/roomId`] = roomId;
+    chat[`friendChats/${roomId}/${fromUser.uid}/uid`] = fromUser.uid;
+    chat[`friendChats/${roomId}/${fromUser.uid}/displayName`] = fromUser.displayName;
+    chat[`friendChats/${roomId}/${fromUser.uid}/photoURL`] = fromUser.photoURL;
+    chat[`friendChats/${roomId}/${fromUser.uid}/lastMessage`] = message;
+    chat[`friendChats/${roomId}/${fromUser.uid}/timestamp`] = firebase.database.ServerValue.TIMESTAMP;
+
+    chat[`friendChats/${roomId}/${toUser.uid}/roomId`] = roomId;
+    chat[`friendChats/${roomId}/${toUser.uid}/uid`] = toUser.uid;
+    chat[`friendChats/${roomId}/${toUser.uid}/displayName`] = toUser.displayName;
+    chat[`friendChats/${roomId}/${toUser.uid}/photoURL`] = toUser.photoURL;
+    chat[`friendChats/${roomId}/${toUser.uid}/lastMessage`] = message;
+    chat[`friendChats/${roomId}/${toUser.uid}/timestamp`] = firebase.database.ServerValue.TIMESTAMP;
+
     this.afDB.list(`/messages/${roomId}`).push(messageObj);
     firebase.database().ref().update(chat);
   }
@@ -87,6 +87,16 @@ export class ChatServiceProvider {
 
   isNewMessageArrived(roomId: string) {
     return this.afDB.list(`messages/${roomId}`).snapshotChanges(['child_added']);
+  }
+
+  isMemberOfRoomId() {
+    return this.afDB.list(`memberFriendChatrooms/${this.userService.currentUserId}`).snapshotChanges(['child_removed']);
+  }
+
+  removeFriendChat(roomId: string, toUserId: string) {
+    let friendChat = {};
+    friendChat[`friendChats/${roomId}/${toUserId}`] = null;
+    firebase.database().ref().update(friendChat);
   }
 
 

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { UsernamePage } from './username';
+import { UsernamePage } from '@ashy-pages/username/username';
 
 @NgModule({
   declarations: [

@@ -16,22 +16,12 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 
-import { environment } from '../environments/environment'
-import { CameraMock } from '../mocks/camera-mock';
-
 import { MyApp } from './app.component';
+import { CoreModule } from '@ashy-core/core.module';
+import { SharedModule } from '@ashy-shared/shared.module';
+import { environment } from '@ashy-environments/environment';
 
-import { UserServiceProvider } from '../providers/user-service/user-service';
-import { AuthServiceProvider } from '../providers/auth-service/auth-service';
-import { ModalServiceProvider } from '../providers/modal-service/modal-service';
-import { ToastServiceProvider } from '../providers/toast-service/toast-service';
-import { LoadingServiceProvider } from '../providers/loading-service/loading-service';
-import { AlertServiceProvider } from '../providers/alert-service/alert-service';
-import { ErrorDetectionServiceProvider } from '../providers/error-detection-service/error-detection-service';
-import { UploadServiceProvider } from '../providers/upload-service/upload-service';
-import { UtilityServiceProvider } from '../providers/utility-service/utility-service';
-import { EmojiServiceProvider } from '../providers/emoji-service/emoji-service';
-import { ChatServiceProvider } from '../providers/chat-service/chat-service';
+import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-service/error-detection-service';
 
 
 @NgModule({
@@ -54,7 +44,9 @@ import { ChatServiceProvider } from '../providers/chat-service/chat-service';
     IonicImageLoader.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    CoreModule.forRoot(),
+    SharedModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -64,22 +56,12 @@ import { ChatServiceProvider } from '../providers/chat-service/chat-service';
     StatusBar,
     SplashScreen,
     AngularFireDatabase,
-    UserServiceProvider,
-    AuthServiceProvider,
-    ModalServiceProvider,
-    ToastServiceProvider,
-    LoadingServiceProvider,
-    AlertServiceProvider,
     ErrorDetectionServiceProvider,
-    UploadServiceProvider,
     NativePageTransitions,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Camera,
     File,
-    Keyboard,
-    UtilityServiceProvider,
-    EmojiServiceProvider,
-    ChatServiceProvider
+    Keyboard
   ]
 })
 export class AppModule {}

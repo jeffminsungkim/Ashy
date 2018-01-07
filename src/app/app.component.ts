@@ -6,8 +6,8 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-import { ToastServiceProvider } from '../providers/toast-service/toast-service';
-import { UserServiceProvider } from '../providers/user-service/user-service';
+import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 
 import 'rxjs/add/operator/take';
 

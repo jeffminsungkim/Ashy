@@ -1,15 +1,14 @@
 import { Component, ViewChild, Renderer } from '@angular/core';
-import { IonicPage, NavController, ViewController, NavParams, Platform, Content, TextInput, FabContainer } from 'ionic-angular';
+import { IonicPage, NavController, ViewController, NavParams, Platform, Content } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 
 import { Subscription } from 'rxjs/Subscription';
 
-import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
-import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { UtilityServiceProvider } from '../../providers/utility-service/utility-service';
-import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
-
-import { User } from '../../models/User';
+import { ChatServiceProvider } from '@ashy-services/chat-service/chat-service';
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
+import { AlertServiceProvider } from '@ashy-services/alert-service/alert-service';
+import { User } from '@ashy-models/User';
 
 @IonicPage()
 @Component({
@@ -47,7 +46,11 @@ export class FriendChatPage {
     public utilityService: UtilityServiceProvider,
     public alertService: AlertServiceProvider) {
 
-    this.toUser = this.navParams.get('listener');
+    this.toUser = this.navParams.get('toUser');
+    this.roomId = this.navParams.get('roomId');
+    console.log('constructor toUser', this.toUser);
+    console.log('constructor roomId', this.roomId);
+
     this.getCurrentUser();
   }
 
@@ -89,9 +92,6 @@ export class FriendChatPage {
   }
 
   retrieveRoomHistroy() {
-    console.log('room id', this.roomId);
-    console.log('from User', this.fromUser);
-    console.log('to User', this.toUser);
     this.chatService.fetchChatHistory(this.roomId).subscribe(data => {
       this.history = data;
     });
@@ -130,19 +130,16 @@ export class FriendChatPage {
     let currentHeight = this.scrollContentElement.style.marginBottom.replace('px', '');
     let newHeight = currentHeight - this.textareaHeight + this.initialTextAreaHeight;
     this.renderer.setElementStyle(this.scrollContentElement, 'marginBottom', newHeight + 'px');
-    this.updateScroll(250);
     this.textareaHeight = this.initialTextAreaHeight;
     this.renderer.setElementStyle(this.inputElement, 'height', this.initialTextAreaHeight + 'px');
   }
 
   sendMessage() {
     if (!this.message.trim()) return;
-
     this.chatService.createNewChatRoom(this.roomId, this.fromUser, this.toUser, this.message);
     this.chatService.pushMessage(this.message, this.roomId, this.fromUser, this.toUser);
     this.message = '';
     this.resetTextAreaHeight();
-
     // this.chatService.isUserAlreadyMemberOfRoom(this.roomId).take(1).subscribe(res => {
     //   console.log('data', res);
     //   console.log('data', res[0].key);

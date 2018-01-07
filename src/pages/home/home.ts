@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, Events } from 'ionic-angular';
 
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 
-import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 @IonicPage()
 @Component({

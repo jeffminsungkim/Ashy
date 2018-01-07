@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { ChatServiceProvider } from '@ashy-services/chat-service/chat-service';
+import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
+import { User } from '@ashy-models/User';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/combineLatest';
 
-import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
-import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
-
-import { User } from '../../models/User';
 
 @IonicPage()
 @Component({

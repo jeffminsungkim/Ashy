@@ -2,15 +2,15 @@ import { Component, ViewChild, Renderer, ElementRef, OnDestroy } from '@angular/
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { IonicPage, NavController, NavParams, ActionSheetController, ViewController } from 'ionic-angular';
 
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
+import { LoadingServiceProvider } from '@ashy-services/loading-service/loading-service';
+import { Upload } from '@ashy-models/upload';
+
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { Subscription } from 'rxjs/Subscription';
 
-import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { UploadServiceProvider } from '../../providers/upload-service/upload-service';
-import { LoadingServiceProvider } from '../../providers/loading-service/loading-service';
-
-import { Upload } from '../../models/upload';
 
 @IonicPage()
 @Component({

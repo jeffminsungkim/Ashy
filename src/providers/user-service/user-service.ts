@@ -1,5 +1,9 @@
 // import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
+import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
+import { User } from '@ashy-models/user';
+
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -8,9 +12,6 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/do';
 
-import { AuthServiceProvider } from '../auth-service/auth-service';
-
-import { User } from '../../models/user';
 
 @Injectable()
 export class UserServiceProvider {

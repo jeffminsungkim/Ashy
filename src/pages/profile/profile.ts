@@ -3,19 +3,16 @@ import { IonicPage, App, NavParams, NavController, Events, ActionSheetController
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 
-import { NgProgress } from 'ngx-progressbar';
-
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
-import { UploadServiceProvider } from '../../providers/upload-service/upload-service';
-import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
-import { ChatServiceProvider } from '../../providers/chat-service/chat-service';
-
+import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { AlertServiceProvider } from '@ashy-services/alert-service/alert-service';
+import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
+import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
+import { ChatServiceProvider } from '@ashy-services/chat-service/chat-service';
+import { User } from '@ashy-models/User';
+import { Upload } from '@ashy-models/upload';
 import { Observable } from 'rxjs/Observable';
 
-import { User } from '../../models/User';
-import { Upload } from '../../models/upload';
 
 @IonicPage()
 @Component({
@@ -36,7 +33,6 @@ export class ProfilePage {
     public navCtrl: NavController,
     public events: Events,
     public nativePageTransitions: NativePageTransitions,
-    public ngProgress: NgProgress,
     public authService: AuthServiceProvider,
     public userService: UserServiceProvider,
     public alertService: AlertServiceProvider,
@@ -66,7 +62,7 @@ export class ProfilePage {
     const tabsNav = this.app.getNavByIdOrName('appTabs') as Tabs;
     tabsNav.select(1);
     // this.navCtrl.setRoot('FriendChatPage', {listener: this.user});
-    this.modalService.openFriendChatRoomModal(this.user);
+    this.modalService.createFriendChatRoomModal(this.user);
   }
 
   editProfile() { this.modalService.showProfileDetailModal(); }

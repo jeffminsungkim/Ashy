@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 
-import { AuthServiceProvider } from '../auth-service/auth-service';
-import { ToastServiceProvider } from '../toast-service/toast-service';
+import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
+import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
 import { ErrorDetectionServiceProvider } from '../error-detection-service/error-detection-service';
 
 @Injectable()
@@ -97,5 +97,22 @@ export class AlertServiceProvider {
       this.toastService.show(errorMessage);
     }
   }
+
+  notifyRoomDestroyed() {
+    this.alertCtrl.create({
+      title: 'Oops! :(',
+      message: 'Room has been destroyed.',
+      buttons: [
+        {
+          text: 'Out',
+          role: 'cancel'
+        }
+      ]
+    }).present();
+  }
+
+
+
+
   
 }

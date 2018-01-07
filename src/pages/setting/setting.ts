@@ -1,14 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
+import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
+import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
+
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/take';
 
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { ToastServiceProvider } from '../../providers/toast-service/toast-service';
-import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
-import { UploadServiceProvider } from '../../providers/upload-service/upload-service';
 
 @IonicPage()
 @Component({
@@ -16,17 +17,17 @@ import { UploadServiceProvider } from '../../providers/upload-service/upload-ser
   templateUrl: 'setting.html',
 })
 export class SettingPage implements OnDestroy {
-  private subscription: Subscription;
-  private username: string;
+  subscription: Subscription;
+  username: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private authService: AuthServiceProvider,
-    private userService: UserServiceProvider,
-    private toastService: ToastServiceProvider,
-    private modalService: ModalServiceProvider,
-    private uploadService: UploadServiceProvider) { }
+    public authService: AuthServiceProvider,
+    public userService: UserServiceProvider,
+    public toastService: ToastServiceProvider,
+    public modalService: ModalServiceProvider,
+    public uploadService: UploadServiceProvider) { }
 
  
   ionViewWillEnter() {
@@ -54,7 +55,7 @@ export class SettingPage implements OnDestroy {
   }
 
   async logout() {
-    this.userService.updateCurrentActiveStatusTo(false);
+    this.userService.updateCurrentUserActiveStatusTo('signout');
     const user: any = await this.authService.signOut();
     this.toastService.show(`Signed out as ${user.email}`);
   }

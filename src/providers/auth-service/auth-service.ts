@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+
+import { User } from '@ashy-models/user';
+
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 import { ErrorDetectionServiceProvider } from '../error-detection-service/error-detection-service';
 
-import * as firebase from 'firebase/app';
+import { Observable } from 'rxjs/Observable';
 
-import { User } from '../../models/user';
 
 @Injectable()
 export class AuthServiceProvider {

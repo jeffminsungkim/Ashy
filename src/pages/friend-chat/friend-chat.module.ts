@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { FriendChatPage } from './friend-chat';
-import { EmojiPickerComponentModule } from "../../components/emoji-picker/emoji-picker.module";
-import { EmojiServiceProvider } from "../../providers/emoji-service/emoji-service";
+import { ChatServiceProvider } from '@ashy-services/chat-service/chat-service';
+import { EmojiPickerComponentModule } from "@ashy-components/emoji-picker/emoji-picker.module";
+import { EmojiServiceProvider } from "@ashy-services/emoji-service/emoji-service";
 import { ElasticModule } from 'ng-elastic';
 import { IonicImageLoader } from 'ionic-image-loader';
 
@@ -17,6 +18,7 @@ import { IonicImageLoader } from 'ionic-image-loader';
     IonicImageLoader
   ],
   providers:[
+    ChatServiceProvider,
     EmojiServiceProvider
   ]
 })

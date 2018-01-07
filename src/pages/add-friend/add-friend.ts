@@ -1,14 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Subscription } from 'rxjs/Subscription';
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { User } from '@ashy-models/user';
 
+import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/take';
 
-import { UserServiceProvider } from '../../providers/user-service/user-service';
-
-import { User } from '../../models/user';
 
 @IonicPage()
 @Component({

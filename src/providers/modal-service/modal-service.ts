@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
-import { User } from '../../models/user';
+import { User } from '@ashy-models/user';
 
 @Injectable()
 export class ModalServiceProvider {
@@ -14,6 +14,8 @@ export class ModalServiceProvider {
 
   showAddFriendModal() { this.modalCtrl.create('AddFriendPage').present(); }
 
-  openFriendChatRoomModal(user: User) { this.modalCtrl.create('FriendChatPage', {listener: user}).present(); }
+  createFriendChatRoomModal(user: User) { this.modalCtrl.create('FriendChatPage', {toUser: user}).present(); }
+
+  openFriendChatRoomModal(roomId: string, user: any) { this.modalCtrl.create('FriendChatPage', {roomId: roomId, toUser: user}).present(); }
 
 }

@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { ToastServiceProvider } from '../../providers/toast-service/toast-service';
-import { AlertServiceProvider } from '../../providers/alert-service/alert-service';
-import { LoadingServiceProvider } from '../../providers/loading-service/loading-service';
-import { ErrorDetectionServiceProvider } from '../../providers/error-detection-service/error-detection-service';
-
-import { User } from '../../models/user';
+import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
+import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
+import { AlertServiceProvider } from '@ashy-services/alert-service/alert-service';
+import { LoadingServiceProvider } from '@ashy-services/loading-service/loading-service';
+import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-service/error-detection-service';
+import { User } from '@ashy-models/user';
 
 
 @IonicPage()

@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import { EmojiServiceProvider } from '../../providers/emoji-service/emoji-service';
+import { EmojiServiceProvider } from '@ashy-services/emoji-service/emoji-service';
 
 export const EMOJI_PICKER_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -23,24 +23,43 @@ export class EmojiPickerComponent implements ControlValueAccessor {
 
   constructor(public emojiService: EmojiServiceProvider) {
     this.emojiBucket = this.emojiService.getEmojis();
+    console.log('init content:', this.content);
   }
 
-  writeValue(obj: any): void {
+  writeValue(obj: any) {
     this.content = obj;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: any) {
     this.onChanged = fn;
-    this.setValue(this.content);
+    if (this.content !== undefined || this.content !== null || this.content !== '') {
+      console.log('register on change');
+      this.setValue(this.content);
+    }
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: any) {
     this.onTouched = fn;
   }
 
   setValue(val: any): any {
+   
+    if (val === null) {
+       console.log('setValue val is null', val);
+       return;
+    }
+
+    if (this.content === undefined)
+      this.content = '';
+
+    console.log('setValue val', val);
+    console.log('typeof val', typeof val);
+
     this.content += val;
-    if (this.content) 
+    console.log('content2:', this.content);
+    if (this.content) {
       this.onChanged(this.content);
+      console.log('ok');
+    }
   }
 }

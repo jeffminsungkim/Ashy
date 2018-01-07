@@ -1,20 +1,19 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
+import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
+import { User } from '@ashy-models/user';
+
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-
 import 'rxjs/add/operator/take'
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/combineLatest';
 
-import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { ModalServiceProvider } from '../../providers/modal-service/modal-service';
-
-import { User } from '../../models/user';
 
 @IonicPage()
 @Component({

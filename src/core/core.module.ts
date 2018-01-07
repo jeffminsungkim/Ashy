@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { AuthServiceProvider } from '../providers/auth-service/auth-service';
-import { UserServiceProvider } from '../providers/user-service/user-service';
+import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 
 
 @NgModule({

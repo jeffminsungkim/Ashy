@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { PasswordResetPage } from './password-reset';
+import { PasswordResetPage } from '@ashy-pages/password-reset/password-reset';
 
 @NgModule({
   declarations: [

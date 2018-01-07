@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { NgProgressModule } from 'ngx-progressbar';
-import { ProfilePage } from './profile';
+import { ProfilePage } from '@ashy-pages/profile/profile';
 
 
 @NgModule({
@@ -9,7 +8,6 @@ import { ProfilePage } from './profile';
     ProfilePage,
   ],
   imports: [
-    NgProgressModule,
     IonicPageModule.forChild(ProfilePage),
   ],
 })

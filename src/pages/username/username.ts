@@ -1,10 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/take';
 
-import { UserServiceProvider } from '../../providers/user-service/user-service';
 
 @IonicPage()
 @Component({

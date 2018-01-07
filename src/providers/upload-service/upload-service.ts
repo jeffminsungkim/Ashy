@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
+import { Upload } from '@ashy-models/upload';
+
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
 
-import { UserServiceProvider } from '../user-service/user-service';
-import { ModalServiceProvider } from '../modal-service/modal-service';
-
-import { Upload } from '../../models/upload';
-
 declare var window: any;
+
 
 @Injectable()
 export class UploadServiceProvider {
