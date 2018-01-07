@@ -14,7 +14,6 @@ import 'rxjs/add/operator/take';
 @Component({
   selector: 'page-notification',
   templateUrl: 'notification.html',
-  providers: [ReversePipe]
 })
 export class NotificationPage implements OnDestroy {
 
