@@ -34,7 +34,6 @@ export class MyApp {
            userService.getUserActiveStatus().take(1).subscribe(status => {
              if (status === 'online') {
                toastService.show(`Signed in as ${user.email}`);
-               userService.updateCurrentUserActiveStatusTo('online');
              }
            });
           this.rootPage = 'HomePage';
