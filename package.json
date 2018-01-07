@@ -19,7 +19,8 @@
   },
   "config": {
     "ionic_copy": "./config/copy.config.js",
-    "ionic_sass": "./config/sass.config.js"
+    "ionic_sass": "./config/sass.config.js",
+    "ionic_webpack": "./config/webpack.config.js"
   },
   "dependencies": {
     "@angular/common": "5.0.4",
@@ -85,7 +86,8 @@
     "protractor": "^5.2.2",
     "ts-loader": "^3.2.0",
     "ts-node": "^4.0.2",
-    "typescript": "2.6.2"
+    "typescript": "2.6.2",
+    "webpack-merge": "^4.1.1"
   },
   "description": "An Ionic project",
   "cordova": {

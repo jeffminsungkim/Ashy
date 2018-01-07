@@ -14,7 +14,21 @@
     "target": "es5",
     "typeRoots": [
       "../node_modules/@types"
-    ]
+    ],
+    "baseUrl": "./src",
+     "paths": {
+       "@ashy-app/*": ["app/*"],
+       "@ashy-core/*": ["core/*"],
+       "@ashy-pages/*": ["pages/*"],
+       "@ashy-components/*": ["components/*"],
+       "@ashy-pipes/*": ["pipes/*"],
+       "@ashy-services/*": ["providers/*"],
+       "@ashy-shared/*": ["shared/shared.module"],
+       "@ashy-components/*": ["components/*"],
+       "@ashy-environments/*": ["environments/*"],
+       "@ashy-models/*": ["models/*"],
+       "@ashy-mocks/*": ["mocks/*"],
+     }
   },
   "include": [
     "src/**/*.ts"
