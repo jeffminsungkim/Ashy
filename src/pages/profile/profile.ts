@@ -3,14 +3,15 @@ import { IonicPage, App, NavParams, NavController, Events, ActionSheetController
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 
-import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 import { AlertServiceProvider } from '@ashy-services/alert-service/alert-service';
-import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
-import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
+import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
 import { ChatServiceProvider } from '@ashy-services/chat-service/chat-service';
+import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
+import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
+import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 import { User } from '@ashy-models/User';
 import { Upload } from '@ashy-models/upload';
+
 import { Observable } from 'rxjs/Observable';
 
 
