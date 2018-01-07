@@ -146,6 +146,11 @@ export class UserServiceProvider {
     }
   }
 
+  updateLastLoginTime() {
+    let lastLogin = { lastLoginAt: firebase.database.ServerValue.TIMESTAMP };
+    this.afDB.object(`users/${this.currentUserId}`).update(lastLogin);
+  }
+
   updateCurrentUserActiveStatusTo(status: string) {
     let activeStatus = { currentActiveStatus: status }
     this.afDB.object(`users/${this.currentUserId}`).update(activeStatus).catch(error => console.error('Update CurrentActiveStatus in users node Fails',error));
@@ -171,6 +176,7 @@ export class UserServiceProvider {
                     .do(connected => {
                       let status = connected ? 'online' : 'offline'
                       this.updateCurrentUserActiveStatusTo(status)
+                      this.updateLastLoginTime();
                     })
                     .subscribe()
   }
