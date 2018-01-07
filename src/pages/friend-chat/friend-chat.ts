@@ -1,14 +1,16 @@
 import { Component, ViewChild, Renderer } from '@angular/core';
 import { IonicPage, NavController, ViewController, NavParams, Platform, Content } from 'ionic-angular';
-import { Keyboard } from '@ionic-native/keyboard';
-
-import { Subscription } from 'rxjs/Subscription';
 
 import { ChatServiceProvider } from '@ashy-services/chat-service/chat-service';
 import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
 import { AlertServiceProvider } from '@ashy-services/alert-service/alert-service';
 import { User } from '@ashy-models/User';
+
+import { Keyboard } from '@ionic-native/keyboard';
+
+import { Subscription } from 'rxjs/Subscription';
+
 
 @IonicPage()
 @Component({
