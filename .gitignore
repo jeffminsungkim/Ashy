@@ -38,6 +38,7 @@ UserInterfaceState.xcuserstate
 
 # Custom
 firebase-rules.json
+.editorconfig
 
 # Cloud functions
 functions/node_modules
