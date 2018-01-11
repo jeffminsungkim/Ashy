@@ -16,6 +16,7 @@ export class UserServiceProvider {
 
   private rtdb: any;
   private usersRef: AngularFirestoreCollection<User>;
+  private friendsRef: AngularFirestoreCollection<User>;
   authState: any = null;
   // usersRef: AngularFirestoreCollection<any>;
   users$: Observable<User[]>;
@@ -85,8 +86,12 @@ export class UserServiceProvider {
     return this.afDB.object(`users/${this.currentUserId}`).valueChanges();
   }*/
 
+  getCurrentUserRef(uid: string) {
+    return this.usersRef.doc<User>(uid);
+  }
+
   getCurrentUser() {
-    return this.usersRef.doc<User>(this.currentUserId).valueChanges();
+    return this.getCurrentUserRef(this.currentUserId).valueChanges();
   }
 
   /*getCurrentUsername() {
@@ -95,21 +100,21 @@ export class UserServiceProvider {
 
   getUserActiveStatus(): Observable<any> {
     return this.afDB.object(`users/${this.currentUserId}/currentActiveStatus`).valueChanges();
-  }
+  }*/
 
-  getMyFriendsKey() {
-    this.friendsListRef$ = this.afDB.list(`friends/${this.currentUserId}`);
-    this.friends$ = this.friendsListRef$.snapshotChanges().map(changes => {
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+  getMyFriendsId() {
+    let friendRef = this.getCurrentUserRef(this.currentUserId).collection('friends');
+    this.friends$ = friendRef.snapshotChanges().map(actions => {
+      return actions.map(a => ({ key: a.payload.doc.id, ...a.payload.doc.data()}));
     });
     return this.friends$;
   }
 
   getFriends(uid: any) {
-    return this.afDB.object(`users/${uid}`).valueChanges();
+    return this.getCurrentUserRef(uid).valueChanges();
   }
 
-  deleteLoggedInUser() {
+  /*deleteLoggedInUser() {
     let endpoint = this.usersNode + this.currentUserId;
     return this.afDB.object(endpoint).remove();
   }
@@ -269,11 +274,11 @@ export class UserServiceProvider {
         this.afDB.list(endpoint).remove(requester.key);
       });
     });
-  }
-
-  removeUserFromFriendList(UID: string) {
-    this.afDB.list(`friends/${this.currentUserId}`).remove(UID);
   }*/
+
+  // removeUserFromFriendList(UID: string) {
+  //   this.afDB.list(`friends/${this.currentUserId}`).remove(UID);
+  // }
 
 
 }

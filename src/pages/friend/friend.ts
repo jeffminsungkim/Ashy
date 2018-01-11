@@ -50,15 +50,16 @@ export class FriendPage {
   ionViewWillEnter() {
     // Runs when the page is about to enter and become the active page.;
     this.getUserProfile();
+    this.getMyFriendList();
     // this.getRequestFromUser();
-    // this.getMyFriendList();
+
   }
 
-  // getMyFriendList() {
-  //   this.friends$ = this.userService.getMyFriendsKey().switchMap(data => {
-  //     return Observable.combineLatest(data.map(friend => this.userService.getFriends(friend.key)));
-  //   });
-  // }
+  getMyFriendList() {
+    this.friends$ = this.userService.getMyFriendsId().switchMap(data => {
+      return Observable.combineLatest(data.map(friend => this.userService.getFriends(friend.key)));
+    });
+  }
 
   getUserProfile() {
     this.me$ = this.userService.getCurrentUser();
