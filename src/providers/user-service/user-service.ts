@@ -1,10 +1,9 @@
 // import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
 import { User } from '@ashy-models/user';
 
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
@@ -14,32 +13,31 @@ import 'rxjs/add/operator/do';
 
 @Injectable()
 export class UserServiceProvider {
-  
+
+  private rtdb: any;
+  private usersRef: AngularFirestoreCollection<User>;
   authState: any = null;
-  usersRef: AngularFireList<any>;
+  // usersRef: AngularFirestoreCollection<any>;
   users$: Observable<User[]>;
-  usersNode: string;
   defaultProfileImgURL: string;
   user$: any;
-  friendsListRef$: AngularFireList<any>;
+  friendsListRef$: AngularFirestoreCollection<any>;
   friends$: Observable<any[]>;
 
   constructor(
     public afAuth: AngularFireAuth,
-    public afDB: AngularFireDatabase,
-    public authService: AuthServiceProvider) {
+    public afs: AngularFirestore) {
 
-
-    this.usersNode = 'users/';
-    this.afAuth.authState.do(user => {
-      this.authState = user;
-      if (user) {
-        this.updateOnConnect();
-        this.updateOnDisconnect();
-      }
-    }).subscribe();
-    this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=f85be639-9a1c-4c79-a28d-361171358a41';
-    this.usersRef = this.afDB.list<User>(this.usersNode);
+      this.rtdb = firebase.database();
+      this.usersRef = this.afs.collection<User>('users');
+      this.afAuth.authState.do(user => {
+        this.authState = user;
+        if (user) {
+          this.updateOnConnect();
+          this.updateOnDisconnect();
+        }
+      }).subscribe();
+      this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2Favatar.png?alt=media&token=b914dee7-cdee-44ec-8222-146c9f6f3ef8';
   }
 
   get authenticated(): boolean {
@@ -67,10 +65,6 @@ export class UserServiceProvider {
     return this.authState['photoURL'];
   }
 
-  get isUserEmailVerified(): any {
-    return this.authState.emailVerified;
-  }
-
   // determineUserSentFriendRequestToCertainParty(followingUserUID: string) {
   //   let usersRef = this.afDB.list('friend-requests/', ref => ref.orderByChild(followingUserUID));
   //   this.users$ = usersRef.snapshotChanges().map(changes => {
@@ -79,7 +73,7 @@ export class UserServiceProvider {
   //   return this.users$;
   // }
 
-  determineUserSentFriendRequestToCertainParty(followingUserUID: string) {
+  /*determineUserSentFriendRequestToCertainParty(followingUserUID: string) {
     return this.afDB.list(`friend-requests/${followingUserUID}`, ref => ref.orderByChild('uid').equalTo(this.currentUserId)).valueChanges();
   }
 
@@ -134,26 +128,25 @@ export class UserServiceProvider {
     let endpoint = this.usersNode + this.currentUserId;
     let photoURL = { photoURL: url }
     return this.afDB.object(endpoint).update(photoURL).catch(error => console.error("Update photoURL", error));
-  }
+  }*/
 
   updateEmailVerificationStatus() {
-    // TODO: RUN THIS FUNCTION ONLY ONCE.
-    if (!this.currentUserEmailVerified) {
-      let endpoint = this.usersNode + this.currentUserId;
-      let emailVerified = { emailVerified: this.isUserEmailVerified }
-      this.afDB.object(endpoint).update(emailVerified).catch(error => console.error('Update User',error));
-      console.log("updated email verification status");
-    }
+    if (this.currentUserEmailVerified) return;
+    let emailVerified = { emailVerified: this.currentUserEmailVerified }
+    this.usersRef.doc(this.currentUserId).update(emailVerified).catch(error => console.error('Update User',error));
+    console.log("Updated email verification status");
+
   }
 
   updateLastLoginTime() {
-    let lastLogin = { lastLoginAt: firebase.database.ServerValue.TIMESTAMP };
-    this.afDB.object(`users/${this.currentUserId}`).update(lastLogin);
+    let lastLogin = { lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
+    this.usersRef.doc(this.currentUserId).update(lastLogin);
   }
 
   updateCurrentUserActiveStatusTo(status: string) {
     let activeStatus = { currentActiveStatus: status }
-    this.afDB.object(`users/${this.currentUserId}`).update(activeStatus).catch(error => console.error('Update CurrentActiveStatus in users node Fails',error));
+    this.rtdb.ref(`status/${this.currentUserId}`).update(activeStatus);
+    this.usersRef.doc(this.currentUserId).update(activeStatus).catch(error => console.error('Update CurrentActiveStatus in users node Fails',error));
   }
 
   // updateFriendActiveStatusTo(status: string) {
@@ -172,23 +165,25 @@ export class UserServiceProvider {
 
   // Updates status when connection to Firebase starts
   updateOnConnect() {
-    return this.afDB.object('.info/connected').valueChanges()
-                    .do(connected => {
-                      let status = connected ? 'online' : 'offline'
-                      this.updateCurrentUserActiveStatusTo(status)
-                      this.updateLastLoginTime();
-                    })
-                    .subscribe()
+    if (!this.currentUserEmailVerified) return;
+    return this.rtdb.ref('.info/connected').on('value', snapshot => {
+      this.updateCurrentUserActiveStatusTo('online');
+      this.updateLastLoginTime();
+    });
   }
 
   // Updates status when connection to Firebase ends
   updateOnDisconnect() {
-    firebase.database().ref().child(`users/${this.currentUserId}`)
-            .onDisconnect()
-            .update({currentActiveStatus: 'offline'});
+    if (!this.currentUserEmailVerified) return;
+    const currentActiveStatus = this.rtdb.ref('.info/connected');
+    currentActiveStatus.on('value', snapshot => {
+      this.rtdb.ref(`status/${this.currentUserId}`)
+      .onDisconnect()
+      .update({ currentActiveStatus: 'offline' });
+    });
   }
 
-  updateGender(selectedGender: string) {
+  /*updateGender(selectedGender: string) {
     let gender = { gender: selectedGender }
     console.log('selected gender', selectedGender);
     this.afDB.object(`users/${this.currentUserId}`).update(gender).catch(error => console.error('Update Gender Fails', error));
@@ -207,7 +202,7 @@ export class UserServiceProvider {
   // }
   updateUsername(username: string) {
     let updateUsername = {};
-    updateUsername[`usernames/${username}`] = this.currentUserId; 
+    updateUsername[`usernames/${username}`] = this.currentUserId;
     updateUsername[`users/${this.currentUserId}/username`] = username;
     firebase.database().ref().update(updateUsername);
   }
@@ -282,7 +277,7 @@ export class UserServiceProvider {
 
   removeUserFromFriendList(UID: string) {
     this.afDB.list(`friends/${this.currentUserId}`).remove(UID);
-  }
+  }*/
 
 
 }
