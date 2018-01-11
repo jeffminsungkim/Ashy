@@ -24,7 +24,7 @@ export class FriendPage {
 
   subscription: Subscription;
   friends$: Observable<any[]>;
-  me$: Observable<any[]>;
+  me$: Observable<User>;
   uid: string;
 
   constructor(
@@ -37,34 +37,34 @@ export class FriendPage {
 
   ionViewDidLoad() { }
 
-  getRequestFromUser() {
-    this.subscription = this.userService.fetchFriendRequest().subscribe((req: any) => {
-      for (let sender of req)
-        this.uid = sender.uid;
-      console.log("GET REQUEST FROM FOLLOWING UID", this.uid);
-      if (this.uid !== this.userService.currentUserId && this.uid !== undefined)
-        this.events.publish('totalRequests:arrived', req.length);
-    });
-  }
+  // getRequestFromUser() {
+  //   this.subscription = this.userService.fetchFriendRequest().subscribe((req: any) => {
+  //     for (let sender of req)
+  //       this.uid = sender.uid;
+  //     console.log("GET REQUEST FROM FOLLOWING UID", this.uid);
+  //     if (this.uid !== this.userService.currentUserId && this.uid !== undefined)
+  //       this.events.publish('totalRequests:arrived', req.length);
+  //   });
+  // }
 
   ionViewWillEnter() {
     // Runs when the page is about to enter and become the active page.;
     this.getUserProfile();
-    this.getRequestFromUser();
-    this.getMyFriendList();
+    // this.getRequestFromUser();
+    // this.getMyFriendList();
   }
 
-  getMyFriendList() {
-    this.friends$ = this.userService.getMyFriendsKey().switchMap(data => {
-      return Observable.combineLatest(data.map(friend => this.userService.getFriends(friend.key)));
-    });
-  }
+  // getMyFriendList() {
+  //   this.friends$ = this.userService.getMyFriendsKey().switchMap(data => {
+  //     return Observable.combineLatest(data.map(friend => this.userService.getFriends(friend.key)));
+  //   });
+  // }
 
   getUserProfile() {
     this.me$ = this.userService.getCurrentUser();
   }
 
-  deleteUserFromFriendList(user) {
+  /*deleteUserFromFriendList(user) {
     this.userService.removeUserFromFriendList(user.uid);
     this.getMyFriendList();
   }
@@ -95,6 +95,6 @@ export class FriendPage {
 
   ionViewDidLeave() {
     console.log('Runs when the page has finished leaving and is no longer the active page.');
-  }
+  }*/
 
 }

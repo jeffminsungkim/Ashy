@@ -83,17 +83,13 @@ export class UserServiceProvider {
 
   getCurrentUserObject() {
     return this.afDB.object(`users/${this.currentUserId}`).valueChanges();
-  }
+  }*/
 
   getCurrentUser() {
-    let userRef = this.afDB.list(`users/`, ref => ref.orderByKey().equalTo(this.currentUserId));
-    this.user$ = userRef.snapshotChanges().map(changes => {
-      return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
-    });
-    return this.user$;
+    return this.usersRef.doc<User>(this.currentUserId).valueChanges();
   }
 
-  getCurrentUsername() {
+  /*getCurrentUsername() {
     return this.afDB.object(`users/${this.currentUserId}/username`).valueChanges();
   }
 
