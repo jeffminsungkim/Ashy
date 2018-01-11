@@ -65,12 +65,12 @@ export class FriendPage {
     this.me$ = this.userService.getCurrentUser();
   }
 
-  /*deleteUserFromFriendList(user) {
+  deleteUserFromFriendList(user) {
     this.userService.removeUserFromFriendList(user.uid);
     this.getMyFriendList();
   }
 
-  showOriginalAvatarImage() {
+  /*showOriginalAvatarImage() {
     console.log("showOriginalAvatarImage()");
   }
 

@@ -86,8 +86,12 @@ export class UserServiceProvider {
     return this.afDB.object(`users/${this.currentUserId}`).valueChanges();
   }*/
 
-  getCurrentUserRef(uid: string) {
+  private getCurrentUserRef(uid: string) {
     return this.usersRef.doc<User>(uid);
+  }
+
+  private getCurrentUserFriendRef(uid: string) {
+    return this.usersRef.doc<User>(uid).collection('friends');
   }
 
   getCurrentUser() {
@@ -103,14 +107,14 @@ export class UserServiceProvider {
   }*/
 
   getMyFriendsId() {
-    let friendRef = this.getCurrentUserRef(this.currentUserId).collection('friends');
+    let friendRef = this.getCurrentUserFriendRef(this.currentUserId);
     this.friends$ = friendRef.snapshotChanges().map(actions => {
       return actions.map(a => ({ key: a.payload.doc.id, ...a.payload.doc.data()}));
     });
     return this.friends$;
   }
 
-  getFriends(uid: any) {
+  getFriends(uid: string) {
     return this.getCurrentUserRef(uid).valueChanges();
   }
 
@@ -276,9 +280,8 @@ export class UserServiceProvider {
     });
   }*/
 
-  // removeUserFromFriendList(UID: string) {
-  //   this.afDB.list(`friends/${this.currentUserId}`).remove(UID);
-  // }
-
+  removeUserFromFriendList(uid: string) {
+    this.getCurrentUserFriendRef(this.currentUserId).doc(uid).delete();
+  }
 
 }
