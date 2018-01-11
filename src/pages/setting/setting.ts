@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
@@ -6,7 +6,9 @@ import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
 import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
 import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
+import { User } from '@ashy-models/user';
 
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/take';
 
@@ -16,9 +18,10 @@ import 'rxjs/add/operator/take';
   selector: 'page-setting',
   templateUrl: 'setting.html',
 })
-export class SettingPage implements OnDestroy {
+export class SettingPage {
   subscription: Subscription;
   username: string;
+  user: Observable<User>;
 
   constructor(
     public navCtrl: NavController,
@@ -29,26 +32,10 @@ export class SettingPage implements OnDestroy {
     public modalService: ModalServiceProvider,
     public uploadService: UploadServiceProvider) { }
 
- 
+
   ionViewWillEnter() {
-    this.subscription = this.userService.getCurrentUsername().subscribe((user: any) => {
-      console.log("SettingPage user", user);
-      this.username = user;
-    });
+    this.user = this.userService.getCurrentUser();
   }
-
-  ngOnDestroy() {
-    if (this.subscription !== undefined) {
-      this.subscription.unsubscribe();
-      console.log("Setting ngOnDestroy");
-    }
-  }
-
-  // ionViewWillUnload() {
-  //   // console.log('Runs when the page is about to leave and no longer be the active page.');
-  //   this.subscription.unsubscribe();
-  // }
-
 
   goToProfileDetail() {
     this.modalService.showProfileDetailModal();
@@ -64,10 +51,11 @@ export class SettingPage implements OnDestroy {
     // TODO: DELETE ACCOUNT FROM THE FOLLOWING CONDITION:
     // USER SHOULD TYPE THEIR EMAIL ACCOUNT IN TEXT INPUT
     // AND INPUT STRING MUST MATCH WITH THE USER'S EMAIL ACCOUNT.
-    this.userService.removeDeprecatedUsername(this.username);
-    this.uploadService.deleteFileNode();
-    this.uploadService.deleteFileStorage();
-    this.userService.deleteLoggedInUser();
-    this.authService.deleteAccount();
+    // this.userService.removeDeprecatedUsername(this.username);
+
+    // this.uploadService.deleteFileNode();
+    // this.uploadService.deleteFileStorage();
+    // this.userService.deleteCurrentUserDoc();
+    // this.authService.deleteAccount();
   }
 }

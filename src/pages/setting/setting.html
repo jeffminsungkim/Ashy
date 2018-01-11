@@ -30,16 +30,13 @@
          <ion-list-header>
           ACCOUNT
         </ion-list-header>
-    
+
          <ion-item-group>
             <ion-item>
                 <ion-icon ios="ios-finger-print" md="md-finger-print" item-start></ion-icon>
                 Username
-                <ion-note *ngIf="username != null" item-end>
-                    {{username}}
-                </ion-note>
-                <ion-note *ngIf="username == null" item-end>
-                    Username is not set
+                <ion-note item-end>
+                    {{ (user | async)?.username }}
                 </ion-note>
             </ion-item>
 
