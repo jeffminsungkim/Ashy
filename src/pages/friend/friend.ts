@@ -67,7 +67,7 @@ export class FriendPage {
 
   deleteUserFromFriendList(user) {
     this.userService.removeUserFromFriendList(user.uid);
-    this.getMyFriendList();
+    // this.getMyFriendList();
   }
 
   /*showOriginalAvatarImage() {
