@@ -55,7 +55,7 @@ export class SettingPage {
 
     // this.uploadService.deleteFileNode();
     // this.uploadService.deleteFileStorage();
-    // this.userService.deleteCurrentUserDoc();
-    // this.authService.deleteAccount();
+    this.userService.deleteCurrentUserDoc();
+    this.authService.deleteAccount();
   }
 }
