@@ -98,11 +98,7 @@ export class UserServiceProvider {
     return this.getCurrentUserRef(this.currentUserId).valueChanges();
   }
 
-  /*getCurrentUsername() {
-    return this.afDB.object(`users/${this.currentUserId}/username`).valueChanges();
-  }
-
-  getUserActiveStatus(): Observable<any> {
+  /*getUserActiveStatus(): Observable<any> {
     return this.afDB.object(`users/${this.currentUserId}/currentActiveStatus`).valueChanges();
   }*/
 
@@ -118,12 +114,12 @@ export class UserServiceProvider {
     return this.getCurrentUserRef(uid).valueChanges();
   }
 
-  /*deleteLoggedInUser() {
-    let endpoint = this.usersNode + this.currentUserId;
-    return this.afDB.object(endpoint).remove();
+  deleteCurrentUserDoc() {
+    this.usersRef.doc(this.currentUserId).delete();
+    this.rtdb.ref(`status/${this.currentUserId}`).remove();
   }
 
-  updatePhotoUrlToPlaceholder() {
+  /*updatePhotoUrlToPlaceholder() {
      let endpoint = this.usersNode + this.currentUserId;
      let photoURL = { photoURL: this.defaultProfileImgURL }
      return this.afDB.object(endpoint).update(photoURL).catch(error => console.error("Update photoURL", error));
