@@ -12,14 +12,9 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 import { IonicImageLoader } from 'ionic-image-loader';
 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
-
 import { MyApp } from './app.component';
 import { CoreModule } from '@ashy-core/core.module';
 import { SharedModule } from '@ashy-shared/shared.module';
-import { environment } from '@ashy-environments/environment';
 
 import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-service/error-detection-service';
 
@@ -36,15 +31,12 @@ import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-se
     IonicModule.forRoot(MyApp, {
       ios: {
         scrollPadding: false,
-        scrollAssist: true, 
+        scrollAssist: true,
         autoFocusAssist: false,
         inputBlurring: false
       }
     }),
     IonicImageLoader.forRoot(),
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFireDatabaseModule,
     CoreModule.forRoot(),
     SharedModule.forRoot()
   ],
@@ -55,7 +47,6 @@ import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-se
   providers: [
     StatusBar,
     SplashScreen,
-    AngularFireDatabase,
     ErrorDetectionServiceProvider,
     NativePageTransitions,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
