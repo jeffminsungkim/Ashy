@@ -7,15 +7,15 @@ const customConfig = {
     resolve: {
       alias: {
         '@ashy-app': path.resolve('src/app'),
-        '@ashy-core': path.resolve('src/core'),
-        '@ashy-pages': path.resolve('src/pages'),
         '@ashy-components': path.resolve('src/components'),
+        '@ashy-core': path.resolve('src/core'),
+        '@ashy-environments': path.resolve('src/environments'),
+        '@ashy-mocks': path.resolve('src/mocks'),
+        '@ashy-models': path.resolve('src/models'),
+        '@ashy-pages': path.resolve('src/pages'),
         '@ashy-pipes': path.resolve('src/pipes'),
         '@ashy-services': path.resolve('src/providers'),
-        '@ashy-shared': path.resolve('src/shared'),
-        '@ashy-environments': path.resolve('src/environments'),
-        '@ashy-models': path.resolve('src/models'),
-        '@ashy-mocks': path.resolve('src/mocks'),
+        '@ashy-shared': path.resolve('src/shared')
       }
     }
   },
@@ -23,15 +23,15 @@ const customConfig = {
     resolve: {
       alias: {
         '@ashy-app': path.resolve('src/app'),
-        '@ashy-core': path.resolve('src/core'),
-        '@ashy-pages': path.resolve('src/pages'),
         '@ashy-components': path.resolve('src/components'),
+        '@ashy-core': path.resolve('src/core'),
+        '@ashy-environments': path.resolve('src/environments'),
+        '@ashy-mocks': path.resolve('src/mocks'),
+        '@ashy-models': path.resolve('src/models'),
+        '@ashy-pages': path.resolve('src/pages'),
         '@ashy-pipes': path.resolve('src/pipes'),
         '@ashy-services': path.resolve('src/providers'),
-        '@ashy-shared': path.resolve('src/shared'),
-        '@ashy-environments': path.resolve('src/environments'),
-        '@ashy-models': path.resolve('src/models'),
-        '@ashy-mocks': path.resolve('src/mocks'),
+        '@ashy-shared': path.resolve('src/shared')
       }
     }
   }
