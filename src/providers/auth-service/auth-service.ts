@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 
+import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
+
 import { User } from '@ashy-models/user';
 
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 
 import { ErrorDetectionServiceProvider } from '../error-detection-service/error-detection-service';
@@ -11,18 +13,22 @@ import { ErrorDetectionServiceProvider } from '../error-detection-service/error-
 import { Observable } from 'rxjs/Observable';
 
 
+
 @Injectable()
 export class AuthServiceProvider {
-  
+
   authState: any = null;
   defaultProfileImgURL: string;
+  private usersRef: AngularFirestoreCollection<User>;
 
   constructor(
     public afAuth: AngularFireAuth,
-    public afDB: AngularFireDatabase,
+    public afs: AngularFirestore,
+    public utilityService: UtilityServiceProvider,
     public errorDetectionService: ErrorDetectionServiceProvider) {
-    this.afAuth.authState.subscribe((auth) => this.authState = auth);
-    this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/chattycherry-3636c.appspot.com/o/user-default.png?alt=media&token=f85be639-9a1c-4c79-a28d-361171358a41';
+      this.usersRef = this.afs.collection<User>('users');
+      this.afAuth.authState.subscribe((auth) => this.authState = auth);
+      this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2Favatar.png?alt=media&token=b914dee7-cdee-44ec-8222-146c9f6f3ef8';
   }
 
   get authenticated(): boolean {
@@ -38,7 +44,6 @@ export class AuthServiceProvider {
     return this.authState['email'];
   }
 
-
   sendEmailVerification() {
     this.currentUser.sendEmailVerification();
   }
@@ -48,25 +53,28 @@ export class AuthServiceProvider {
       firebase.auth().sendPasswordResetEmail(email).then(() => {resolve({status: true});
     }).catch(err => reject(err));
     });
-  } 
+  }
 
   emailSignUp(user: User) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password).then((auth) => {
-        if (auth && !auth.emailVerified) 
+        if (auth && !auth.emailVerified)
           auth.sendEmailVerification().then(() => {console.log("Email SENT!!!!!!");})
         this.afAuth.auth.currentUser.updateProfile({
           displayName: user.displayName,
           photoURL: this.defaultProfileImgURL
         }).then(() => {
-          this.afDB.object(`users/${auth.uid}`).update({
+          this.usersRef.doc(auth.uid).set({
           uid: auth.uid,
           email: auth.email,
           displayName: user.displayName,
           photoURL: this.defaultProfileImgURL,
           statusMessage: '',
-          username: '',
-          currentActiveStatus: 'signout'
+          username: this.utilityService.generateRandomUsername(),
+          currentActiveStatus: 'signout',
+          lastLoginAt: null,
+          emailVerified: false,
+          signupAt: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`})).catch(err => reject(err))
         }).catch(err => reject(err))
       }).catch(err => reject(err))
