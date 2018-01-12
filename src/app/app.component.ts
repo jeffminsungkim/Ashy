@@ -9,7 +9,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
 import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 
-import 'rxjs/add/operator/take';
 
 @Component({
   templateUrl: 'app.html'
@@ -31,11 +30,15 @@ export class MyApp {
       afAuth.auth.onAuthStateChanged(user => {
         console.log("App User", user);
         if (user && user.emailVerified) {
-           userService.getUserActiveStatus().take(1).subscribe(status => {
-             if (status === 'online') {
-               toastService.show(`Signed in as ${user.email}`);
-             }
-           });
+          userService.getUserStatus().once('value').then((snapshot) => {
+            const status = snapshot.val().currentActiveStatus;
+            const userSignedIn = snapshot.val().usingApp;
+
+            if (!userSignedIn || userSignedIn === undefined) {
+              toastService.show(`Signed in as ${user.email}`);
+              userService.updateCurrentUserAppUsageStatusTo(true, status);
+            }
+          });
           this.rootPage = 'HomePage';
         } else {
           this.rootPage = 'LoginPage';

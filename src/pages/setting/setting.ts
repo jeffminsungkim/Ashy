@@ -43,6 +43,7 @@ export class SettingPage {
 
   async logout() {
     this.userService.updateCurrentUserActiveStatusTo('signout');
+    this.userService.updateCurrentUserAppUsageStatusTo(false, 'signout');
     const user: any = await this.authService.signOut();
     this.toastService.show(`Signed out as ${user.email}`);
   }

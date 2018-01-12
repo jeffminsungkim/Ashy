@@ -98,9 +98,9 @@ export class UserServiceProvider {
     return this.getCurrentUserRef(this.currentUserId).valueChanges();
   }
 
-  /*getUserActiveStatus(): Observable<any> {
-    return this.afDB.object(`users/${this.currentUserId}/currentActiveStatus`).valueChanges();
-  }*/
+  getUserStatus() {
+    return this.rtdb.ref(`status/${this.currentUserId}`);
+  }
 
   getMyFriendsId() {
     let friendRef = this.getCurrentUserFriendRef(this.currentUserId);
@@ -133,10 +133,9 @@ export class UserServiceProvider {
 
   updateEmailVerificationStatus() {
     if (this.currentUserEmailVerified) return;
+
     let emailVerified = { emailVerified: this.currentUserEmailVerified }
     this.usersRef.doc(this.currentUserId).update(emailVerified).catch(error => console.error('Update User',error));
-    console.log("Updated email verification status");
-
   }
 
   updateLastLoginTime() {
@@ -145,9 +144,15 @@ export class UserServiceProvider {
   }
 
   updateCurrentUserActiveStatusTo(status: string) {
-    let activeStatus = { currentActiveStatus: status }
+    let activeStatus = { currentActiveStatus: status };
     this.rtdb.ref(`status/${this.currentUserId}`).update(activeStatus);
     this.usersRef.doc(this.currentUserId).update(activeStatus).catch(error => console.error('Update CurrentActiveStatus in users node Fails',error));
+  }
+
+  updateCurrentUserAppUsageStatusTo(isUsingApp: boolean, activeStatus: string) {
+    let status = { usingApp: isUsingApp };
+    if (activeStatus === 'signout') this.rtdb.ref(`status/${this.currentUserId}`).update(status);
+    else this.rtdb.ref(`status/${this.currentUserId}`).update(status);
   }
 
   // updateFriendActiveStatusTo(status: string) {
@@ -167,6 +172,7 @@ export class UserServiceProvider {
   // Updates status when connection to Firebase starts
   updateOnConnect() {
     if (!this.currentUserEmailVerified) return;
+
     return this.rtdb.ref('.info/connected').on('value', snapshot => {
       this.updateCurrentUserActiveStatusTo('online');
       this.updateLastLoginTime();
@@ -176,8 +182,8 @@ export class UserServiceProvider {
   // Updates status when connection to Firebase ends
   updateOnDisconnect() {
     if (!this.currentUserEmailVerified) return;
-    const currentActiveStatus = this.rtdb.ref('.info/connected');
-    currentActiveStatus.on('value', snapshot => {
+
+    return this.rtdb.ref('.info/connected').on('value', snapshot => {
       this.rtdb.ref(`status/${this.currentUserId}`)
       .onDisconnect()
       .update({ currentActiveStatus: 'offline' });
