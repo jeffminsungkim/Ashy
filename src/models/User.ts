@@ -1,5 +1,5 @@
 export interface User {
-  key?: string;
+  uid: string;
   email: string;
   password: string;
   displayName: string;
@@ -8,5 +8,7 @@ export interface User {
   username: string;
   statusMessage: string;
   currentActiveStatus: string;
-  uid: string;
+  lastLoginAt: string;
+  signupAt: string;
+  emailVerified: boolean;
 }
