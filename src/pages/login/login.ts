@@ -15,7 +15,7 @@ import { User } from '@ashy-models/user';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-  
+
   user = {} as User;
 
   constructor(
@@ -39,9 +39,12 @@ export class LoginPage {
     try {
       await this.authService.emailLogin(this.user);
       if (!this.userService.currentUserEmailVerified) {
+        console.log('emailVerified:', this.userService.currentUserEmailVerified);
         this.authService.sendEmailVerification();
         this.authService.signOut();
         this.alertService.notifyToCheckVerificationEmail();
+      } else {
+        this.userService.updateEmailVerificationStatus();
       }
     } catch (err) {
       this.alertService.notifyErrorMessage(err.message);
