@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
 
+import { EmailSignup } from '@ashy-models/emailsignup';
 import { User } from '@ashy-models/user';
 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -55,7 +56,7 @@ export class AuthServiceProvider {
     });
   }
 
-  emailSignUp(user: User) {
+  emailSignUp(user: EmailSignup) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password).then((auth) => {
         if (auth && !auth.emailVerified)

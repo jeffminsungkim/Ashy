@@ -17,9 +17,9 @@
                         <ion-label floating>Email Address</ion-label>
                         <ion-input type="email" [(ngModel)]="user.email" name="email" #userEmail="ngModel" required></ion-input>
                     </ion-item>
-    
+
                    <div *ngIf="userEmail.errors?.required && userEmail.touched">Email is required</div>
-                   
+
                     <ion-item>
                         <ion-label floating>Password</ion-label>
                         <ion-input type="password" [(ngModel)]="user.password" name="password" #userPassword="ngModel" required></ion-input>

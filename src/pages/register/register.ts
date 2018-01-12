@@ -6,7 +6,7 @@ import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service
 import { AlertServiceProvider } from '@ashy-services/alert-service/alert-service';
 import { LoadingServiceProvider } from '@ashy-services/loading-service/loading-service';
 import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-service/error-detection-service';
-import { User } from '@ashy-models/user';
+import { EmailSignup } from '@ashy-models/emailsignup';
 
 
 @IonicPage()
@@ -15,18 +15,13 @@ import { User } from '@ashy-models/user';
   templateUrl: 'register.html',
 })
 export class RegisterPage {
-  user: User = {
+
+  user: EmailSignup = {
     email: '',
     password: '',
-    displayName: '',
-    gender: '',
-    photoURL: '',
-    username: '',
-    statusMessage: '',
-    currentActiveStatus: '',
-    uid: ''
+    displayName: ''
   }
-  
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -37,11 +32,7 @@ export class RegisterPage {
     public errorDetectionService: ErrorDetectionServiceProvider) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterPage');
-  }
-
-  async onSubmit({value, valid}: {value: User, valid: boolean}) {
+  async onSubmit({value, valid}: {value: EmailSignup, valid: boolean}) {
     console.log("register value", value);
     if (!valid) {
       this.toastService.allFieldsRequired();
