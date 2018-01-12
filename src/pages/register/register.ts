@@ -33,14 +33,13 @@ export class RegisterPage {
   }
 
   async onSubmit({value, valid}: {value: EmailSignup, valid: boolean}) {
-    console.log("register value", value);
     if (!valid) {
       this.toastService.allFieldsRequired();
     } else {
       this.loadingService.showWaitLoader();
       try {
         const res: any = await this.authService.emailSignUp(value);
-        console.log("Register onSubmit data:", res);
+
         if (res) {
           this.toastService.show(res.message);
           this.authService.signOut();

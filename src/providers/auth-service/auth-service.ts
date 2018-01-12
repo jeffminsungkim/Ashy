@@ -14,7 +14,6 @@ import { ErrorDetectionServiceProvider } from '../error-detection-service/error-
 import { Observable } from 'rxjs/Observable';
 
 
-
 @Injectable()
 export class AuthServiceProvider {
 
