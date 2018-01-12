@@ -16,7 +16,7 @@ import { EmailSignup } from '@ashy-models/emailsignup';
 })
 export class RegisterPage {
 
-  user: EmailSignup = {
+  public user: EmailSignup = {
     email: '',
     password: '',
     displayName: ''
