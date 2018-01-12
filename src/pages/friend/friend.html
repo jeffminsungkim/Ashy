@@ -9,7 +9,6 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-
     <ion-list>
         <ion-list-header>Me</ion-list-header>
         <ion-item (click)="viewUserProfile(user)">
@@ -25,7 +24,7 @@
     <ion-list>
         <ion-list-header>Friends</ion-list-header>
         <ion-item-sliding *ngFor="let user of friends$ | async">
-            <ion-item (click)="viewUserProfile(user)">
+            <ion-item *ngIf="user" (click)="viewUserProfile(user)">
                 <ion-avatar (click)="showOriginalAvatarImage()" item-start>
                     <img-loader [src]="user.photoURL" [spinner]="true"></img-loader>
                 </ion-avatar>
@@ -42,5 +41,4 @@
             </ion-item-options>
         </ion-item-sliding>
     </ion-list>
-
 </ion-content>
