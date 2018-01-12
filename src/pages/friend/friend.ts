@@ -25,6 +25,7 @@ export class FriendPage {
   subscription: Subscription;
   friends$: Observable<any[]>;
   me$: Observable<User>;
+  me: User;
   uid: string;
 
   constructor(
@@ -33,7 +34,10 @@ export class FriendPage {
     public events: Events,
     public userService: UserServiceProvider,
     public authService: AuthServiceProvider,
-    public modalService: ModalServiceProvider) { }
+    public modalService: ModalServiceProvider) {
+
+      this.me$ = this.userService.getCurrentUser();
+    }
 
   ionViewDidLoad() { }
 
@@ -52,7 +56,11 @@ export class FriendPage {
     this.getUserProfile();
     this.getMyFriendList();
     // this.getRequestFromUser();
+  }
 
+  ionViewWillLeave() {
+    console.log("friends ionViewWillLeave");
+    if (this.subscription !== undefined) this.subscription.unsubscribe();
   }
 
   getMyFriendList() {
@@ -62,7 +70,7 @@ export class FriendPage {
   }
 
   getUserProfile() {
-    this.me$ = this.userService.getCurrentUser();
+    this.subscription = this.me$.subscribe(user => this.me = user);
   }
 
   deleteUserFromFriendList(user) {
@@ -70,7 +78,7 @@ export class FriendPage {
     // this.getMyFriendList();
   }
 
-  /*showOriginalAvatarImage() {
+  showOriginalAvatarImage() {
     console.log("showOriginalAvatarImage()");
   }
 
@@ -78,24 +86,8 @@ export class FriendPage {
     this.modalService.showAddFriendModal();
   }
 
-  viewUserProfile(user: User) {
-    this.modalService.showProfileModal(user);
+  viewUserProfile() {
+    console.log('me:', this.me);
+    this.modalService.showProfileModal(this.me);
   }
-
-  // ngOnDestroy() {
-  //   if (this.subscription !== undefined) {
-  //     this.subscription.unsubscribe();
-  //     console.log("friends ngOnDestroy");
-  //   }
-  // }
-
-  ionViewWillLeave() {
-    this.subscription.unsubscribe();
-    console.log("friends ionViewWillLeave");
-  }
-
-  ionViewDidLeave() {
-    console.log('Runs when the page has finished leaving and is no longer the active page.');
-  }*/
-
 }
