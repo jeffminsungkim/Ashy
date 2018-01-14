@@ -30,6 +30,7 @@ export class UserServiceProvider {
     public afs: AngularFirestore) {
 
       this.rtdb = firebase.database();
+      this.appRef = this.afs.collection<Ashy>('app');
       this.usersRef = this.afs.collection<User>('users');
       this.afAuth.authState.do(user => {
         this.authState = user;
@@ -86,7 +87,7 @@ export class UserServiceProvider {
     return this.afDB.object(`users/${this.currentUserId}`).valueChanges();
   }*/
 
-  private getCurrentUserRef(uid: string) {
+  private getUsersRef(uid: string) {
     return this.usersRef.doc<User>(uid);
   }
 
@@ -95,7 +96,7 @@ export class UserServiceProvider {
   }
 
   getCurrentUser() {
-    return this.getCurrentUserRef(this.currentUserId).valueChanges();
+    return this.getUsersRef(this.currentUserId).valueChanges();
   }
 
   getUserStatus() {
@@ -111,7 +112,7 @@ export class UserServiceProvider {
   }
 
   getFriends(uid: string) {
-    return this.getCurrentUserRef(uid).valueChanges();
+    return this.getUsersRef(uid).valueChanges();
   }
 
   deleteCurrentUserDoc() {
