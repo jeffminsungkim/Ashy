@@ -1,6 +1,7 @@
 // import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { Ashy } from '@ashy-models/ashy';
 import { User } from '@ashy-models/user';
 
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
@@ -15,6 +16,7 @@ import 'rxjs/add/operator/do';
 export class UserServiceProvider {
 
   private rtdb: any;
+  private appRef: AngularFirestoreCollection<Ashy>;
   private usersRef: AngularFirestoreCollection<User>;
   private friendsRef: AngularFirestoreCollection<User>;
   authState: any = null;
@@ -86,6 +88,10 @@ export class UserServiceProvider {
   getCurrentUserObject() {
     return this.afDB.object(`users/${this.currentUserId}`).valueChanges();
   }*/
+
+  private getAppRef(uid: string) {
+    return this.appRef.doc<Ashy>(uid);
+  }
 
   private getUsersRef(uid: string) {
     return this.usersRef.doc<User>(uid);
