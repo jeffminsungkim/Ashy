@@ -42,11 +42,6 @@ export class LoginPage {
 	goToPasswordReset() {
 		this.navCtrl.push('PasswordResetPage');
 	}
-			} else {
-				this.userService.getCurrentUserAppState().subscribe(state => {
-					this.userService.updateEmailVerificationState(state.firstLogin);
-					this.userService.updateFirstLoginState(state.firstLogin);
-				});
 
 	goToRegister() {
 		this.navCtrl.push('RegisterPage');
