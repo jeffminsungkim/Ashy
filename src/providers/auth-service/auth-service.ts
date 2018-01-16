@@ -69,6 +69,7 @@ export class AuthServiceProvider {
           }).catch(err => reject(err))
         }).catch(err => reject(err))
       });
+
     }
 
   emailLogin(user: User) {
