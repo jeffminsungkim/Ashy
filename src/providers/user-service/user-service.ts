@@ -25,7 +25,6 @@ export class UserServiceProvider {
   authState: any = null;
   // usersRef: AngularFirestoreCollection<any>;
   users$: Observable<User[]>;
-  defaultProfileImgURL: string;
   user$: any;
   friendsListRef$: AngularFirestoreCollection<any>;
   friends$: Observable<any[]>;
@@ -46,7 +45,6 @@ export class UserServiceProvider {
           this.updateOnDisconnect();
         }
       }).subscribe();
-      this.defaultProfileImgURL = 'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2Favatar.png?alt=media&token=b914dee7-cdee-44ec-8222-146c9f6f3ef8';
   }
 
   get authenticated(): boolean {
