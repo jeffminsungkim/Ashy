@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar color="cherry">
+  <ion-navbar color="white">
     <ion-title>Welcome!</ion-title>
   </ion-navbar>
 
@@ -21,19 +21,19 @@
             </ion-card-header>
             <ion-card-content>
                 <ion-list list-inset>
- 
+
                     <ion-item>
                         <ion-label floating>Email Address</ion-label>
                         <ion-input type="email" [(ngModel)]="user.email"></ion-input>
                     </ion-item>
-                    
+
                     <ion-item>
                         <ion-label floating>Password</ion-label>
                         <ion-input type="password" [(ngModel)]="user.password" (keyup.enter)="login()"></ion-input>
                     </ion-item>
 
-                     
-                    
+
+
                     <button ion-button block [disabled]="!user.email || !user.password" (click)="login()">Sign In</button>
                     <p>OR</p>
                     <button ion-button clear full color="light" (click)="goToRegister()">Don't have an account? Sign Up</button>
