@@ -1,26 +1,24 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 
-import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
-import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
-import { AlertServiceProvider } from '@ashy-services/alert-service/alert-service';
-import { LoadingServiceProvider } from '@ashy-services/loading-service/loading-service';
-import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-service/error-detection-service';
-import { EmailSignup } from '@ashy-models/emailsignup';
-
+import { AuthServiceProvider } from "@ashy-services/auth-service/auth-service";
+import { ToastServiceProvider } from "@ashy-services/toast-service/toast-service";
+import { AlertServiceProvider } from "@ashy-services/alert-service/alert-service";
+import { LoadingServiceProvider } from "@ashy-services/loading-service/loading-service";
+import { ErrorDetectionServiceProvider } from "@ashy-services/error-detection-service/error-detection-service";
+import { EmailSignup } from "@ashy-models/emailsignup";
 
 @IonicPage()
 @Component({
-  selector: 'page-register',
-  templateUrl: 'register.html',
+  selector: "page-register",
+  templateUrl: "register.html"
 })
 export class RegisterPage {
-
   public user: EmailSignup = {
-    email: '',
-    password: '',
-    displayName: ''
-  }
+    email: "",
+    password: "",
+    displayName: ""
+  };
 
   constructor(
     public navCtrl: NavController,
@@ -29,10 +27,10 @@ export class RegisterPage {
     public toastService: ToastServiceProvider,
     public alertService: AlertServiceProvider,
     public loadingService: LoadingServiceProvider,
-    public errorDetectionService: ErrorDetectionServiceProvider) {
-  }
+    public errorDetectionService: ErrorDetectionServiceProvider
+  ) {}
 
-  async onSubmit({value, valid}: {value: EmailSignup, valid: boolean}) {
+  async onSubmit({ value, valid }: { value: EmailSignup; valid: boolean }) {
     if (!valid) {
       this.toastService.allFieldsRequired();
     } else {
