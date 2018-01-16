@@ -8,43 +8,43 @@ import { User } from "@ashy-models/user";
 
 @IonicPage()
 @Component({
-	selector: "page-login",
-	templateUrl: "login.html"
+  selector: "page-login",
+  templateUrl: "login.html"
 })
 export class LoginPage {
-	user = {} as User;
+  user = {} as User;
 
-	constructor(
-		public navCtrl: NavController,
-		public navParams: NavParams,
-		public alertService: AlertServiceProvider,
-		public authService: AuthServiceProvider,
-		public userService: UserServiceProvider
-	) {}
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public alertService: AlertServiceProvider,
+    public authService: AuthServiceProvider,
+    public userService: UserServiceProvider
+  ) {}
 
-	async login() {
-		try {
-			await this.authService.emailLogin(this.user);
-			if (!this.userService.currentUserEmailVerified) {
-				console.log("emailVerified:",this.userService.currentUserEmailVerified);
-				this.authService.sendEmailVerification();
-				this.authService.signOut();
-				this.alertService.notifyToCheckVerificationEmail();
-			} else {
-				this.userService.getCurrentUserAppState().subscribe(state => {
-					this.userService.updateEmailVerificationState(state.firstLogin);
-					this.userService.updateFirstLoginState(state.firstLogin);
-				});
-			}
-		} catch (err) {
-			this.alertService.notifyErrorMessage(err.message);
-		}
-	}
-	goToPasswordReset() {
-		this.navCtrl.push("PasswordResetPage");
-	}
+  async login() {
+    try {
+      await this.authService.emailLogin(this.user);
+      if (!this.userService.currentUserEmailVerified) {
+        console.log("emailVerified:",this.userService.currentUserEmailVerified);
+        this.authService.sendEmailVerification();
+        this.authService.signOut();
+        this.alertService.notifyToCheckVerificationEmail();
+      } else {
+        this.userService.getCurrentUserAppState().subscribe(state => {
+          this.userService.updateEmailVerificationState(state.firstLogin);
+          this.userService.updateFirstLoginState(state.firstLogin);
+        });
+      }
+    } catch (err) {
+      this.alertService.notifyErrorMessage(err.message);
+    }
+  }
+  goToPasswordReset() {
+    this.navCtrl.push("PasswordResetPage");
+  }
 
-	goToRegister() {
-		this.navCtrl.push("RegisterPage");
-	}
+  goToRegister() {
+    this.navCtrl.push("RegisterPage");
+  }
 }
