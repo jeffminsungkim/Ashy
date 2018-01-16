@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
-
 import { EmailSignup } from '@ashy-models/emailsignup';
 import { User } from '@ashy-models/user';
 
@@ -24,7 +22,6 @@ export class AuthServiceProvider {
   constructor(
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,
-    public utilityService: UtilityServiceProvider,
     public errorDetectionService: ErrorDetectionServiceProvider) {
       this.usersRef = this.afs.collection<User>('users');
       this.afAuth.authState.subscribe((auth) => this.authState = auth);
@@ -59,27 +56,20 @@ export class AuthServiceProvider {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password).then((auth) => {
         if (auth && !auth.emailVerified)
-          auth.sendEmailVerification().then(() => {console.log("Email SENT!!!!!!");})
-        this.afAuth.auth.currentUser.updateProfile({
-          displayName: user.displayName,
-          photoURL: this.defaultProfileImgURL
-        }).then(() => {
-          this.usersRef.doc(auth.uid).set({
-          uid: auth.uid,
-          email: auth.email,
-          displayName: user.displayName,
-          photoURL: this.defaultProfileImgURL,
-          statusMessage: '',
-          username: this.utilityService.generateRandomUsername(),
-          currentActiveStatus: 'signout',
-          lastLoginAt: null,
-          emailVerified: false,
-          signupAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`})).catch(err => reject(err))
+          auth.sendEmailVerification().then(() => {
+            console.log('Verification email has sent.');
+            this.afAuth.auth.currentUser.updateProfile({
+              displayName: user.displayName,
+              photoURL: this.defaultProfileImgURL
+            }).then(() => {
+              this.usersRef.doc(auth.uid).update({
+                displayName: user.displayName
+              }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`})).catch(err => reject(err))
+            }).catch(err => reject(err))
+          }).catch(err => reject(err))
         }).catch(err => reject(err))
-      }).catch(err => reject(err))
-    });
-  }
+      });
+    }
 
   emailLogin(user: User) {
     return new Promise((resolve, reject) => {
