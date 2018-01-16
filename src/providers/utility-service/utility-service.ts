@@ -18,8 +18,4 @@ export class UtilityServiceProvider {
     return (!str.trim().length) ? true : false;
   }
 
-  generateRandomUsername() {
-    return Math.random().toString(36).substr(2, 8);
-  }
-
 }
