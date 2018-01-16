@@ -19,13 +19,14 @@ export class LoginPage {
 		public navParams: NavParams,
 		public alertService: AlertServiceProvider,
 		public authService: AuthServiceProvider,
-		public userService: UserServiceProvider) {}
+		public userService: UserServiceProvider
+	) {}
 
 	async login() {
 		try {
 			await this.authService.emailLogin(this.user);
 			if (!this.userService.currentUserEmailVerified) {
-				console.log('emailVerified:', this.userService.currentUserEmailVerified);
+				console.log("emailVerified:",this.userService.currentUserEmailVerified);
 				this.authService.sendEmailVerification();
 				this.authService.signOut();
 				this.alertService.notifyToCheckVerificationEmail();
@@ -40,10 +41,10 @@ export class LoginPage {
 		}
 	}
 	goToPasswordReset() {
-		this.navCtrl.push('PasswordResetPage');
+		this.navCtrl.push("PasswordResetPage");
 	}
 
 	goToRegister() {
-		this.navCtrl.push('RegisterPage');
+		this.navCtrl.push("RegisterPage");
 	}
 }
