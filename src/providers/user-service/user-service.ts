@@ -10,14 +10,17 @@ import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
+import { firestore } from 'firebase/app';
 
 
 @Injectable()
 export class UserServiceProvider {
 
-  private rtdb: any;
+  private rtdb: firebase.database.Database;
+  private fs: firebase.firestore.Firestore;
   private appRef: AngularFirestoreCollection<Ashy>;
   private usersRef: AngularFirestoreCollection<User>;
+  private usernamesRef: AngularFirestoreCollection<any>;
   private friendsRef: AngularFirestoreCollection<User>;
   authState: any = null;
   // usersRef: AngularFirestoreCollection<any>;
@@ -32,8 +35,10 @@ export class UserServiceProvider {
     public afs: AngularFirestore) {
 
       this.rtdb = firebase.database();
+      this.fs = firebase.firestore();
       this.appRef = this.afs.collection<Ashy>('app');
       this.usersRef = this.afs.collection<User>('users');
+      this.usernamesRef = this.afs.collection('usernames');
       this.afAuth.authState.do(user => {
         this.authState = user;
         if (user) {
@@ -97,8 +102,16 @@ export class UserServiceProvider {
     return this.usersRef.doc<User>(uid);
   }
 
-  private getCurrentUserFriendRef(uid: string) {
+  private getUsernamesRef(username: string) {
+    return this.usernamesRef.doc(username);
+  }
+
+  private getFriendRef(uid: string) {
     return this.usersRef.doc<User>(uid).collection('friends');
+  }
+
+  getCurrentUserAppState() {
+    return this.getAppRef(this.currentUserId).valueChanges();
   }
 
   getCurrentUser() {
@@ -110,7 +123,7 @@ export class UserServiceProvider {
   }
 
   getMyFriendsId() {
-    let friendRef = this.getCurrentUserFriendRef(this.currentUserId);
+    let friendRef = this.getFriendRef(this.currentUserId);
     this.friends$ = friendRef.snapshotChanges().map(actions => {
       return actions.map(a => ({ key: a.payload.doc.id, ...a.payload.doc.data()}));
     });
@@ -138,11 +151,18 @@ export class UserServiceProvider {
     return this.afDB.object(endpoint).update(photoURL).catch(error => console.error("Update photoURL", error));
   }*/
 
-  updateEmailVerificationStatus() {
-    if (this.currentUserEmailVerified) return;
+  updateEmailVerificationState(firstLogin: boolean) {
+    if (firstLogin) return;
 
-    let emailVerified = { emailVerified: this.currentUserEmailVerified }
-    this.usersRef.doc(this.currentUserId).update(emailVerified).catch(error => console.error('Update User',error));
+    let emailVerified = { emailVerified: true };
+    this.getAppRef(this.currentUserId).update(emailVerified).catch(error => console.error('Update User',error));
+  }
+
+  updateFirstLoginState(currentState: boolean) {
+    if (currentState) return;
+
+    let firstLogin = { firstLogin: true };
+    this.getAppRef(this.currentUserId).update(firstLogin);
   }
 
   updateLastLoginTime() {
@@ -195,6 +215,20 @@ export class UserServiceProvider {
       .onDisconnect()
       .update({ currentActiveStatus: 'offline' });
     });
+  }
+
+  updateUsername(newUsername: string) {
+    let username = {};
+    username[newUsername] = this.currentUserId;
+    const batch = this.fs.batch();
+    batch.update(this.getUsersRef(this.currentUserId).ref, {username: newUsername});
+    batch.set(this.getUsernamesRef(newUsername).ref, username);
+    batch.commit();
+  }
+
+  allocateRandomUsernameAtFirstLogin(username: string, firstLogin: boolean) {
+    if (firstLogin) return;
+    this.updateUsername(username);
   }
 
   /*updateGender(selectedGender: string) {
@@ -290,7 +324,7 @@ export class UserServiceProvider {
   }*/
 
   removeUserFromFriendList(uid: string) {
-    this.getCurrentUserFriendRef(this.currentUserId).doc(uid).delete();
+    this.getFriendRef(this.currentUserId).doc(uid).delete();
   }
 
 }
