@@ -43,8 +43,6 @@ export class LoginPage {
         this.authService.sendEmailVerification();
         this.authService.signOut();
         this.alertService.notifyToCheckVerificationEmail();
-      } else {
-        this.userService.updateEmailVerificationStatus();
       }
     } catch (err) {
       this.alertService.notifyErrorMessage(err.message);
