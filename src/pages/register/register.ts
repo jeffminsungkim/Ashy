@@ -40,8 +40,6 @@ export class RegisterPage {
 
         if (res) {
           this.toastService.show(res.message);
-          this.authService.signOut();
-          this.navCtrl.pop();
           this.alertService.notifyToCheckVerificationEmail();
         }
       } catch (error) {
