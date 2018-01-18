@@ -25,17 +25,10 @@ export class LoginPage {
   async login() {
     try {
       await this.authService.emailLogin(this.user);
-      if (!this.userService.currentUserEmailVerified) {
-        console.log("emailVerified:",this.userService.currentUserEmailVerified);
-        this.authService.sendEmailVerification();
-        this.authService.signOut();
-        this.alertService.notifyToCheckVerificationEmail();
-      } else {
-        this.userService.getCurrentUserAppState().subscribe(state => {
-          this.userService.updateEmailVerificationState(state.firstLogin);
-          this.userService.updateFirstLoginState(state.firstLogin);
-        });
-      }
+      this.userService.getCurrentUserAppState().subscribe(state => {
+        this.userService.updateEmailVerificationState(state.firstLogin);
+        this.userService.updateFirstLoginState(state.firstLogin);
+      });
     } catch (err) {
       this.alertService.notifyErrorMessage(err.message);
     }
