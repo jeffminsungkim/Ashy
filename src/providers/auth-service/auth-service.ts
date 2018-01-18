@@ -58,16 +58,9 @@ export class AuthServiceProvider {
         if (auth && !auth.emailVerified)
           auth.sendEmailVerification().then(() => {
             console.log('Verification email has sent.');
-            this.afAuth.auth.currentUser.updateProfile({
-              displayName: user.displayName,
-              photoURL: this.defaultProfileImgURL
-            }).then(() => {
-              this.usersRef.doc(auth.uid).update({
-                displayName: user.displayName
-              }).then(() => resolve({status: true, message: `Signed up as ${auth.email}`})).catch(err => reject(err))
-            }).catch(err => reject(err))
-          }).catch(err => reject(err))
-        }).catch(err => reject(err))
+            resolve({status: true, message: `Signed up as ${auth.email}`});
+          }).catch(err => reject(err));
+        }).catch(err => reject(err));
       });
     }
 
