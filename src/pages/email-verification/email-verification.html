@@ -1,0 +1,26 @@
+<ion-content padding>
+  <h3>Verify your account</h3>
+  <p>Please verify {{ email }} to continue</p>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button clear icon-only (click)="updateEmailAddress()">
+          <ion-icon ios="ios-mail" md="md-mail"></ion-icon>
+        </button>
+        <p>Update email</p>
+      </ion-col>
+      <ion-col>
+        <button ion-button clear icon-only (click)="requestVerificationEmail()">
+          <ion-icon ios="ios-refresh" md="md-refresh"></ion-icon>
+        </button>
+        <p>Re-send</p>
+      </ion-col>
+      <ion-col>
+        <button ion-button clear icon-only (click)="logout()">
+          <ion-icon ios="ios-log-out" md="md-log-out"></ion-icon>
+        </button>
+        <p>Logout</p>
+      </ion-col>
+      </ion-row>
+  </ion-grid>
+</ion-content>
