@@ -5,6 +5,7 @@ module.exports = ({ admin, functions, firestore }) => {
     const user = event.data;
     const uid = user.uid;
     const email = user.email;
+    const displayName = user.displayName || null;
     const photoURL = user.photoURL ||
     'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2Favatar.png?alt=media&token=b914dee7-cdee-44ec-8222-146c9f6f3ef8';
     const username = generateRandomUsername().toLowerCase();
@@ -21,6 +22,7 @@ module.exports = ({ admin, functions, firestore }) => {
     const userData = {
       uid: uid,
       email: email,
+      displayName: displayName,
       photoURL: photoURL,
       username: username,
       lastLoginAt: null,
