@@ -6,11 +6,7 @@
 
 </ion-header>
 <ion-content padding>
-    <ion-card>
-        <ion-card-header>
-            Register
-        </ion-card-header>
-        <ion-card-content>
+
             <ion-list>
                 <form novalidate #f="ngForm" (ngSubmit)="onSubmit(f)" >
                     <ion-item>
@@ -26,19 +22,10 @@
                     </ion-item>
 
                     <div *ngIf="userPassword.errors?.required && userPassword.touched">Password is required</div>
-
-                    <ion-item>
-                        <ion-label floating>Display Name</ion-label>
-                        <ion-input type="text" [(ngModel)]="user.displayName" name="displayName" #displayName="ngModel" required></ion-input>
-                    </ion-item>
-
-                    <div *ngIf="displayName.errors?.required && displayName.touched">Name is required</div>
-                    <ion-input type="submit" style="display:none" (keyup.enter)="onSubmit(f)"></ion-input>
                     <button ion-button type="submit" [disabled]="!user.email || !user.password" value="Submit" round outline block>Sign Up</button>
                 </form>
 
                 <button ion-button round outline block (click)="backToRoot()">Go Back</button>
             </ion-list>
-        </ion-card-content>
-    </ion-card>
+
 </ion-content>
