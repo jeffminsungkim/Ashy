@@ -52,6 +52,12 @@ export class AuthServiceProvider {
     });
   }
 
+  updateEmailAddress(newEmail: string) {
+    return new Promise((resolve, reject) => {
+      firebase.auth().currentUser.updateEmail(newEmail).then(() => resolve({status: true})).catch(err => reject(err));
+    });
+  }
+
   emailSignUp(user: EmailSignup) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password).then((auth) => {
