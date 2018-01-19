@@ -20,7 +20,7 @@
        "@ashy-app/*": ["app/*"],
        "@ashy-components/*": ["components/*"],
        "@ashy-core/*": ["core/*"],
-       "@ashy-environments/*": ["environments/*"],
+       "@ashy-env": ["environments/environment"],
        "@ashy-mocks/*": ["mocks/*"],
        "@ashy-models/*": ["models/*"],
        "@ashy-pages/*": ["pages/*"],
