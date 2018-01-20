@@ -21,9 +21,11 @@ try { admin.initializeApp(functions.config().firebase); } catch(e) {} // You do 
 const firestore = admin.firestore();
 const logging = require('@google-cloud/logging')();
 const gcs = require('@google-cloud/storage')();
+const cors = require('cors');
+const express = require('express');
 // const stripe = require('stripe')(functions.config().stripe.token);
 
 module.exports = require('./exports')({
-  admin, functions, firestore, gcs, logging
+  admin, cors, express, functions, firestore, gcs, logging
 });
 
