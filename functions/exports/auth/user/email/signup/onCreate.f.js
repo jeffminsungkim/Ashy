@@ -7,7 +7,8 @@ module.exports = ({ admin, functions, firestore }) => {
     const email = user.email;
     const displayName = user.displayName || null;
     const photoURL = user.photoURL ||
-    'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2Favatar.png?alt=media&token=b914dee7-cdee-44ec-8222-146c9f6f3ef8';
+    'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2Favatar.jpg?alt=media&token=210aa481-209b-4374-a494-13bdbdc17b54';
+    const thumbnail = 'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2Fthumb_avatar.jpg?alt=media&token=0e1d9733-a87d-4bf7-be4a-072dd1c20c50';
     const username = generateRandomUsername().toLowerCase();
     const appRef = firestore.doc(`app/${uid}`);
     const newUserRef = firestore.doc(`users/${uid}`);
@@ -24,6 +25,7 @@ module.exports = ({ admin, functions, firestore }) => {
       email: email,
       displayName: displayName,
       photoURL: photoURL,
+      thumbnail: thumbnail,
       username: username,
       lastLoginAt: null,
       statusMessage: null,
