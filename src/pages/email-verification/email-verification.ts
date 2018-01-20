@@ -45,7 +45,7 @@ export class EmailVerificationPage {
           console.log('verified:', user.emailVerified);
           if (user.emailVerified) this.navCtrl.push('ProfilePresetPage');
         });
-      }, 1000);
+      }, 2000);
     });
   }
 
