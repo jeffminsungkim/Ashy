@@ -1,6 +1,9 @@
 page-email-verification {
+  ::-webkit-scrollbar{
+    display: none;
+  }
   .scroll-content {
-    margin-top: 220px;
+    margin-top: 50%;
     text-align: center;
     color: #b9b7b7;
   }
