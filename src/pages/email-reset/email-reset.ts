@@ -24,8 +24,8 @@ export class EmailResetPage {
     private toastService: ToastServiceProvider,
     private errorDetectionService: ErrorDetectionServiceProvider) {
 
-      this.oldEmail = this.navParams.get('oldEmail');
-    }
+    this.oldEmail = this.navParams.get('oldEmail');
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmailResetPage');
