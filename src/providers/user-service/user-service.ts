@@ -215,6 +215,11 @@ export class UserServiceProvider {
     });
   }
 
+  updateDisplayname(name: string) {
+    let displayName = { displayName: name };
+    this.getUsersRef(this.currentUserId).update(displayName);
+  }
+
   /*updateGender(selectedGender: string) {
     let gender = { gender: selectedGender }
     console.log('selected gender', selectedGender);
