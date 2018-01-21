@@ -1,0 +1,57 @@
+page-profile-preset {
+  text-align: center;
+
+  .scroll-content{
+    position: fixed;
+  }
+  ::-webkit-scrollbar{
+    display: none;
+  }
+  .section-a {
+    h2 {
+      color: #A4A4A4;
+    }
+    display: block;
+    margin-top: 15%;
+    img {
+      height: 150px;
+      width: 150px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.4);
+    }
+  }
+  .section-b {
+    margin-top: 10%;
+    margin-left: 10%;
+    margin-right: 10%;
+    border-radius: 5px;
+    border: 1px solid;
+    border-color: lightgrey;
+    display: inline-block;
+
+    ::-webkit-input-placeholder {
+      text-align: center;
+    }
+    :-moz-placeholder { /* Firefox 18- */
+      text-align: center;
+    }
+    ::-moz-placeholder {  /* Firefox 19+ */
+      text-align: center;
+    }
+    :-ms-input-placeholder {
+      text-align: center;
+    }
+    input {
+      text-align: center;
+    }
+  }
+
+  .section-c {
+    margin-top: 2%;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: block;
+  }
+
+
+}

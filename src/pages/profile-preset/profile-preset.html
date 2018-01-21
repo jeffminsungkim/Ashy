@@ -1,0 +1,15 @@
+<ion-content padding no-bounce>
+<ion-grid>
+  <ion-row class="section-a">
+    <h2>You are almost there!</h2>
+      <img src="assets/avatar/placeholder.jpg" (click)="uploadProfilePicture()">
+  </ion-row>
+  <ion-row class="section-b">
+    <ion-input type="text" minlength="1" maxlength="20" [(ngModel)]="displayName" placeholder="Choose your display name"
+               onfocus="this.placeholder = ''" onblur="this.placeholder = 'Choose your display name'"></ion-input>
+  </ion-row>
+  <ion-row class="section-c">
+    <button ion-button full [disabled]=!displayName (click)="startApp()">START ASHY</button>
+  </ion-row>
+</ion-grid>
+</ion-content>
