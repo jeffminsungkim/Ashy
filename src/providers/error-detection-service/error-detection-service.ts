@@ -22,6 +22,8 @@ export class ErrorDetectionServiceProvider {
         return 'Please double check your account.';
       else if (errorCode === 'auth/user-disabled')
         return 'Your account is suspended.';
+      else if (errorCode === 'auth/requires-recent-login')
+        return 'Log in again before retrying this request.';
       else
         return 'Oops! Something going wrong around here.';
 
