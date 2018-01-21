@@ -14,6 +14,8 @@ export class ModalServiceProvider {
 
   showAddFriendModal() { this.modalCtrl.create('AddFriendPage').present(); }
 
+  showEmailResetModal(email: string) { return this.modalCtrl.create('EmailResetPage', {oldEmail: email}); }
+
   createFriendChatRoomModal(user: User) { this.modalCtrl.create('FriendChatPage', {toUser: user}).present(); }
 
   openFriendChatRoomModal(roomId: string, user: any) { this.modalCtrl.create('FriendChatPage', {roomId: roomId, toUser: user}).present(); }
