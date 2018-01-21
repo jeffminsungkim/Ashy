@@ -2,7 +2,9 @@
 <ion-grid>
   <ion-row class="section-a">
     <h2>You are almost there!</h2>
-      <img src="assets/avatar/placeholder.jpg" (click)="uploadProfilePicture()">
+    <img *ngIf="placeholder;then previewImg else customImg">
+    <ng-template #previewImg><img [src]="placeholder" (click)="presentActionSheet()"></ng-template>
+    <ng-template #customImg><img [src]="avatar" (click)="presentActionSheet()"></ng-template>
   </ion-row>
   <ion-row class="section-b">
     <ion-input type="text" minlength="1" maxlength="20" [(ngModel)]="displayName" placeholder="Choose your display name"
