@@ -4,7 +4,6 @@
       <i class="fa fa-smile-o fa-2x" aria-hidden="true"></i>
       <p>Online</p>
     </span>
-
     <span *ngSwitchCase="'offline'" class="status-offline">
       <i class="fa fa-meh-o fa-2x" aria-hidden="true"></i>
       <p>Offline</p>
@@ -13,4 +12,8 @@
       <i class="fa fa-frown-o fa-2x" aria-hidden="true"></i>
       <p>Logout</p>
     </span>
+    <span *ngSwitchCase="'firstlogin'" class="status-firstlogin">
+        <i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+        <p>FirstLogin</p>
+     </span>
 </span>
