@@ -42,3 +42,6 @@ firebase-rules.json
 
 # Cloud functions
 functions/node_modules
+
+# Service account credentials
+ashy-dev-3662f-firebase-adminsdk-hw09n-81434c603b.json
