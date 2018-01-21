@@ -52,6 +52,13 @@ export class AuthServiceProvider {
     });
   }
 
+  updateDisplayname(name: string) {
+    this.afAuth.auth.currentUser.updateProfile({
+      displayName: name,
+      photoURL: ''
+    }).then(() => console.log('Updated user profile.')).catch((err) => console.log(err));
+  }
+
   updateEmailAddress(newEmail: string) {
     return new Promise((resolve, reject) => {
       firebase.auth().currentUser.updateEmail(newEmail).then(() => resolve({status: true})).catch(err => reject(err));
