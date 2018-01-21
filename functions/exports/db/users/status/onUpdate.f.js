@@ -11,7 +11,8 @@ module.exports = ({ functions, firestore }) => {
       return statusSnapshot.val();
     }).then((status) => {
         console.log('eventStatus:', eventStatus);
-        if (status.currentActiveStatus === 'offline' || status.currentActiveStatus === 'signout') return userStatusFirestoreRef.update(eventStatus);
+        if (status.currentActiveStatus === 'offline' || status.currentActiveStatus === 'signout')
+          return userStatusFirestoreRef.update({currentActiveStatus: eventStatus.currentActiveStatus});
     });
   });
 };
