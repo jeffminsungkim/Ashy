@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
-
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
 import { Upload } from '@ashy-models/upload';
-
-import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
-
 declare var window: any;
 
 
@@ -17,11 +11,7 @@ export class UploadServiceProvider {
   uploadTask: firebase.storage.UploadTask;
   nativePath: any;
 
-  constructor(
-    public afDB: AngularFireDatabase,
-    public userService: UserServiceProvider,
-    public modalService: ModalServiceProvider) {
-  }
+  constructor() {}
 
   // private generateUUID(): string {
   //   function s4() {
