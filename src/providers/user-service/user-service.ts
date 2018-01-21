@@ -215,20 +215,6 @@ export class UserServiceProvider {
     });
   }
 
-  updateUsername(newUsername: string) {
-    let username = {};
-    username[newUsername] = this.currentUserId;
-    const batch = this.fs.batch();
-    batch.update(this.getUsersRef(this.currentUserId).ref, {username: newUsername});
-    batch.set(this.getUsernamesRef(newUsername).ref, username);
-    batch.commit();
-  }
-
-  allocateRandomUsernameAtFirstLogin(username: string, firstLogin: boolean) {
-    if (firstLogin) return;
-    this.updateUsername(username);
-  }
-
   /*updateGender(selectedGender: string) {
     let gender = { gender: selectedGender }
     console.log('selected gender', selectedGender);
