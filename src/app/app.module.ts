@@ -31,7 +31,7 @@ import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-se
     IonicModule.forRoot(MyApp, {
       ios: {
         scrollPadding: false,
-        scrollAssist: true,
+        scrollAssist: false,
         autoFocusAssist: false,
         inputBlurring: false
       }
@@ -49,7 +49,7 @@ import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-se
     SplashScreen,
     ErrorDetectionServiceProvider,
     NativePageTransitions,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+		{provide: ErrorHandler, useClass: IonicErrorHandler},
     Camera,
     File,
     Keyboard
