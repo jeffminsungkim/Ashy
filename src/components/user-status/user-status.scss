@@ -2,29 +2,37 @@ user-status {
 
     .status-online {
         color: #00e676;
-        font-size: 1.2em;
+        font-size: 19px;
         p {
             color: #00e676;
-            font-size: 0.6em;
-
+            font-size: 12px;
         }
     }
 
     .status-offline {
         color: #ffd600;
-        font-size: 1.2em;
+        font-size: 19px;
         p {
             color: #ffd600;
-            font-size: 0.6em;
+            font-size: 12px;
         }
     }
 
     .status-signout {
         color: #ff1744;
-        font-size: 1.2em;
+        font-size: 19px;
         p {
             color: #ff1744;
-            font-size: 0.6em;
+            font-size: 12px;
         }
+    }
+
+    .status-firstlogin {
+      color: #ffd600;
+      font-size: 19px;
+      p {
+        color: #ffd600;
+        font-size: 8px;
+      }
     }
 }
