@@ -25,10 +25,6 @@ export class LoginPage {
   async login() {
     try {
       await this.authService.emailLogin(this.user);
-      this.userService.getCurrentUserAppState().subscribe(state => {
-        this.userService.updateEmailVerificationState(state.firstLogin);
-        this.userService.updateFirstLoginState(state.firstLogin);
-      });
     } catch (err) {
       this.alertService.notifyErrorMessage(err.message);
     }

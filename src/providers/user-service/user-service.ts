@@ -149,20 +149,6 @@ export class UserServiceProvider {
     return this.afDB.object(endpoint).update(photoURL).catch(error => console.error("Update photoURL", error));
   }*/
 
-  updateEmailVerificationState(firstLogin: boolean) {
-    if (firstLogin) return;
-
-    let emailVerified = { emailVerified: true };
-    this.getAppRef(this.currentUserId).update(emailVerified).catch(error => console.error('Update User',error));
-  }
-
-  updateFirstLoginState(currentState: boolean) {
-    if (currentState) return;
-
-    let firstLogin = { firstLogin: true };
-    this.getAppRef(this.currentUserId).update(firstLogin);
-  }
-
   updateLastLoginTime() {
     let lastLogin = { lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
     this.usersRef.doc(this.currentUserId).update(lastLogin);
