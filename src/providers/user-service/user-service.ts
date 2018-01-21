@@ -215,6 +215,16 @@ export class UserServiceProvider {
     });
   }
 
+  updateAppMetaData() {
+    let app = {
+      emailVerified: true,
+      firstLogin: true
+    };
+    const batch = this.fs.batch();
+    batch.update(this.getAppRef(this.currentUserId).ref, app);
+    batch.commit();
+  }
+
   updateDisplayname(name: string) {
     let displayName = { displayName: name };
     this.getUsersRef(this.currentUserId).update(displayName);
