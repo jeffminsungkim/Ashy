@@ -20,12 +20,17 @@ const functions = require('firebase-functions');
 try { admin.initializeApp(functions.config().firebase); } catch(e) {} // You do that because the admin SDK can only be initialized once.
 const firestore = admin.firestore();
 const logging = require('@google-cloud/logging')();
-const gcs = require('@google-cloud/storage')();
+const gcs = require('@google-cloud/storage')({keyFilename: 'ashy-dev-3662f-firebase-adminsdk-hw09n-81434c603b.json'});
+const spawn = require('child-process-promise').spawn;
+const mkdirp = require('mkdirp-promise');
+const path = require('path');
+const os = require('os');
+const fs = require('fs');
 const cors = require('cors');
 const express = require('express');
 // const stripe = require('stripe')(functions.config().stripe.token);
 
 module.exports = require('./exports')({
-  admin, cors, express, functions, firestore, gcs, logging
+  admin, cors, express, functions, firestore, fs, gcs, logging, mkdirp, os, path, spawn
 });
 
