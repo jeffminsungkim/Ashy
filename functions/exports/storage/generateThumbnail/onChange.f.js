@@ -10,7 +10,7 @@ module.exports = ({ admin, functions, firestore, fs, gcs, mkdirp, os, path, spaw
     const THUMBNAIL_PLACEHOLDER = `${BASE_URL}thumb_avatar.jpg?alt=media&token=0e1d9733-a87d-4bf7-be4a-072dd1c20c50`;
     const contentType = event.data.contentType; // This is the image Mimme type
     const filePath = event.data.name; // A full path including a file name
-    const fileDir = path.dirname(filePath); // Directory path ex) profile-pictures/tWB4bLrVqsSGAAQf7pQGTlbS3oy2
+    const fileDir = path.dirname(filePath); // Directory path ex) user-profile/tWB4bLrVqsSGAAQf7pQGTlbS3oy2
     const fileName = path.basename(filePath);
     const thumbFilePath = path.normalize(path.join(fileDir, `${THUMB_PREFIX}${fileName}`));
     const tempLocalFile = path.join(os.tmpdir(), filePath);
@@ -42,12 +42,12 @@ module.exports = ({ admin, functions, firestore, fs, gcs, mkdirp, os, path, spaw
 
     if (!contentType.startsWith('image/')) {
       console.log('This is not an image type.');
-      return null;
+      return;
     }
 
     if (fileName.startsWith(THUMB_PREFIX)) {
       console.log('Already a thumbnail.');
-      return null;
+      return;
     }
 
     // Create the temp directory where the storage file will be downloaded.
