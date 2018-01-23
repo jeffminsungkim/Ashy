@@ -1,18 +1,18 @@
 page-profile-preset {
   text-align: center;
 
+  [ion-fixed] { height: 100%; width: 100%; }
+
   .scroll-content{
     position: fixed;
   }
-  ::-webkit-scrollbar{
-    display: none;
-  }
+
   .section-a {
     h2 {
       color: #A4A4A4;
     }
     display: block;
-    margin-top: 15%;
+    margin-top: 10%;
     img {
       height: 150px;
       width: 150px;
@@ -21,7 +21,7 @@ page-profile-preset {
     }
   }
   .section-b {
-    margin-top: 10%;
+    margin-top: 8%;
     margin-left: 10%;
     margin-right: 10%;
     border-radius: 5px;
