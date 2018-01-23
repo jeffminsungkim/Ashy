@@ -3,6 +3,10 @@ page-profile-preset {
 
   [ion-fixed] { height: 100%; width: 100%; }
 
+  ::-webkit-scrollbar{
+    display: none;
+  }
+
   .section-a {
     h2 {
       color: #A4A4A4;
@@ -17,7 +21,7 @@ page-profile-preset {
     }
   }
   .section-b {
-    margin-top: 8%;
+    margin-top: 5%;
     margin-left: 10%;
     margin-right: 10%;
     border-radius: 5px;
