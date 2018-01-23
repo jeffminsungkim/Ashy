@@ -132,11 +132,6 @@ export class UserServiceProvider {
     return this.getUsersRef(uid).valueChanges();
   }
 
-  deleteCurrentUserDoc() {
-    this.usersRef.doc(this.currentUserId).delete();
-    this.rtdb.ref(`status/${this.currentUserId}`).remove();
-  }
-
   /*updatePhotoUrlToPlaceholder() {
      let endpoint = this.usersNode + this.currentUserId;
      let photoURL = { photoURL: this.defaultProfileImgURL }
@@ -182,8 +177,6 @@ export class UserServiceProvider {
 
   // Updates status when connection to Firebase starts
   updateOnConnect() {
-    if (!this.currentUserEmailVerified) return;
-
     return this.rtdb.ref('.info/connected').on('value', snapshot => {
       this.updateCurrentUserActiveStatusTo('online');
       this.updateLastLoginTime();
@@ -192,8 +185,6 @@ export class UserServiceProvider {
 
   // Updates status when connection to Firebase ends
   updateOnDisconnect() {
-    if (!this.currentUserEmailVerified) return;
-
     return this.rtdb.ref('.info/connected').on('value', snapshot => {
       this.rtdb.ref(`status/${this.currentUserId}`)
       .onDisconnect()
