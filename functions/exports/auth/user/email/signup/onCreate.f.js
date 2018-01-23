@@ -27,6 +27,7 @@ module.exports = ({ admin, functions, firestore }) => {
       photoURL: photoURL,
       thumbnailURL: thumbnail,
       username: username,
+      gender: null,
       lastLoginAt: null,
       statusMessage: null,
       currentActiveStatus: 'signout'
