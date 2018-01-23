@@ -30,6 +30,7 @@ export class EmailVerificationPage {
     private toastService: ToastServiceProvider) { }
 
   ionViewDidLoad() {
+    this.email = this.userService.currentUserEmail;
     this.checkIsUserEmailVerifiedOrNot();
   }
 
@@ -38,12 +39,18 @@ export class EmailVerificationPage {
   }
 
   checkIsUserEmailVerifiedOrNot() {
+    if (this.userService.currentUserEmailVerified) {
+      this.navCtrl.push('ProfilePresetPage');
+      return;
+    }
     this.afAuth.auth.onAuthStateChanged(user => {
-      this.email = user.email;
       this.intervalId = setInterval(() => {
         this.afAuth.auth.currentUser.reload().then(() => {
-          console.log('verified:', user.emailVerified);
-          if (user.emailVerified) this.navCtrl.push('ProfilePresetPage');
+          console.log('Verification State:', user.emailVerified);
+          if (user.emailVerified) {
+            clearInterval(this.intervalId);
+            this.navCtrl.push('ProfilePresetPage');
+          }
         });
       }, 2000);
     });
