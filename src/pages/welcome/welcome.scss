@@ -12,6 +12,19 @@ page-welcome {
     .section-b {
       display: block;
       padding: 130% 10%;
+
+      .button-clear-md-lightgray {
+        color: color($colors, ashygray, base);
+      }
+      .button-clear-md-lightgray:hover {
+        color: color($colors, primary, base);
+      }
+      .button-clear-ios-lightgray {
+        color: color($colors, ashygray, base);
+      }
+      .button-clear-ios-lightgray:hover {
+        color: color($colors, primary, base);
+      }
     }
 
     ion-col {
