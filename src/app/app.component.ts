@@ -29,19 +29,19 @@ export class MyApp {
     platform.ready().then((readySource) => {
       afAuth.auth.onAuthStateChanged(user => {
         console.log("App User", user);
-        if (user && user.emailVerified && user.displayName) {
+        if (user && user.displayName) {
           userService.getUserStatus().once('value').then((snapshot) => {
             const status = snapshot.val().currentActiveStatus;
             const userSignedIn = snapshot.val().usingApp;
 
-            if (!userSignedIn || userSignedIn === undefined) {
+            if (status && !userSignedIn || userSignedIn === undefined) {
               toastService.show(`Signed in as ${user.email}`);
               userService.updateCurrentUserAppUsageStatusTo(true, status);
             }
           });
           this.rootPage = 'HomePage';
         }
-        else if (user && !user.emailVerified || user && !user.displayName) {
+        else if (user && !user.emailVerified) {
           this.rootPage = 'EmailVerificationPage';
         }
         else {
