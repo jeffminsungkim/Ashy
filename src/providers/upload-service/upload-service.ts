@@ -8,21 +8,11 @@ declare var window: any;
 
 @Injectable()
 export class UploadServiceProvider {
-  rootDir: string = 'profile-pictures';
+  rootDir: string = 'user-profile';
   uploadTask: firebase.storage.UploadTask;
   nativePath: any;
 
   constructor(private utilityService: UtilityServiceProvider) {}
-
-  // private generateUUID(): string {
-  //   function s4() {
-  //     return Math.floor((1 + Math.random()) * 0x10000)
-  //       .toString(16)
-  //       .substring(1);
-  //   }
-  //   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-  //     s4() + '-' + s4() + s4() + s4();
-  // }
 
   convertImageIntoBlob(imagePath: string) {
     return new Promise((resolve, reject) => {
@@ -46,7 +36,8 @@ export class UploadServiceProvider {
   uploadImageToCurrentUserDir(imageBlob, userDir: string) {
     return new Promise((resolve, reject) => {
       const storageRef = firebase.storage().ref();
-       this.uploadTask = storageRef.child(`${this.rootDir}/${userDir}/${this.utilityService.generateRandomString()}`).put(imageBlob);
+       this.uploadTask = storageRef.child(`${this.rootDir}/${userDir}/${this.utilityService.generateRandomString()}.jpeg`).put(imageBlob);
+       console.log('upload task:', this.uploadTask);
         this.uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot: any) => {
           console.log('snapshot:', snapshot);
         }, (error) => {
