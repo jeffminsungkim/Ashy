@@ -18,4 +18,8 @@ export class UtilityServiceProvider {
     return (!str.trim().length) ? true : false;
   }
 
+  generateRandomString() {
+    return Math.random().toString(36).substr(2, 6);
+  }
+
 }
