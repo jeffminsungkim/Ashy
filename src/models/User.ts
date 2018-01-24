@@ -4,6 +4,7 @@ export interface User {
   password: string;
   displayName: string;
   gender: string;
+  thumbnailURL: string;
   photoURL: string;
   username: string;
   statusMessage: string;
