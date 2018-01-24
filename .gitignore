@@ -32,10 +32,6 @@ www/
 environments/
 $RECYCLE.BIN/
 
-.DS_Store
-Thumbs.db
-UserInterfaceState.xcuserstate
-
 # Custom
 firebase-rules.json
 .editorconfig
@@ -45,3 +41,17 @@ functions/node_modules
 
 # Service account credentials
 ashy-dev-3662f-firebase-adminsdk-hw09n-81434c603b.json
+
+# Android
+google-services.json
+
+# iOS
+.DS_Store
+Pods/
+Podfile.lock
+xcuserdata/
+*.xcworkspace/
+
+# Windows
+Thumbs.db
+UserInterfaceState.xcuserstate
