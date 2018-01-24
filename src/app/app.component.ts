@@ -45,7 +45,7 @@ export class MyApp {
           this.rootPage = 'EmailVerificationPage';
         }
         else {
-          this.rootPage = 'LoginPage'; // TODO: Switch Weclome page
+          this.rootPage = 'WelcomePage';
         }
       });
 

@@ -1,3 +1,45 @@
 page-welcome {
 
+
+  .no-scroll .scroll-content {
+    overflow: hidden;
+
+    ion-list {
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .section-b {
+      display: block;
+      padding: 130% 10%;
+    }
+
+    ion-col {
+      display: block;
+      margin-top: 2%;
+    }
+
+    .section-c {
+      left: 0;
+      bottom: 0;
+      position: absolute;
+      z-index: 10;
+      display: block;
+      width: 100%;
+
+      .button-clear-md-white {
+        color: color($colors, primary, base);
+      }
+      .button-clear-md-white:hover {
+        color: color($colors, ashygray, base);
+      }
+      .button-clear-ios-white {
+        color: color($colors, primary, base);
+      }
+      .button-clear-ios-white:hover {
+        color: color($colors, ashygray, base);
+      }
+    }
+  }
+
 }

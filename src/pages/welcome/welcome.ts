@@ -12,8 +12,12 @@ export class WelcomePage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WelcomePage');
+  goToRegisterPage() {
+    this.navCtrl.push('RegisterPage');
+  }
+
+  goToLoginPage() {
+    this.navCtrl.push('LoginPage');
   }
 
 }
