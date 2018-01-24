@@ -51,6 +51,7 @@ Pods/
 Podfile.lock
 xcuserdata/
 *.xcworkspace/
+GoogleService-info.plist
 
 # Windows
 Thumbs.db
