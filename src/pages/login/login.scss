@@ -47,23 +47,15 @@ page-login {
         color: color($colors, ashygray, base);
         background-color: color($colors, white, base);
       }
-
     }
     .section-b {
       padding-top: 2%;
-      .button-clear-md {
-        background-color: color($colors, white, base);
-      }
+
       .button-clear-md:hover {
         color: color($colors, ashygray, base);
-        background-color: color($colors, white, base);
-      }
-      .button-clear-ios {
-        background-color: color($colors, white, base);
       }
       .button-clear-ios:hover {
         color: color($colors, ashygray, base);
-        background-color: color($colors, white, base);
       }
     }
     .line-break {
