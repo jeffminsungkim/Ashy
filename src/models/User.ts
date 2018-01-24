@@ -1,7 +1,6 @@
 export interface User {
   uid: string;
   email: string;
-  password: string;
   displayName: string;
   gender: string;
   thumbnailURL: string;
@@ -10,6 +9,4 @@ export interface User {
   statusMessage: string;
   currentActiveStatus: string;
   lastLoginAt: string;
-  signupAt: string;
-  emailVerified: boolean;
 }
