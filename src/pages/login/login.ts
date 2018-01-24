@@ -3,8 +3,9 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
 
 import { AlertServiceProvider } from "@ashy-services/alert-service/alert-service";
 import { AuthServiceProvider } from "@ashy-services/auth-service/auth-service";
+import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
 import { UserServiceProvider } from "@ashy-services/user-service/user-service";
-import { User } from "@ashy-models/user";
+import { EmailSignup } from "@ashy-models/emailsignup";
 
 @IonicPage()
 @Component({
@@ -12,13 +13,14 @@ import { User } from "@ashy-models/user";
   templateUrl: "login.html"
 })
 export class LoginPage {
-  user = {} as User;
+  user = {} as EmailSignup;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertService: AlertServiceProvider,
     public authService: AuthServiceProvider,
+    public toastService: ToastServiceProvider,
     public userService: UserServiceProvider
   ) {}
 

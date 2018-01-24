@@ -77,7 +77,7 @@ export class AuthServiceProvider {
       });
     }
 
-  emailLogin(user: User) {
+  emailLogin(user: EmailSignup) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
       .then(user => resolve(user)).catch((error) => {
