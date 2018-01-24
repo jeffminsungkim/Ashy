@@ -20,6 +20,7 @@ import 'rxjs/add/operator/take';
 })
 export class SettingPage {
   subscription: Subscription;
+  uid: string;
   username: string;
   user: Observable<User>;
 
@@ -30,7 +31,7 @@ export class SettingPage {
     public userService: UserServiceProvider,
     public toastService: ToastServiceProvider,
     public modalService: ModalServiceProvider,
-    public uploadService: UploadServiceProvider) { }
+    public uploadService: UploadServiceProvider) { this.uid = this.userService.currentUserId; }
 
 
   ionViewWillEnter() {
@@ -52,11 +53,6 @@ export class SettingPage {
     // TODO: DELETE ACCOUNT FROM THE FOLLOWING CONDITION:
     // USER SHOULD TYPE THEIR EMAIL ACCOUNT IN TEXT INPUT
     // AND INPUT STRING MUST MATCH WITH THE USER'S EMAIL ACCOUNT.
-    // this.userService.removeDeprecatedUsername(this.username);
-
-    // this.uploadService.deleteFileNode();
-    // this.uploadService.deleteFileStorage();
-    this.userService.deleteCurrentUserDoc();
     this.authService.deleteAccount();
   }
 }
