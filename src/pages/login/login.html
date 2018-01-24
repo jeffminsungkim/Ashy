@@ -1,42 +1,46 @@
-<!--
-  Generated template for the LoginPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
-  <ion-navbar color="white">
-    <ion-title>Welcome!</ion-title>
+<ion-header no-border>
+  <ion-navbar transparent>
   </ion-navbar>
-
 </ion-header>
 
-<ion-content class="background" padding>
-
-
-                <ion-list>
-
-                    <ion-item>
-                        <ion-label floating>Email Address</ion-label>
-                        <ion-input type="email" [(ngModel)]="user.email"></ion-input>
-                    </ion-item>
-
-                    <ion-item>
-                        <ion-label floating>Password</ion-label>
-                        <ion-input type="password" [(ngModel)]="user.password" (keyup.enter)="login()"></ion-input>
-                    </ion-item>
-
-
-
-                    <button ion-button block [disabled]="!user.email || !user.password" (click)="login()">Sign In</button>
-                    <p>OR</p>
-                    <button ion-button clear full color="light" (click)="goToRegister()">Don't have an account? Sign Up</button>
-                    <ion-item>
-                         <button ion-button outline full color="danger" (click)="goToPasswordReset()"><b>Forgot my password :(</b></button>
-                    </ion-item>
-
-                </ion-list>
-
-
+<ion-content padding>
+  <ion-list>
+    <ion-row class="section-a">
+      <ion-col>
+        <h2>Welcome back!</h2>
+        <p>Login to your account to start</p>
+      </ion-col>
+      <ion-col>
+        <button ion-button block color="summersky" (click)="loginWithTwitter()">
+          <ion-icon name="logo-twitter"></ion-icon>&nbsp;&nbsp; SIGN IN WITH TWITTER
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button block color="danger" (click)="loginWithGoogle()">
+          <ion-icon name="logo-google"></ion-icon>&nbsp;&nbsp; SIGN IN WITH GOOGLE
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="line-break">
+      <span>OR</span>
+    </ion-row>
+    <ion-row class="section-b">
+      <ion-col>
+        <ion-item>
+          <ion-input type="email" placeholder="Email" [(ngModel)]="user.email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="password" placeholder="Password" [(ngModel)]="user.password" (keyup.enter)="login()"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col col-12>
+        <button ion-button block [disabled]="!user.email || !user.password" (click)="login()">Sign In</button>
+      </ion-col>
+      <ion-col>
+          <button ion-button outline clear (click)="goToPasswordReset()">
+            Forgot my password
+          </button>
+        </ion-col>
+    </ion-row>
+  </ion-list>
 </ion-content>

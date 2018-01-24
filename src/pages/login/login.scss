@@ -1,10 +1,99 @@
 page-login {
-    .background {
-        background: #fff;
-    }
+  .scroll-content {
 
-    .scroll-content {
-        text-align: center;
-        color: #fff;
+    ion-list {
+      vertical-align: middle;
+      text-align: center;
     }
+    ion-item {
+      padding-left: 20px;
+      padding-right: 20px;
+      font-size: 0.9em;
+      border: 1px solid #fff;
+    }
+    ion-col {
+      h2 {
+        color: #000000;
+      }
+      p {
+        font-size: 1.1em;
+        color: #9b9b9b;
+      }
+    }
+    .section-a {
+      padding: 0;
+      margin: 0;
+      display: block;
+
+      .button-md-summersky:hover {
+        color: color($colors, ashygray, base);
+        background-color:  color($colors, white, base);
+      }
+      .button-md-danger {
+        color: #fff;
+      }
+      .button-md-danger:hover {
+        color: color($colors, ashygray, base);
+        background-color: color($colors, white, base);
+      }
+      .button-ios-summersky:hover {
+        color: color($colors, ashygray, base);
+        background-color:  color($colors, white, base);
+      }
+      .button-ios-danger {
+        color: #fff;
+      }
+      .button-ios-danger:hover {
+        color: color($colors, ashygray, base);
+        background-color: color($colors, white, base);
+      }
+
+    }
+    .section-b {
+      padding-top: 2%;
+      .button-clear-md {
+        background-color: color($colors, white, base);
+      }
+      .button-clear-md:hover {
+        color: color($colors, ashygray, base);
+        background-color: color($colors, white, base);
+      }
+      .button-clear-ios {
+        background-color: color($colors, white, base);
+      }
+      .button-clear-ios:hover {
+        color: color($colors, ashygray, base);
+        background-color: color($colors, white, base);
+      }
+    }
+    .line-break {
+      display: block;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 1.2em;
+      color: #9b9b9b;
+    }
+    .line-break > span {
+      position: relative;
+      display: inline-block;
+    }
+    .line-break > span:before,
+    .line-break > span:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 9999px;
+        height: 1px;
+        background: #9b9b9b;
+    }
+    .line-break > span:before {
+      right: 100%;
+      margin-right: 15px;
+    }
+    .line-break > span:after {
+      left: 100%;
+      margin-left: 15px;
+    }
+  }
 }
