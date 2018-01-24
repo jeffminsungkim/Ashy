@@ -12,6 +12,12 @@ module.exports = ({ admin, functions, firestore }) => {
     batch.delete(appRef);
     batch.delete(newUserRef);
 
-    return batch.commit().then(() => console.log(`User, ${email} deleted.`)).catch(err => console.log('Deletion Error:', err));
+
+    return batch.commit().then(() => {
+      console.log(`User, ${email} deleted.`);
+    }).then(() => {
+      console.log(`RTDB user status deleted.`);
+      return admin.database().ref(`status/${uid}`).remove();
+    }).catch(err => console.log('Deletion Error:', err));
   });
 };

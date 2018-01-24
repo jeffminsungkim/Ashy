@@ -15,11 +15,17 @@ module.exports = ({ admin, functions, firestore }) => {
     const usernameRef = firestore.doc(`usernames/${username}`);
     const batch = admin.firestore().batch();
 
+    const rtdbUserStatus = {
+      currentActiveStatus: 'firstlogin',
+      usingApp: true
+    };
+
     const appData = {
       emailVerified: false,
       firstLogin: false,
       signupAt: admin.firestore.FieldValue.serverTimestamp()
     };
+
     const userData = {
       uid: uid,
       email: email,
@@ -30,14 +36,17 @@ module.exports = ({ admin, functions, firestore }) => {
       gender: null,
       lastLoginAt: null,
       statusMessage: null,
-      currentActiveStatus: 'signout'
+      currentActiveStatus: 'firstlogin'
     };
 
     batch.set(appRef, appData);
     batch.set(newUserRef, userData);
     batch.set(usernameRef, {[username]: uid});
 
-    return batch.commit().then(() => console.log(`A new user signed up as ${email}`));
+    return batch.commit().then(() => {
+      console.log(`A new user signed up as ${email}`);
+      return admin.database().ref(`status/${uid}`).set(rtdbUserStatus);
+    });
   });
 };
 
