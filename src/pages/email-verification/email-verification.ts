@@ -44,15 +44,17 @@ export class EmailVerificationPage {
       return;
     }
     this.afAuth.auth.onAuthStateChanged(user => {
-      this.intervalId = setInterval(() => {
-        this.afAuth.auth.currentUser.reload().then(() => {
-          console.log('Verification State:', user.emailVerified);
-          if (user.emailVerified) {
-            clearInterval(this.intervalId);
-            this.navCtrl.push('ProfilePresetPage');
-          }
-        });
-      }, 2000);
+      if (user) {
+        this.intervalId = setInterval(() => {
+          this.afAuth.auth.currentUser.reload().then(() => {
+            console.log('Verification State:', user.emailVerified);
+            if (user.emailVerified) {
+              clearInterval(this.intervalId);
+              this.navCtrl.push('ProfilePresetPage');
+            }
+          });
+        }, 2000);
+      }
     });
   }
 
