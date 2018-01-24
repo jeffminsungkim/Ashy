@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, Platform } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
 import { LoadingServiceProvider } from '@ashy-services/loading-service/loading-service';
@@ -18,6 +18,7 @@ export class ProfilePresetPage {
   public avatar: string;
   public displayName: string;
   public placeholder: string = 'assets/avatar/placeholder.jpg';
+  public uid: string;
 
   cameraOptions: CameraOptions = {
     quality: 100,
@@ -33,13 +34,12 @@ export class ProfilePresetPage {
     public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController,
     public camera: Camera,
+    public platform: Platform,
     private authService: AuthServiceProvider,
     private  loadingService: LoadingServiceProvider,
     private toastService: ToastServiceProvider,
     private userService: UserServiceProvider,
-    private uploadService: UploadServiceProvider) {
-
-  }
+    private uploadService: UploadServiceProvider) { this.uid = this.userService.currentUserId; }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePresetPage');
@@ -52,8 +52,9 @@ export class ProfilePresetPage {
       return this.uploadService.convertImageIntoBlob(imagePath);
     }).then((imageBlob) => {
       console.log("IMAGE BLOB", imageBlob);
-      return this.uploadService.uploadImageToCurrentUserDir(imageBlob, this.userService.currentUserId);
+      return this.uploadService.uploadImageToCurrentUserDir(imageBlob, this.uid);
     }).then((snapshot: any) => {
+      console.log('downloadurl:', snapshot.downloadURL);
       this.avatar = snapshot.downloadURL;
       console.log("FILE UPLOAD SUCCESSFULLY", snapshot.downloadURL);
       this.placeholder = null;
@@ -61,30 +62,57 @@ export class ProfilePresetPage {
     });
   }
 
-  deleteUploadFile() {
-
+  removeProfilePicture() {
+    this.placeholder = 'assets/avatar/placeholder.jpg';
+    this.avatar = null;
   }
-  presentActionSheet() {
+
+  presentActionSheetUploadProfilePicture() {
     let actionSheet = this.actionSheetCtrl.create({
-      cssClass:'alert-buttons',
+      title: !this.platform.is('ios') ? 'Albums' : null,
+      cssClass:'action-sheet-buttons',
       buttons: [
         {
           text: 'Photo from library',
+          icon: !this.platform.is('ios') ? 'cloud-upload' : null,
+          handler: () => {
+            this.uploadProfilePicture();
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          icon: !this.platform.is('ios') ? 'close' : null,
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+  presentActionSheetRemoveProfilePicture() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: !this.platform.is('ios') ? 'Albums' : null,
+      cssClass:'action-sheet-buttons',
+      buttons: [
+        {
+          text: 'Photo from library',
+          icon: !this.platform.is('ios') ? 'cloud-upload' : null,
           handler: () => {
             this.uploadProfilePicture();
           }
         },
         {
           text: 'Remove Profile Photo',
-          role: 'destructive',
           cssClass: 'remove-button',
+          role: 'destructive',
+          icon: !this.platform.is('ios') ? 'trash' : null,
           handler: () => {
-            this.deleteUploadFile();
+            this.removeProfilePicture();
           }
         },
         {
           text: 'Cancel',
-          role: 'cancel'
+          role: 'cancel',
+          icon: !this.platform.is('ios') ? 'close' : null,
         }
       ]
     });
@@ -98,7 +126,6 @@ export class ProfilePresetPage {
     this.userService.updateLastLoginTime();
     this.userService.updateAppMetaData();
     this.toastService.show(`Signed in as ${this.userService.currentUserEmail}`);
-    this.userService.updateCurrentUserAppUsageStatusTo(true, 'firstlogin');
     this.navCtrl.setRoot('HomePage');
   }
 
