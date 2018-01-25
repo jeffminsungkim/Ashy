@@ -31,6 +31,10 @@
     padding-top:20px;
 }
 
+.alert-message {
+  overflow-y: auto;
+}
+
 .alert-buttons {
   button.alert-button.cancel-button{
     color: red;
