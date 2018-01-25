@@ -1,8 +1,10 @@
 page-welcome {
 
-
-  .no-scroll .scroll-content {
+  .scroll-content {
     overflow: hidden;
+    height: 100%;
+    width: 100%;
+    background: repeating-linear-gradient(30deg, #7F7F7F, #FE635B);
 
     ion-list {
       vertical-align: middle;
@@ -11,19 +13,19 @@ page-welcome {
 
     .section-b {
       display: block;
-      padding: 130% 10%;
+      padding: 120% 10%;
 
       .button-clear-md-lightgray {
-        color: color($colors, ashygray, base);
+        color: color($colors, white, base);
       }
       .button-clear-md-lightgray:hover {
-        color: color($colors, primary, base);
+        color: color($colors, pastelred, base);
       }
       .button-clear-ios-lightgray {
-        color: color($colors, ashygray, base);
+        color: color($colors, white, base);
       }
       .button-clear-ios-lightgray:hover {
-        color: color($colors, primary, base);
+        color: color($colors, pastelred, base);
       }
     }
 
@@ -36,21 +38,12 @@ page-welcome {
       left: 0;
       bottom: 0;
       position: absolute;
-      z-index: 10;
       display: block;
       width: 100%;
-
-      .button-clear-md-white {
-        color: color($colors, primary, base);
-      }
-      .button-clear-md-white:hover {
-        color: color($colors, ashygray, base);
-      }
-      .button-clear-ios-white {
-        color: color($colors, primary, base);
-      }
-      .button-clear-ios-white:hover {
-        color: color($colors, ashygray, base);
+      a { color: inherit; }
+      p {
+        color: color($colors, lightgray, base);
+        font-size: 1.0em;
       }
     }
   }
