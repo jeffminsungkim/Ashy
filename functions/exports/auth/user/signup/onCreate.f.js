@@ -7,8 +7,8 @@ module.exports = ({ admin, functions, firestore }) => {
     const uid = user.uid;
     const email = user.email;
     const displayName = user.displayName || null;
-    const photoURL = user.photoURL || `${BASE_URL}avatar.jpg?alt=media&token=210aa481-209b-4374-a494-13bdbdc17b54`;
-    const thumbnail = `${BASE_URL}thumb_avatar.jpg?alt=media&token=0e1d9733-a87d-4bf7-be4a-072dd1c20c50`;
+    const photoURL = user.photoURL || null;
+    const thumbnail = user.photoURL || `${BASE_URL}thumb_avatar.jpg?alt=media&token=0e1d9733-a87d-4bf7-be4a-072dd1c20c50`;
     const username = generateRandomUsername().toLowerCase();
     const appRef = firestore.doc(`app/${uid}`);
     const newUserRef = firestore.doc(`users/${uid}`);
