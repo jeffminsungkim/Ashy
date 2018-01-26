@@ -29,6 +29,8 @@ import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-se
     ReactiveFormsModule,
     HttpModule,
     IonicModule.forRoot(MyApp, {
+      backButtonText: "",
+      iconMode: 'ios',
       ios: {
         scrollPadding: false,
         scrollAssist: false,
