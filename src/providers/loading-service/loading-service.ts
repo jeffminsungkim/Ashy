@@ -22,6 +22,14 @@ export class LoadingServiceProvider {
     }, 3000);
   }
 
+  showAuthenticationLoader() {
+    this.loader = this.loadingCtrl.create({
+      spinner: 'dots',
+      content: 'Authenticating...'
+    });
+    this.loader.present();
+  }
+
   dismiss() { return this.loader.dismiss(); }
 
 }
