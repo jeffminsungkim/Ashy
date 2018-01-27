@@ -4,29 +4,11 @@ page-welcome {
     overflow: hidden;
     height: 100%;
     width: 100%;
-    background: repeating-linear-gradient(30deg, #7F7F7F, #FE635B);
+    background: repeating-linear-gradient(30deg, color($colors, ashygray, base), color($colors, pastelred, base));
 
     ion-list {
       vertical-align: middle;
       text-align: center;
-    }
-
-    .section-b {
-      display: block;
-      padding: 120% 10%;
-
-      .button-clear-md-lightgray {
-        color: color($colors, white, base);
-      }
-      .button-clear-md-lightgray:hover {
-        color: color($colors, pastelred, base);
-      }
-      .button-clear-ios-lightgray {
-        color: color($colors, white, base);
-      }
-      .button-clear-ios-lightgray:hover {
-        color: color($colors, pastelred, base);
-      }
     }
 
     ion-col {
@@ -34,6 +16,41 @@ page-welcome {
       margin-top: 2%;
     }
 
+    .section-b {
+      display: block;
+      padding: 100% 10%;
+
+      .button-md-twitter {
+        background: repeating-linear-gradient(90deg, color($colors, dodger, base), color($colors, twitter, base));
+      }
+      .button-md-twitter:hover {
+        color: color($colors, ashygray, base);
+      }
+      .button-md-pastelred:hover {
+        color: color($colors, ashygray, base);
+      }
+      .button-clear-md-lightgray {
+        color: white;
+      }
+      .button-clear-md-lightgray:hover {
+        color: color($colors, pastelred, base);
+      }
+      .button-ios-twitter {
+        background: repeating-linear-gradient(90deg, color($colors, dodger, base), color($colors, twitter, base));
+      }
+      .button-ios-twitter:hover {
+        color: color($colors, ashygray, base);
+      }
+      .button-ios-pastelred:hover {
+        color: color($colors, ashygray, base);
+      }
+      .button-clear-ios-lightgray {
+        color: white;
+      }
+      .button-clear-ios-lightgray:hover {
+        color: color($colors, pastelred, base);
+      }
+    }
     .section-c {
       left: 0;
       bottom: 0;
@@ -42,7 +59,7 @@ page-welcome {
       width: 100%;
       a { color: inherit; }
       p {
-        color: color($colors, lightgray, base);
+        color: lightgray;
         font-size: 1.0em;
       }
     }
