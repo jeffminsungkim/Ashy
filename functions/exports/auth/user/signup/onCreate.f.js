@@ -22,7 +22,6 @@ module.exports = ({ admin, functions, firestore }) => {
 
     const appData = {
       emailVerified: false,
-      firstLogin: false,
       signupAt: admin.firestore.FieldValue.serverTimestamp()
     };
 

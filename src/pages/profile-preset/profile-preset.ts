@@ -124,7 +124,7 @@ export class ProfilePresetPage {
     this.userService.updateDisplayname(this.displayName);
     this.userService.updateCurrentUserActiveStatusTo('firstlogin');
     this.userService.updateLastLoginTime();
-    this.userService.updateAppMetaData();
+    this.userService.updateEmailVerificationState();
     this.toastService.show(`Signed in as ${this.userService.currentUserEmail}`);
     this.navCtrl.setRoot('HomePage');
   }

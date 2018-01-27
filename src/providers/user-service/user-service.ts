@@ -192,14 +192,9 @@ export class UserServiceProvider {
     });
   }
 
-  updateAppMetaData() {
-    let app = {
-      emailVerified: true,
-      firstLogin: true
-    };
-    const batch = this.fs.batch();
-    batch.update(this.getAppRef(this.currentUserId).ref, app);
-    batch.commit();
+  updateEmailVerificationState() {
+    let app = { emailVerified: true };
+    this.getAppRef(this.currentUserId).update(app);
   }
 
   updateDisplayname(name: string) {
