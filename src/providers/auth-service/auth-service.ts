@@ -87,6 +87,15 @@ export class AuthServiceProvider {
     });
   }
 
+  twitterLogin(token, secret) {
+    const credential = firebase.auth.TwitterAuthProvider.credential(token, secret);
+    return this.oAuthLogin(credential);
+  }
+
+  private oAuthLogin(credential) {
+   return this.afAuth.auth.signInWithCredential(credential);
+  }
+
   signOut() {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.signOut().then(_ => resolve({email: this.currentUserEmail}),
