@@ -15,7 +15,7 @@ module.exports = ({ admin, functions, firestore }) => {
     const usernameRef = firestore.doc(`usernames/${username}`);
     const batch = admin.firestore().batch();
 
-    const initState = {
+    const initialState = {
       currentActiveStatus: 'firstlogin',
       usingApp: true
     };
@@ -45,7 +45,7 @@ module.exports = ({ admin, functions, firestore }) => {
 
     return batch.commit().then(() => {
       console.log(`A new user signed up as ${email}`);
-      return admin.database().ref(`status/${uid}`).set(initState);
+      return admin.database().ref(`status/${uid}`).set(initialState);
     });
   });
 };
