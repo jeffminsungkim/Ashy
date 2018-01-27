@@ -122,7 +122,8 @@ export class ProfilePresetPage {
   startApp() {
     this.authService.updateDisplayname(this.displayName);
     this.userService.updateDisplayname(this.displayName);
-    this.userService.updateCurrentUserActiveStatusTo('firstlogin');
+    this.userService.updateCurrentUserAppUsageStatusTo(true, 'signout');
+    this.userService.updateCurrentUserActiveStatusTo('online');
     this.userService.updateLastLoginTime();
     this.userService.updateEmailVerificationState();
     this.toastService.show(`Signed in as ${this.userService.currentUserEmail}`);

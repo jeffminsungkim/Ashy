@@ -16,8 +16,8 @@ module.exports = ({ admin, functions, firestore }) => {
     const batch = admin.firestore().batch();
 
     const initialState = {
-      currentActiveStatus: 'firstlogin',
-      usingApp: true
+      currentActiveStatus: 'signout',
+      usingApp: false
     };
 
     const appData = {
@@ -35,7 +35,7 @@ module.exports = ({ admin, functions, firestore }) => {
       gender: null,
       lastLoginAt: null,
       statusMessage: null,
-      currentActiveStatus: 'firstlogin'
+      currentActiveStatus: 'signout'
     };
 
     batch.set(appRef, appData);
