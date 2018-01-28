@@ -44,6 +44,9 @@ export class MyApp {
         else if (user && !user.emailVerified) {
           this.rootPage = 'EmailVerificationPage';
         }
+        else if (user && user.emailVerified && !user.displayName) {
+          this.rootPage = 'ProfilePresetPage';
+        }
         else {
           this.rootPage = 'WelcomePage';
         }
