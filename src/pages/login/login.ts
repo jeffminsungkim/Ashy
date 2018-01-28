@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Input, ViewChild } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 
 import { AlertServiceProvider } from "@ashy-services/alert-service/alert-service";
@@ -6,13 +6,15 @@ import { AuthServiceProvider } from "@ashy-services/auth-service/auth-service";
 import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
 import { UserServiceProvider } from "@ashy-services/user-service/user-service";
 import { EmailSignup } from "@ashy-models/emailsignup";
-
+import * as firebase from 'firebase/app';
 @IonicPage()
 @Component({
   selector: "page-login",
   templateUrl: "login.html"
 })
 export class LoginPage {
+
+  @ViewChild('emailInput') emailInput;
   user = {} as EmailSignup;
 
   constructor(
@@ -24,6 +26,12 @@ export class LoginPage {
     public userService: UserServiceProvider
   ) {}
 
+  ionViewDidLoad() {
+    setTimeout(() => {
+      this.emailInput.setFocus();
+    }, 1000);
+  }
+
   async login() {
     try {
       await this.authService.emailLogin(this.user);
@@ -31,6 +39,7 @@ export class LoginPage {
       this.alertService.notifyErrorMessage(err.message);
     }
   }
+
   goToPasswordReset() {
     this.navCtrl.push("PasswordResetPage");
   }
