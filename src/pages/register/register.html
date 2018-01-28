@@ -3,7 +3,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding (touchend)="preventBlur($event)">
+<ion-content padding>
   <ion-list>
     <ion-row>
       <ion-col>
@@ -30,9 +30,7 @@
         <ion-col col-12>
           <button ion-button block type="submit" [disabled]="!userEmail.valid || !userPassword.valid || !signupForm.form.valid" value="Submit">Sign Up</button>
         </ion-col>
-
       </ion-row>
     </form>
   </ion-list>
-
 </ion-content>

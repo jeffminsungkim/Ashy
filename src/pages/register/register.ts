@@ -38,11 +38,6 @@ export class RegisterPage {
     }, 500);
   }
 
-  preventBlur(event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
   async onSubmit({ value, valid }: { value: EmailSignup; valid: boolean }) {
     if (!valid) {
       this.toastService.allFieldsRequired();
