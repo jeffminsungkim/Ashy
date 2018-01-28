@@ -88,36 +88,6 @@ export class ProfilePresetPage {
     });
     actionSheet.present();
   }
-  presentActionSheetRemoveProfilePicture() {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: !this.platform.is('ios') ? 'Albums' : null,
-      cssClass:'action-sheet-buttons',
-      buttons: [
-        {
-          text: 'Photo from library',
-          icon: !this.platform.is('ios') ? 'cloud-upload' : null,
-          handler: () => {
-            this.uploadProfilePicture();
-          }
-        },
-        {
-          text: 'Remove Profile Photo',
-          cssClass: 'remove-button',
-          role: 'destructive',
-          icon: !this.platform.is('ios') ? 'trash' : null,
-          handler: () => {
-            this.removeProfilePicture();
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          icon: !this.platform.is('ios') ? 'close' : null,
-        }
-      ]
-    });
-    actionSheet.present();
-  }
 
   startApp() {
     this.authService.updateDisplayname(this.displayName);
