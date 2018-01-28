@@ -11,7 +11,7 @@
         <p>Login to your account to start</p>
       </ion-col>
       <ion-col>
-        <button ion-button block color="summersky" (click)="loginWithTwitter()">
+        <button ion-button block color="twitter" (click)="loginWithTwitter()">
           <ion-icon name="logo-twitter"></ion-icon>&nbsp;&nbsp; SIGN IN WITH TWITTER
         </button>
       </ion-col>
@@ -27,7 +27,7 @@
     <ion-row class="section-b">
       <ion-col>
         <ion-item>
-          <ion-input type="email" placeholder="Email" [(ngModel)]="user.email"></ion-input>
+          <ion-input #emailInput type="email" placeholder="Email" [(ngModel)]="user.email"></ion-input>
         </ion-item>
         <ion-item>
           <ion-input type="password" placeholder="Password" [(ngModel)]="user.password" (keyup.enter)="login()"></ion-input>
