@@ -1,29 +1,42 @@
 page-register {
 
-}
+  .scroll-content {
+    overflow: hidden;
 
-/*.alert {
-    background: #f2edda;
-    padding: 7px;
-    font-size: .9em;
-    margin-bottom: 20px;
-    display: inline-block;
-    animation: 2s alertAnim forwards;
-}
-
-.button {
-    margin-top: 3rem;
-}
-
-
-@keyframes alertAnim {
-    from {
-        opacity:0;
-        transform: translateY(-20px);
+    ion-list {
+      vertical-align: middle;
+      text-align: center;
     }
-    to {
-        opacity:1;
-        transform: translateY(0);
+    ion-col {
+      padding-left: 7%;
+      padding-right: 7%;
     }
+
+    .item-md {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .note-md {
+      color: green;
+      font-size: 30px;
+    }
+    .item-md.item-label-floating [item-end] {
+      margin-top: 30px;
+      margin-bottom: auto;
+    }
+
+    .item-ios {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .note-ios {
+      color: green;
+      font-size: 30px;
+    }
+    .item-ios.item-label-floating [item-end] {
+      margin-top: 30px;
+      margin-bottom: auto;
+    }
+  }
 }
-*/
+

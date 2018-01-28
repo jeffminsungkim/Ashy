@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 
 import { AuthServiceProvider } from "@ashy-services/auth-service/auth-service";
@@ -14,6 +14,8 @@ import { EmailSignup } from "@ashy-models/emailsignup";
   templateUrl: "register.html"
 })
 export class RegisterPage {
+
+  @ViewChild('emailInput') emailInput;
   public user: EmailSignup = {
     email: "",
     password: "",
@@ -29,6 +31,17 @@ export class RegisterPage {
     public loadingService: LoadingServiceProvider,
     public errorDetectionService: ErrorDetectionServiceProvider
   ) {}
+
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.emailInput.setFocus();
+    }, 500);
+  }
+
+  preventBlur(event) {
+    event.preventDefault();
+    // event.stopPropagation();
+  }
 
   async onSubmit({ value, valid }: { value: EmailSignup; valid: boolean }) {
     if (!valid) {
