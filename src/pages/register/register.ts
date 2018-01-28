@@ -40,7 +40,7 @@ export class RegisterPage {
 
   preventBlur(event) {
     event.preventDefault();
-    // event.stopPropagation();
+    event.stopPropagation();
   }
 
   async onSubmit({ value, valid }: { value: EmailSignup; valid: boolean }) {

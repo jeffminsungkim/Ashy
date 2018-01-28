@@ -45,6 +45,11 @@ export class ProfilePresetPage {
     console.log('ionViewDidLoad ProfilePresetPage');
   }
 
+  preventBlur(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
   uploadProfilePicture() {
     this.camera.getPicture(this.cameraOptions).then((imagePath) => {
       this.loadingService.show('Please wait');
