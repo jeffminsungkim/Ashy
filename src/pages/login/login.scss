@@ -9,11 +9,11 @@ page-login {
       padding-left: 20px;
       padding-right: 20px;
       font-size: 0.9em;
-      border: 1px solid #fff;
+      border: 1px solid white;
     }
     ion-col {
       h2 {
-        color: #000000;
+        color: black;
       }
       p {
         font-size: 1.1em;
@@ -27,25 +27,25 @@ page-login {
 
       .button-md-summersky:hover {
         color: color($colors, ashygray, base);
-        background-color:  color($colors, white, base);
+        background-color: white;
       }
       .button-md-danger {
-        color: #fff;
+        color: white;
       }
       .button-md-danger:hover {
         color: color($colors, ashygray, base);
-        background-color: color($colors, white, base);
+        background-color: white;
       }
       .button-ios-summersky:hover {
         color: color($colors, ashygray, base);
-        background-color:  color($colors, white, base);
+        background-color: white;
       }
       .button-ios-danger {
-        color: #fff;
+        color: white;
       }
       .button-ios-danger:hover {
         color: color($colors, ashygray, base);
-        background-color: color($colors, white, base);
+        background-color: white;
       }
     }
     .section-b {
