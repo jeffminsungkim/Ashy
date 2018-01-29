@@ -24,7 +24,7 @@ export class WelcomePage {
 
   loginWithTwitter() {
     this.twitterConnect.login().then((res) => {
-      this.loadingService.showAuthenticationLoader();
+      this.loadingService.showWaitLoader();
       console.log('token:',res.token);
       console.log('secret:',res.secret);
       this.authService.twitterLogin(res.token, res.secret).then(user => {
