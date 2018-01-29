@@ -51,6 +51,13 @@ page-profile-preset {
     margin-left: 10%;
     margin-right: 10%;
     display: block;
+
+    .button-md {
+      background: repeating-linear-gradient(90deg, color($colors, pastelred, base), color($colors, ashygray, base));
+    }
+    .button-ios {
+      background: repeating-linear-gradient(90deg, color($colors, pastelred, base), color($colors, ashygray, base));
+    }
   }
 
 

@@ -19,6 +19,7 @@ export class ProfilePresetPage {
   public displayName: string;
   public placeholder: string = 'assets/avatar/placeholder.jpg';
   public uid: string;
+  public isClicked: boolean = false;
 
   cameraOptions: CameraOptions = {
     quality: 100,
@@ -90,14 +91,15 @@ export class ProfilePresetPage {
   }
 
   startApp() {
-    this.authService.updateDisplayname(this.displayName);
-    this.userService.updateDisplayname(this.displayName);
-    this.userService.updateCurrentUserAppUsageStatusTo(true, 'signout');
-    this.userService.updateCurrentUserActiveStatusTo('online');
-    this.userService.updateLastLoginTime();
-    this.userService.updateEmailVerificationState();
-    this.toastService.show(`Signed in as ${this.userService.currentUserEmail}`);
-    this.navCtrl.setRoot('HomePage');
+    this.isClicked = true;
+    // this.authService.updateDisplayname(this.displayName);
+    // this.userService.updateDisplayname(this.displayName);
+    // this.userService.updateCurrentUserAppUsageStatusTo(true, 'signout');
+    // this.userService.updateCurrentUserActiveStatusTo('online');
+    // this.userService.updateLastLoginTime();
+    // this.userService.updateEmailVerificationState();
+    // this.toastService.show(`Signed in as ${this.userService.currentUserEmail}`);
+    // this.navCtrl.setRoot('HomePage');
   }
 
 }

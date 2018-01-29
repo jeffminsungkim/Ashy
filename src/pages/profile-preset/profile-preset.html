@@ -13,7 +13,10 @@
           onblur="this.placeholder = 'Choose your display name'"></ion-input>
       </ion-row>
       <ion-row class="section-c">
-        <button ion-button full [disabled]=!displayName (click)="startApp()">START ASHY</button>
+        <button ion-button full [disabled]=!displayName (click)="startApp()">
+          <span *ngIf="!isClicked">START ASHY</span>
+          <img *ngIf="isClicked" src="assets/svgs/bars-50.svg">
+        </button>
       </ion-row>
     </ion-grid>
   </div>
