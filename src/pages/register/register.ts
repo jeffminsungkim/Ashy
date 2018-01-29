@@ -49,6 +49,7 @@ export class RegisterPage {
         if (res) {
           this.toastService.show(res.message);
           this.alertService.notifyToCheckVerificationEmail();
+          this.loadingService.dismiss();
         }
       } catch (error) {
         console.error(error);
