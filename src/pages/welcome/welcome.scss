@@ -26,29 +26,45 @@ page-welcome {
       .button-md-twitter:hover {
         color: color($colors, ashygray, base);
       }
-      .button-md-pastelred:hover {
+      .button-md-blank {
+        color: white;
+        background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
+      }
+      .button-md:hover {
         color: color($colors, ashygray, base);
       }
       .button-clear-md-lightgray {
         color: white;
       }
       .button-clear-md-lightgray:hover {
-        color: color($colors, pastelred, base);
+        color: color($colors, mac, base);
+        background-color: transparent;
       }
+      .button-clear-md-lightgray:focus {
+        background-color: transparent;
+      }
+
       .button-ios-twitter {
         background: repeating-linear-gradient(90deg, color($colors, dodger, base), color($colors, twitter, base));
       }
       .button-ios-twitter:hover {
         color: color($colors, ashygray, base);
       }
-      .button-ios-pastelred:hover {
+      .button-ios-blank {
+        color: white;
+        background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
+      }
+      .button-ios:hover {
         color: color($colors, ashygray, base);
       }
       .button-clear-ios-lightgray {
         color: white;
       }
       .button-clear-ios-lightgray:hover {
-        color: color($colors, pastelred, base);
+        color: color($colors, mac, base);
+      }
+      .button-clear-ios-lightgray:focus {
+        background-color: transparent;
       }
     }
     .section-c {
