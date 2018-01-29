@@ -19,7 +19,6 @@ export class ProfilePresetPage {
   public displayName: string;
   public placeholder: string = 'assets/avatar/placeholder.jpg';
   public uid: string;
-  public isClicked: boolean = false;
 
   cameraOptions: CameraOptions = {
     quality: 100,
@@ -37,7 +36,7 @@ export class ProfilePresetPage {
     public camera: Camera,
     public platform: Platform,
     private authService: AuthServiceProvider,
-    private  loadingService: LoadingServiceProvider,
+    private loadingService: LoadingServiceProvider,
     private toastService: ToastServiceProvider,
     private userService: UserServiceProvider,
     private uploadService: UploadServiceProvider) { this.uid = this.userService.currentUserId; }
@@ -48,7 +47,7 @@ export class ProfilePresetPage {
 
   uploadProfilePicture() {
     this.camera.getPicture(this.cameraOptions).then((imagePath) => {
-      this.loadingService.show('Please wait');
+      this.loadingService.showWaitLoader();
       console.log("IMAGE PATH", imagePath);
       return this.uploadService.convertImageIntoBlob(imagePath);
     }).then((imageBlob) => {
@@ -91,7 +90,7 @@ export class ProfilePresetPage {
   }
 
   startApp() {
-    this.isClicked = true;
+    this.loadingService.showWaitLoader();
     this.authService.updateDisplayname(this.displayName);
     this.userService.updateDisplayname(this.displayName);
     this.userService.updateCurrentUserAppUsageStatusTo(true, 'signout');
@@ -100,6 +99,7 @@ export class ProfilePresetPage {
     this.userService.updateEmailVerificationState();
     this.toastService.show(`Signed in as ${this.userService.currentUserEmail}`);
     this.navCtrl.setRoot('HomePage');
+    this.loadingService.dismiss();
   }
 
 }
