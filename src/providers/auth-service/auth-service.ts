@@ -79,7 +79,7 @@ export class AuthServiceProvider {
 
   emailLogin(user: EmailSignup) {
     return new Promise((resolve, reject) => {
-      this.afAuth.auth.signInWithEmailAndPassword(user.email.toLowerCase(), user.password)
+      this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
       .then(user => resolve(user)).catch((error) => {
         let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
         reject({message: errorMessage});
