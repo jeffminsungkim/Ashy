@@ -45,6 +45,7 @@ $colors: (
   fadedred: #FF7C81,
   carminepink: #F05438,
   mac: #FAC090,
+  manhatten: #F9C69C,
   fullmoon: #FFFFCB,
   ashygray: #7F7F7F,
   dark:       #222,
@@ -59,6 +60,7 @@ $colors: (
 
 $toolbar-ios-button-font-size: 1.2rem;
 $toolbar-ios-button-color: color($colors, pastelred);
+$loading-ios-background: transparent;
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -78,6 +80,8 @@ $text-input-md-highlight-color-valid: lightgray;
 $text-input-md-show-invalid-highlight: transparent;
 $text-input-md-show-valid-highlight: transparent;
 $text-input-md-highlight-color: transparent;
+$loading-md-background: transparent;
+$loading-md-box-shadow: none;
 
 // App Theme
 // --------------------------------------------------
