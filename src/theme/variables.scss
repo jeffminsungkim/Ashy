@@ -41,9 +41,15 @@ $colors: (
   pastelred: #FE635B,
   twitter: #32CDFD,
   dodger: #1EA1F3,
+  mandy: #E15B64,
+  fadedred: #FF7C81,
+  carminepink: #F05438,
+  mac: #FAC090,
+  fullmoon: #FFFFCB,
   ashygray: #7F7F7F,
   dark:       #222,
   cherry:     #d81b60,
+  blank: #fff
 );
 
 
@@ -51,8 +57,8 @@ $colors: (
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-
-
+$toolbar-ios-button-font-size: 1.2rem;
+$toolbar-ios-button-color: color($colors, pastelred);
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -65,8 +71,13 @@ $colors: (
 // --------------------------------------------------
 // Windows only Sass variables can go here
 
-
-
+$toolbar-md-button-font-size: 1.2rem;
+$toolbar-md-button-color: color($colors, pastelred);
+$text-input-md-highlight-color-invalid: lightgray;
+$text-input-md-highlight-color-valid: lightgray;
+$text-input-md-show-invalid-highlight: transparent;
+$text-input-md-show-valid-highlight: transparent;
+$text-input-md-highlight-color: transparent;
 
 // App Theme
 // --------------------------------------------------
