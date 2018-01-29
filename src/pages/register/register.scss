@@ -16,12 +16,15 @@ page-register {
       padding-left: 0;
       padding-right: 0;
     }
+    .button-md {
+      background-color: color($colors, pastelred, base);
+    }
     .note-md {
       color: green;
       font-size: 30px;
     }
     .item-md.item-label-floating [item-end] {
-      margin-top: 30px;
+      margin-top: 20px;
       margin-bottom: auto;
     }
 
@@ -29,12 +32,15 @@ page-register {
       padding-left: 0;
       padding-right: 0;
     }
+    .button-ios {
+      background-color: color($colors, pastelred, base);
+    }
     .note-ios {
       color: green;
       font-size: 30px;
     }
     .item-ios.item-label-floating [item-end] {
-      margin-top: 30px;
+      margin-top: 20px;
       margin-bottom: auto;
     }
   }
