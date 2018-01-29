@@ -53,10 +53,10 @@ page-profile-preset {
     display: block;
 
     .button-md {
-      background: repeating-linear-gradient(90deg, color($colors, pastelred, base), color($colors, ashygray, base));
+      background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
     }
     .button-ios {
-      background: repeating-linear-gradient(90deg, color($colors, pastelred, base), color($colors, ashygray, base));
+      background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
     }
   }
 
