@@ -14,7 +14,7 @@
       <ion-row>
         <ion-col col-12>
           <ion-item>
-            <ion-label floating>Email Address</ion-label>
+            <ion-label floating>EMAIL</ion-label>
             <ion-input type="email" #emailInput [(ngModel)]="user.email" name="email" #userEmail="ngModel"
             required pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"></ion-input>
             <ion-note item-end *ngIf="userEmail.valid"><ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon></ion-note>
@@ -22,7 +22,7 @@
         </ion-col>
         <ion-col col-12>
           <ion-item>
-            <ion-label floating>Password</ion-label>
+            <ion-label floating>PASSWORD</ion-label>
             <ion-input type="password" [(ngModel)]="user.password" name="password" #userPassword="ngModel" required minlength="7"></ion-input>
             <ion-note item-end *ngIf="userPassword.valid"><ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon></ion-note>
           </ion-item>
