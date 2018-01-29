@@ -21,7 +21,7 @@ export class PasswordResetPage {
 
   }
 
-  requestPasswordResetEmail() {
-    this.alertService.confirmSendPasswordResetEmail(this.email);
+  sendEmail() {
+    this.alertService.confirmSendPasswordResetEmail(this.email.toLowerCase());
   }
 }
