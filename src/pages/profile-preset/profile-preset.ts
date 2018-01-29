@@ -92,14 +92,14 @@ export class ProfilePresetPage {
 
   startApp() {
     this.isClicked = true;
-    // this.authService.updateDisplayname(this.displayName);
-    // this.userService.updateDisplayname(this.displayName);
-    // this.userService.updateCurrentUserAppUsageStatusTo(true, 'signout');
-    // this.userService.updateCurrentUserActiveStatusTo('online');
-    // this.userService.updateLastLoginTime();
-    // this.userService.updateEmailVerificationState();
-    // this.toastService.show(`Signed in as ${this.userService.currentUserEmail}`);
-    // this.navCtrl.setRoot('HomePage');
+    this.authService.updateDisplayname(this.displayName);
+    this.userService.updateDisplayname(this.displayName);
+    this.userService.updateCurrentUserAppUsageStatusTo(true, 'signout');
+    this.userService.updateCurrentUserActiveStatusTo('online');
+    this.userService.updateLastLoginTime();
+    this.userService.updateEmailVerificationState();
+    this.toastService.show(`Signed in as ${this.userService.currentUserEmail}`);
+    this.navCtrl.setRoot('HomePage');
   }
 
 }
