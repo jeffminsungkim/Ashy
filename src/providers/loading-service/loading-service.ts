@@ -5,31 +5,21 @@ import { LoadingController } from 'ionic-angular';
 export class LoadingServiceProvider {
 
   loader: any;
+  public svgPath: string = 'assets/svgs/manhatten-pastel-red-200.svg';
 
   constructor(public loadingCtrl: LoadingController) { }
 
-  show(message: string) {
-    this.loader = this.loadingCtrl.create({ content: message});
-    this.loader.present();
-  }
-
   showWaitLoader() {
-    this.loader = this.loadingCtrl.create({ content: 'Please wait...'});
+    this.loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src=${this.svgPath}>`
+    });
     this.loader.present();
 
     setTimeout(() => {
       this.loader.dismiss();
     }, 3000);
   }
-
-  showAuthenticationLoader() {
-    this.loader = this.loadingCtrl.create({
-      spinner: 'dots',
-      content: 'Authenticating...'
-    });
-    this.loader.present();
-  }
-
   dismiss() { return this.loader.dismiss(); }
 
 }
