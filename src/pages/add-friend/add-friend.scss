@@ -1,7 +1,48 @@
 page-add-friend {
 
     ::-webkit-scrollbar{
-        display:none;
+        display: none;
+    }
+
+    ion-navbar.toolbar .button-inner {
+      font-size: 35px;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    ion-footer {
+      text-align: center;
+      a, u {
+        text-decoration: none;
+      }
+    }
+
+    p.warning-message {
+      font-weight: bold;
+      font-size: 1.6rem;
+      color: #f50057;
+    }
+
+    .scroll-content {
+
+      ion-col {
+        padding-left: 7%;
+        padding-right: 7%;
+      }
+
+      ion-item {
+        text-align: center;
+      }
+      .item-md {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .item-ios {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
     }
 
 }
