@@ -1,9 +1,9 @@
-<ion-header>
-  <ion-navbar>
+<ion-header no-border>
+  <ion-navbar transparent>
     <ion-title>Friends</ion-title>
     <ion-buttons right>
         <button ion-button (click)="addFriend()" color="dark">
-            <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>
+          <ion-icon ios="ios-add" md="md-add"></ion-icon>
         </button>
     </ion-buttons>
   </ion-navbar>
@@ -40,14 +40,6 @@
                 <button ion-button color="cherry" (click)="unread(item)"><ion-icon name="star"></ion-icon></button>
             </ion-item-options>
         </ion-item-sliding>
-
-        <ion-item *ngIf="!user">
-          <ion-col class="default-list">
-              <p>Make new friends!</p>
-          </ion-col>
-
-        </ion-item>
-
-
+        <p class="default-list" *ngIf="!user">Start making new friends :)</p>
     </ion-list>
 </ion-content>
