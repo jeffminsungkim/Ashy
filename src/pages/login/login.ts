@@ -3,10 +3,12 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
 
 import { AlertServiceProvider } from "@ashy-services/alert-service/alert-service";
 import { AuthServiceProvider } from "@ashy-services/auth-service/auth-service";
+import { LoadingServiceProvider } from "@ashy-services/loading-service/loading-service";
 import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
 import { UserServiceProvider } from "@ashy-services/user-service/user-service";
 import { EmailSignup } from "@ashy-models/emailsignup";
 import * as firebase from 'firebase/app';
+
 @IonicPage()
 @Component({
   selector: "page-login",
@@ -22,6 +24,7 @@ export class LoginPage {
     public navParams: NavParams,
     public alertService: AlertServiceProvider,
     public authService: AuthServiceProvider,
+    public loadingService: LoadingServiceProvider,
     public toastService: ToastServiceProvider,
     public userService: UserServiceProvider
   ) {}
@@ -33,10 +36,13 @@ export class LoginPage {
   }
 
   async login() {
+    this.loadingService.showWaitLoader();
     try {
-      await this.authService.emailLogin(this.user);
+      const res = await this.authService.emailLogin(this.user);
+      if (res) this.loadingService.dismiss();
     } catch (err) {
       this.alertService.notifyErrorMessage(err.message);
+      this.loadingService.dismiss();
     }
   }
 
