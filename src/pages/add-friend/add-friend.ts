@@ -1,12 +1,14 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
 import { User } from '@ashy-models/user';
 
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
+import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
+import { map, take, switchMap } from 'rxjs/operators';
 
 
 @IonicPage()
@@ -15,75 +17,115 @@ import 'rxjs/add/operator/take';
   templateUrl: 'add-friend.html',
 })
 export class AddFriendPage implements OnDestroy {
-  subscription: Subscription;
-  avatar: string;
-  displayName: string;
-  recipientUid: string;
-  usernameText: string;
-  isUserExists: boolean;
+
+  @ViewChild('searchInput') searchInput;
+  private subscription: Subscription;
+  public me: User;
+  public magnify: string = 'assets/svgs/magnify-200.svg';
+  public currentUserId: string;
+  public usernameText: string;
   isUserAllowedToSendRequest: boolean = true;
-  matchedUserExists: boolean = false;
-  matchedWithCurrentUser;
-  user$: Observable<any>;
-  user: User;
+  public foundSpecialChar: boolean = false;
+  public wellFormatedUsername: boolean = false;
+  public matchedUser$: Observable<any>;
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
-    public userService: UserServiceProvider) {
-
-    // this.user$ = this.userService.getCurrentUsername();
+    private userService: UserServiceProvider,
+    private utilityService: UtilityServiceProvider) {
+    this.currentUserId = this.userService.currentUserId;
+    this.me = this.navParams.get('me');
   }
 
-  ionViewDidLoad() {
-    this.getUser();
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.searchInput.setFocus();
+    }, 500);
   }
 
-  getUser() {
-    this.subscription = this.userService.getCurrentUserObject().subscribe((user: any) => {
-      this.user = user;
-   });
-  }
+  // findUserWithUsername() {
+  //   let subscription: Subscription;
+  //   let sub: Subscription;
+  //   console.log('findUserWithUsername()');
+
+  //   if (this.usernameText === '') {
+  //     this.foundSpecialChar = false;
+  //     console.log('no words, return!');
+  //     return;
+  //   }
+
+  //   if (this.usernameText) {
+  //     if (this.utilityService.isStringContainsSpecialChar(this.usernameText)) {
+  //       this.foundSpecialChar = true;
+  //       return;
+  //     } else if (!this.utilityService.isStringContainsEnglishOrNumericChar(this.usernameText)) {
+  //       this.wellFormatedUsername = false;
+  //       return;
+  //     } else {
+  //       this.foundSpecialChar = false;
+  //       this.wellFormatedUsername = true;
+  //     }
+  //   }
+
+  //   this.userService.checkUsername(this.usernameText).take(1).subscribe((usernamesRef: any) => {
+  //     console.log("usernamesRef", usernamesRef);
+  //     if (usernamesRef === null) {
+  //       this.foundMatchedUser = false;
+  //       console.log('return!!!!!!');
+  //       return;
+  //     }
+  //     this.foundMatchedUser = true;
+  //     Object.keys(usernamesRef).map((key) => this.uid = usernamesRef[key]);
+  //     console.log('uid:', this.uid );
+  //     this.getMatchedUser();
+  //     this.foundMatchedUser = false;
+  //   });
+  // }
+
+  // private getMatchedUser() {
+  //   this.userService.getMatchedUser(this.uid).take(1).subscribe((user: any) => {
+  //     console.log('getMatchedUser()');
+  //     // this.verifyUserSentRequestOrNot(user.uid);
+  //     this.avatar = user.thumbnailURL;
+  //     this.displayName = user.displayName;
+  //     this.recipientUid = user.uid;
+  //     this.foundMatchedUser = true;
+  //     (this.currentUserId === user.uid) ? this.matchedWithCurrentUser = true : this.matchedWithCurrentUser = false;
+  //   });
+  // }
 
   findUserWithUsername() {
-    let subscription: Subscription;
-    let sub: Subscription;
-    let forbiddenChars = '.$[]#/'; //contains the forbidden characters CONDITION NEEDS TO BE IMPLEMENTED
 
-    this.userService.checkUsername(this.usernameText).take(1).subscribe((uid: any) => {
-    console.log("uid", uid);
-    if (uid === null)
-      this.isUserExists = false;
-    else
-      this.isUserExists = true;
+    if (this.usernameText === '') return;
 
-    if (this.isUserExists && this.usernameText != '') {
-      this.userService.getMatchedUser(uid).take(1).subscribe((user: any) => {
-      console.log("MATCHED USER:", user);
-      this.verifyUserSentRequestOrNot(user.uid);
-      this.avatar = user.photoURL;
-      this.displayName = user.displayName;
-      this.recipientUid = user.uid;
-      this.matchedUserExists = true;
-
-      if (this.userService.currentUserId === user.uid)
-        this.matchedWithCurrentUser = true;
-      else
-        this.matchedWithCurrentUser = false;
-    });
+    if (this.usernameText) {
+      if (this.utilityService.isStringContainsSpecialChar(this.usernameText)) {
+        this.foundSpecialChar = true;
+        return;
+      } else if (!this.utilityService.isStringContainsEnglishOrNumericChar(this.usernameText)) {
+        this.wellFormatedUsername = false;
+        return;
+      } else {
+        this.foundSpecialChar = false;
+        this.wellFormatedUsername = true;
+      }
     }
-    this.matchedUserExists = false;
-  });
-  }
 
-  sendFriendRequest() {
-    this.userService.sendFriendRequest(this.recipientUid, this.user).then((res: any) => {
-      if (res.status) 
-        this.isUserAllowedToSendRequest = false;
+    this.matchedUser$ = this.userService.checkUsername(this.usernameText).switchMap(usernamesRef => {
+      if (usernamesRef === null || usernamesRef === undefined) return new EmptyObservable();
+      return Observable.combineLatest(Object.keys(usernamesRef).map(key => this.userService.getMatchedUser(usernamesRef[key])));
     });
   }
+  sendFriendRequest(user: User) {
+    console.log('request user:', user);
+    // this.userService.sendFriendRequest(this.recipientUid, this.user).then((res: any) => {
+    //   if (res.status)
+    //     this.isUserAllowedToSendRequest = false;
+    // });
+  }
 
-  verifyUserSentRequestOrNot(uid: string) {
+  /*verifyUserSentRequestOrNot(uid: string) {
     let sub = this.userService.determineUserSentFriendRequestToCertainParty(uid).subscribe(user => {
       console.log("Add Friend Verify Requests", user);
       if (user.length > 0)
@@ -92,9 +134,9 @@ export class AddFriendPage implements OnDestroy {
         this.isUserAllowedToSendRequest = true;
     });
     this.subscription.add(sub);
-  }
+  }*/
 
-  backToPreviousView() {
+  closePage() {
     this.navCtrl.pop();
   }
 
