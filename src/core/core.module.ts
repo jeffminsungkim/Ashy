@@ -14,7 +14,7 @@ import { ENV } from '@ashy-env';
   imports: [
     AngularFireModule.initializeApp(ENV.firebase),
     AngularFireDatabaseModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule
   ],
   exports: []
