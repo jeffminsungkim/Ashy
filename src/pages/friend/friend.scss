@@ -1,17 +1,40 @@
 page-friend {
 
   ion-navbar.toolbar .button-inner {
-    font-size: 30px;
+    font-size: 25px;
     margin-right: 20px;
+    -webkit-text-stroke: 3px white;
   }
 
-  ion-list {
-    .default-list {
-      text-align: center;
-      margin-top: 40%;
-      p {
-        font-size: 1.1rem;
+  .rotate {
+    -moz-transition: all 1s linear;
+    -webkit-transition: all 1s linear;
+    transition: all 1s linear;
+  }
+
+  .rotate.fa-rotate-180 {
+    -ms-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+
+  .scroll-content {
+    ion-list {
+
+      p.default-list {
+        text-align: center;
+        margin-top: 40%;
+        color: color($colors, ashygray, base);
+        font-size: 1.3rem;
       }
+
+    }
+
+    span.total-friends {
+      padding: 1%;
+      color: color($colors, ashygray, base);
+      font-size: 1.3rem;
     }
   }
 

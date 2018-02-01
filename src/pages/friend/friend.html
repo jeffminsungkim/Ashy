@@ -1,9 +1,14 @@
 <ion-header no-border>
   <ion-navbar transparent>
     <ion-title>Friends</ion-title>
+    <ion-buttons left>
+        <button ion-button (click)="showQuickSetting()">
+          <i class="fa fa-cog rotate" aria-hidden="true"></i>
+        </button>
+    </ion-buttons>
     <ion-buttons right>
-        <button ion-button (click)="addFriend()" color="dark">
-          <ion-icon ios="ios-add" md="md-add"></ion-icon>
+        <button ion-button (click)="addFriend()">
+          <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
     </ion-buttons>
   </ion-navbar>
@@ -22,8 +27,9 @@
     </ion-list>
 
     <ion-list>
-        <ion-list-header>Friends</ion-list-header>
+        <ion-list-header>Friends <span class="total-friends">{{(friends$ | async)?.length}}</span></ion-list-header>
         <ion-item-sliding *ngFor="let user of friends$ | async">
+            <p class="default-list" *ngIf="!user">Start making new friends :)</p>
             <ion-item *ngIf="user" (click)="viewUserProfile(user)">
                 <ion-avatar (click)="showOriginalAvatarImage()" item-start>
                     <img-loader [src]="user.thumbnailURL" [spinner]="true"></img-loader>
@@ -40,6 +46,5 @@
                 <button ion-button color="cherry" (click)="unread(item)"><ion-icon name="star"></ion-icon></button>
             </ion-item-options>
         </ion-item-sliding>
-        <p class="default-list" *ngIf="!user">Start making new friends :)</p>
     </ion-list>
 </ion-content>
