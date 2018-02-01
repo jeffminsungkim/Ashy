@@ -1,9 +1,9 @@
 <ion-header no-border>
   <ion-navbar transparent>
-    <ion-title>Add Friend</ion-title>
+    <ion-title>Add Friends</ion-title>
     <ion-buttons left>
-      <button ion-button color="dark" (click)="backToPreviousView()">
-        <ion-icon ios="ios-close" md="md-close"></ion-icon>
+      <button ion-button (click)="closePage()">
+          <i class="fa fa-times" aria-hidden="true"></i>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -11,13 +11,15 @@
 <ion-content>
   <ion-row>
     <ion-col>
-      <ion-item>
-          <ion-label color="primary" stacked>SEARCH USERNAME</ion-label>
-          <ion-input type="text" #searchInput maxlength="18" [(ngModel)]="usernameText" clearInput (ionChange)="findUserWithUsername()"></ion-input>
-      </ion-item>
+        <ion-searchbar type="search" #searchInput maxlength="18" placeholder="Search" autocapitalize="none"
+        debounce="0" [(ngModel)]="usernameText" (ionInput)="findUserWithUsername()"></ion-searchbar>
+        <ion-item *ngIf="!usernameText">
+          <p class="user-info">{{me.username}} is your username</p>
+          <p class="user-info">{{me.displayName}} is how you appear on Ashy</p>
+        </ion-item>
     </ion-col>
     <ion-col col-12>
-      <ion-item *ngIf="usernameText && !foundMatchedUser && !foundSpecialChar && wellFormatedUsername" no-lines>
+      <ion-item *ngIf="(matchedUser$ | async) == null && usernameText && !foundSpecialChar && wellFormatedUsername" no-lines>
         <img [src]="magnify" alt="spinner by loading.io">
       </ion-item>
       <ion-item *ngIf="usernameText && foundSpecialChar" no-lines>
@@ -26,18 +28,21 @@
       <ion-item *ngIf="usernameText && !wellFormatedUsername" no-lines>
         <p class="warning-message">A-Z or numbers only</p>
       </ion-item>
-      <ion-item *ngIf="foundMatchedUser && !foundSpecialChar && wellFormatedUsername && usernameText" no-lines>
-        <ion-avatar item-left>
-          <img-loader [src]="avatar"></img-loader>
-        </ion-avatar>
-        <h2>{{displayName}}</h2>
-        <button ion-button *ngIf="isUserAllowedToSendRequest" color="primary" [disabled]="matchedWithCurrentUser" item-end (click)="sendFriendRequest()">
-          Send Request
-        </button>
-        <button ion-button *ngIf="!isUserAllowedToSendRequest" color="danger" [disabled]="true" item-end>
-          Requested
-        </button>
-      </ion-item>
+      <ion-list *ngFor="let user of matchedUser$ | async" no-lines>
+        <ion-item *ngIf="user && !foundSpecialChar && wellFormatedUsername && usernameText">
+          <ion-avatar item-start>
+            <img-loader [src]="user.thumbnailURL"></img-loader>
+          </ion-avatar>
+          <h2>{{user.displayName}}</h2>
+          <p>{{user.statusMessage}}</p>
+          <button ion-button round outline color="primary" item-end *ngIf="isUserAllowedToSendRequest" [disabled]="currentUserId === user.uid" (click)="sendFriendRequest(user)">
+            Send Request
+          </button>
+          <button ion-button round outline color="danger" item-end *ngIf="!isUserAllowedToSendRequest" [disabled]="true">
+            Requested
+          </button>
+        </ion-item>
+      </ion-list>
     </ion-col>
   </ion-row>
 </ion-content>

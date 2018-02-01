@@ -5,8 +5,9 @@ page-add-friend {
     }
 
     ion-navbar.toolbar .button-inner {
-      font-size: 30px;
+      font-size: 25px;
       margin-left: 5px;
+      -webkit-text-stroke: 3px white;
     }
 
     ion-footer {
@@ -22,7 +23,21 @@ page-add-friend {
       color: #f50057;
     }
 
+    p.user-info {
+      padding: 3%;
+      font-size: 1.2rem;
+    }
+
     .scroll-content {
+      overflow: hidden;
+
+      .searchbar-ios {
+        padding: 0 8px;
+        min-height: 44px;
+        border-top: 0.55px solid lightgray;
+        border-bottom: 0.55px solid lightgray;
+        background: transparent;
+      }
 
       ion-item {
         text-align: center;
@@ -31,10 +46,16 @@ page-add-friend {
         padding-left: 0;
         padding-right: 0;
       }
+      .item-md.item-block .item-inner {
+        border-bottom: none;
+      }
 
       .item-ios {
         padding-left: 0;
         padding-right: 0;
+      }
+      .item-ios.item-block .item-inner {
+        border-bottom: none;
       }
     }
 
