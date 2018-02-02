@@ -1,6 +1,8 @@
 import { Component, ViewChild, OnDestroy } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { AngularFireAuth } from 'angularfire2/auth';
 import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
 import { User } from '@ashy-models/user';
@@ -32,6 +34,8 @@ export class AddFriendPage implements OnDestroy {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private afAuth: AngularFireAuth,
+    private http: HttpClient,
     private userService: UserServiceProvider,
     private utilityService: UtilityServiceProvider) {
     this.currentUserId = this.userService.currentUserId;
@@ -43,57 +47,6 @@ export class AddFriendPage implements OnDestroy {
       this.searchInput.setFocus();
     }, 500);
   }
-
-  // findUserWithUsername() {
-  //   let subscription: Subscription;
-  //   let sub: Subscription;
-  //   console.log('findUserWithUsername()');
-
-  //   if (this.usernameText === '') {
-  //     this.foundSpecialChar = false;
-  //     console.log('no words, return!');
-  //     return;
-  //   }
-
-  //   if (this.usernameText) {
-  //     if (this.utilityService.isStringContainsSpecialChar(this.usernameText)) {
-  //       this.foundSpecialChar = true;
-  //       return;
-  //     } else if (!this.utilityService.isStringContainsEnglishOrNumericChar(this.usernameText)) {
-  //       this.wellFormatedUsername = false;
-  //       return;
-  //     } else {
-  //       this.foundSpecialChar = false;
-  //       this.wellFormatedUsername = true;
-  //     }
-  //   }
-
-  //   this.userService.checkUsername(this.usernameText).take(1).subscribe((usernamesRef: any) => {
-  //     console.log("usernamesRef", usernamesRef);
-  //     if (usernamesRef === null) {
-  //       this.foundMatchedUser = false;
-  //       console.log('return!!!!!!');
-  //       return;
-  //     }
-  //     this.foundMatchedUser = true;
-  //     Object.keys(usernamesRef).map((key) => this.uid = usernamesRef[key]);
-  //     console.log('uid:', this.uid );
-  //     this.getMatchedUser();
-  //     this.foundMatchedUser = false;
-  //   });
-  // }
-
-  // private getMatchedUser() {
-  //   this.userService.getMatchedUser(this.uid).take(1).subscribe((user: any) => {
-  //     console.log('getMatchedUser()');
-  //     // this.verifyUserSentRequestOrNot(user.uid);
-  //     this.avatar = user.thumbnailURL;
-  //     this.displayName = user.displayName;
-  //     this.recipientUid = user.uid;
-  //     this.foundMatchedUser = true;
-  //     (this.currentUserId === user.uid) ? this.matchedWithCurrentUser = true : this.matchedWithCurrentUser = false;
-  //   });
-  // }
 
   findUserWithUsername() {
 
@@ -119,6 +72,17 @@ export class AddFriendPage implements OnDestroy {
   }
   sendFriendRequest(user: User) {
     console.log('request user:', user);
+
+    this.afAuth.auth.currentUser.getIdToken().then(idToken => {
+      console.log('idToken:', idToken);
+      console.log('json format:', JSON.stringify(user));
+      this.http.post('https://us-central1-ashy-dev-3662f.cloudfunctions.net/sendfrDbFriendRequests/api/v1/friend-requests/', JSON.stringify(user), {
+        headers: {'Authorization': idToken, 'Content-Type': 'application/json; charset=utf-8'}
+      }).subscribe((res) => {
+        console.log('res?', res);
+      });
+    });
+
     // this.userService.sendFriendRequest(this.recipientUid, this.user).then((res: any) => {
     //   if (res.status)
     //     this.isUserAllowedToSendRequest = false;
