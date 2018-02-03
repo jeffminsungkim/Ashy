@@ -197,6 +197,11 @@ export class UserServiceProvider {
     this.getAppRef(this.currentUserId).update(app);
   }
 
+  updateNotificationPemissionState(state: boolean) {
+    let notificationState = { allowNotification: state };
+    this.getAppRef(this.currentUserId).update(notificationState);
+  }
+
   initializeUserProfile(name: string, photoURL: string) {
     let data = {
       displayName: name,
