@@ -94,4 +94,5 @@
     <plugin name="twitter-connect-plugin" spec="^0.6.0">
         <variable name="FABRIC_KEY" value="a896cced8f0aad8db8f97a94e97e1fd78455a91a" />
     </plugin>
+    <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
 </widget>
