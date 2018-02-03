@@ -31,31 +31,6 @@ export class EmailVerificationPage {
 
   ionViewDidLoad() {
     this.email = this.userService.currentUserEmail;
-    this.checkIsUserEmailVerifiedOrNot();
-  }
-
-  ionViewDidLeave() {
-    clearInterval(this.intervalId);
-  }
-
-  checkIsUserEmailVerifiedOrNot() {
-    if (this.userService.currentUserEmailVerified) {
-      this.navCtrl.push('ProfilePresetPage');
-      return;
-    }
-    this.afAuth.auth.onAuthStateChanged(user => {
-      if (user) {
-        this.intervalId = setInterval(() => {
-          this.afAuth.auth.currentUser.reload().then(() => {
-            console.log('Verification State:', user.emailVerified);
-            if (user.emailVerified) {
-              clearInterval(this.intervalId);
-              this.navCtrl.push('ProfilePresetPage');
-            }
-          });
-        }, 2000);
-      }
-    });
   }
 
   setNewEmailAddress() {

@@ -15,6 +15,7 @@ import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 })
 export class MyApp {
   rootPage: string;
+  intervalId : number;
 
   constructor(
     platform: Platform,
@@ -39,16 +40,29 @@ export class MyApp {
               userService.updateCurrentUserAppUsageStatusTo(true, status);
             }
           });
+          console.log('HomePage');
           this.rootPage = 'HomePage';
         }
         else if (user && !user.emailVerified) {
+          console.log('EmailVerificationPage');
+          this.intervalId = setInterval(() => {
+            afAuth.auth.currentUser.reload().then(() => {
+              console.log('Verification State:', user.emailVerified);
+              if (user.emailVerified && !user.displayName) {
+                clearInterval(this.intervalId);
+                this.rootPage = 'ProfilePresetPage';
+              }
+            });
+          }, 2000);
           this.rootPage = 'EmailVerificationPage';
         }
         else if (user && user.emailVerified && !user.displayName) {
+          console.log('ProfilePresetPage');
           this.rootPage = 'ProfilePresetPage';
         }
         else {
           this.rootPage = 'WelcomePage';
+          clearInterval(this.intervalId);
         }
       });
 
