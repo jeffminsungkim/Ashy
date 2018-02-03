@@ -9,4 +9,5 @@ export interface User {
   statusMessage: string;
   currentActiveStatus: string;
   lastLoginAt: string;
+  notificationToken: string;
 }
