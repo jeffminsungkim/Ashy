@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -27,7 +27,7 @@ import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-se
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp, {
       backButtonText: "",
       iconMode: 'ios',
