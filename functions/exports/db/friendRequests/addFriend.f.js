@@ -2,6 +2,8 @@
 
 module.exports = ({ admin, cors, express, functions }) => {
   const app = express();
+  const fireStore = admin.firestore();
+  const db = fireStore.collection('friendReqeusts');
 
   app.use(cors({ origin: true }));
 
@@ -22,10 +24,19 @@ module.exports = ({ admin, cors, express, functions }) => {
   });
 
   app.post('/api/v1/friend-requests/', (req, res) => {
-    console.log('Friend Requested');
+    const recipientId = req.body.uid;
+    const frRef = db.doc(recipientId).collection('receiveFrom');
     console.log('request body:', req.body);
     console.log('requester:', req.user);
-    res.send({message: 'Friend Requested!'});
+    frRef.add({
+      uid: req.user.user_id,
+      displayName: req.user.name,
+      photoURL: req.user.picture,
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      message: "Let's be friends!"
+    }).then(() => {
+      res.status(200).send({message: 'Friend Requested!'});
+    }).catch((error) => console.log("Error writing document: ", error));
   });
 
   return functions.https.onRequest(app);
