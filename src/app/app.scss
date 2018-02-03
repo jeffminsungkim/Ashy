@@ -41,12 +41,15 @@
   }
 
   button.alert-button.change-button{
-    color: green;
+    color: color($colors, primary, base);
   }
 }
 
 .action-sheet-buttons {
   .remove-button {
     color: red;
+  }
+  .private-button {
+    color: color($colors, pastelred);
   }
 }
