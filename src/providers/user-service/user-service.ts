@@ -197,20 +197,31 @@ export class UserServiceProvider {
     this.getAppRef(this.currentUserId).update(app);
   }
 
-  updateDisplayname(name: string) {
-    let displayName = { displayName: name };
-    this.getUsersRef(this.currentUserId).update(displayName);
+  initializeUserProfile(name: string, photoURL: string) {
+    let data = {
+      displayName: name,
+      photoURL: photoURL
+    };
+
+    this.afAuth.auth.currentUser.updateProfile(data).then(() => {
+      this.getUsersRef(this.currentUserId).set(data);
+      console.log('Updated user profile.');
+    }).catch((err) => console.log(err));
   }
 
   /*updateGender(selectedGender: string) {
     let gender = { gender: selectedGender }
     console.log('selected gender', selectedGender);
     this.afDB.object(`users/${this.currentUserId}`).update(gender).catch(error => console.error('Update Gender Fails', error));
-  }
+  }*/
 
   checkUsername(username: string) {
     username = username.toLowerCase();
-    return this.afDB.object(`usernames/${username}`).valueChanges();
+    return this.getUsernamesRef(username).valueChanges();
+  }
+
+  getMatchedUser(uid: string) {
+    return this.getUsersRef(uid).valueChanges();
   }
 
   // updateUsername(username: string) {
@@ -219,7 +230,7 @@ export class UserServiceProvider {
   //   this.afDB.object(`users/${this.currentUserId}`).update({'username': username});
   //   this.afDB.object(`usernames`).update(data);
   // }
-  updateUsername(username: string) {
+  /*updateUsername(username: string) {
     let updateUsername = {};
     updateUsername[`usernames/${username}`] = this.currentUserId;
     updateUsername[`users/${this.currentUserId}/username`] = username;
@@ -230,9 +241,7 @@ export class UserServiceProvider {
     this.afDB.object(`usernames/${username}`).remove();
   }
 
-  getMatchedUser(UID: string) {
-    return this.afDB.object(`users/${UID}`).valueChanges();
-  }
+
 
   sendFriendRequest(recipient: string, sender: User) {
     let senderInfo = {

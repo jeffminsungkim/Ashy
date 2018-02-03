@@ -6,6 +6,7 @@ import { LoadingServiceProvider } from '@ashy-services/loading-service/loading-s
 import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
 import { UserServiceProvider } from '@ashy-services/user-service/user-service';
 import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 
 @IonicPage()
@@ -17,6 +18,7 @@ export class ProfilePresetPage {
 
   public avatar: string;
   public displayName: string;
+  public photoURL: string;
   public placeholder: string = 'assets/avatar/placeholder.jpg';
   public uid: string;
 
@@ -32,6 +34,7 @@ export class ProfilePresetPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public afAuth: AngularFireAuth,
     public actionSheetCtrl: ActionSheetController,
     public camera: Camera,
     public platform: Platform,
@@ -39,7 +42,11 @@ export class ProfilePresetPage {
     private loadingService: LoadingServiceProvider,
     private toastService: ToastServiceProvider,
     private userService: UserServiceProvider,
-    private uploadService: UploadServiceProvider) { this.uid = this.userService.currentUserId; }
+    private uploadService: UploadServiceProvider) {
+      this.uid = this.userService.currentUserId;
+      const BASE_URL = 'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2F';
+      this.photoURL = `${BASE_URL}thumb_avatar.jpg?alt=media&token=0e1d9733-a87d-4bf7-be4a-072dd1c20c50`;
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePresetPage');
@@ -91,8 +98,7 @@ export class ProfilePresetPage {
 
   startApp() {
     this.loadingService.showWaitLoader();
-    this.authService.updateDisplayname(this.displayName);
-    this.userService.updateDisplayname(this.displayName);
+    this.userService.initializeUserProfile(this.displayName, this.photoURL);
     this.userService.updateCurrentUserAppUsageStatusTo(true, 'signout');
     this.userService.updateCurrentUserActiveStatusTo('online');
     this.userService.updateLastLoginTime();
