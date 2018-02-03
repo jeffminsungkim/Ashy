@@ -6,6 +6,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { FCM } from '@ionic-native/fcm';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -49,6 +50,7 @@ import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-se
   providers: [
     StatusBar,
     SplashScreen,
+    FCM,
     ErrorDetectionServiceProvider,
     NativePageTransitions,
 		{provide: ErrorHandler, useClass: IonicErrorHandler},
