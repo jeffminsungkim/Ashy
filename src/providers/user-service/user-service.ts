@@ -209,7 +209,7 @@ export class UserServiceProvider {
     };
 
     this.afAuth.auth.currentUser.updateProfile(data).then(() => {
-      this.getUsersRef(this.currentUserId).set(data);
+      this.getUsersRef(this.currentUserId).update(data);
       console.log('Updated user profile.');
     }).catch((err) => console.log(err));
   }
