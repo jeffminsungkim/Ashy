@@ -12,7 +12,7 @@ export class ModalServiceProvider {
 
   showProfileDetailModal() { this.modalCtrl.create('ProfileDetailPage').present(); }
 
-  showAddFriendModal() { this.modalCtrl.create('AddFriendPage').present(); }
+  showAddFriendModal(user: User) { this.modalCtrl.create('AddFriendPage', {me: user}).present(); }
 
   showEmailResetModal(email: string) { return this.modalCtrl.create('EmailResetPage', {oldEmail: email}); }
 
