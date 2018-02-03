@@ -1,3 +1,47 @@
 page-email-reset {
 
+    .scroll-content {
+        overflow: hidden;
+
+        ion-col {
+          padding-left: 7%;
+          padding-right: 7%;
+        }
+
+        p.ashy-info {
+          text-align: center;
+          color: color($colors, ashygray, base);
+          font-size: 1.2rem;
+        }
+
+        p.ashy-info .primary {
+          color: color($colors, primary, base);
+        }
+
+        .item-md {
+          padding-left: 0;
+          padding-right: 0;
+        }
+        .note-md {
+          color: green;
+          font-size: 30px;
+        }
+        .item-md.item-label-stacked [item-end] {
+          margin-top: 25px;
+          margin-bottom: auto;
+        }
+
+        .item-ios {
+          padding-left: 0;
+          padding-right: 0;
+        }
+        .note-ios {
+          color: green;
+          font-size: 30px;
+        }
+        .item-ios.item-label-stacked [item-end] {
+          margin-top: 28px;
+          margin-bottom: auto;
+        }
+    }
 }
