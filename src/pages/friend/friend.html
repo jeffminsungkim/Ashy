@@ -27,9 +27,8 @@
     </ion-list>
 
     <ion-list>
-        <ion-list-header>Friends <span class="total-friends">{{(friends$ | async)?.length}}</span></ion-list-header>
+        <ion-list-header>Friends <span class="total-friends"></span></ion-list-header>
         <ion-item-sliding *ngFor="let user of friends$ | async">
-            <p class="default-list" *ngIf="!user">Start making new friends :)</p>
             <ion-item *ngIf="user" (click)="viewUserProfile(user)">
                 <ion-avatar (click)="showOriginalAvatarImage()" item-start>
                     <img-loader [src]="user.thumbnailURL" [spinner]="true"></img-loader>
@@ -46,5 +45,6 @@
                 <button ion-button color="cherry" (click)="unread(item)"><ion-icon name="star"></ion-icon></button>
             </ion-item-options>
         </ion-item-sliding>
+        <p class="default-list" *ngIf="(friends$ | async)?.length === 0">Start making new friends :)</p>
     </ion-list>
 </ion-content>
