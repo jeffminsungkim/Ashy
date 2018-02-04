@@ -10,7 +10,7 @@ module.exports = ({ admin, functions, firestore }) => {
     const photoURL = user.photoURL || null;
     const thumbnail = user.photoURL || `${BASE_URL}thumb_avatar.jpg?alt=media&token=0e1d9733-a87d-4bf7-be4a-072dd1c20c50`;
     const username = generateRandomUsername().toLowerCase();
-    const appRef = firestore.doc(`app/${uid}`);
+    const appsRef = firestore.doc(`apps/${uid}`);
     const newUserRef = firestore.doc(`users/${uid}`);
     const usernameRef = firestore.doc(`usernames/${username}`);
     const batch = admin.firestore().batch();
@@ -38,7 +38,7 @@ module.exports = ({ admin, functions, firestore }) => {
       currentActiveStatus: 'signout'
     };
 
-    batch.set(appRef, appData);
+    batch.set(appsRef, appData);
     batch.set(newUserRef, userData);
     batch.set(usernameRef, {[username]: uid});
 
