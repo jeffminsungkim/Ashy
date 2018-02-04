@@ -5,7 +5,7 @@ module.exports = ({ admin, functions, firestore }) => {
     const user = event.data;
     const uid = user.uid;
     const email = user.email;
-    const appRef = firestore.doc(`app/${uid}`);
+    const appRef = firestore.doc(`apps/${uid}`);
     const newUserRef = firestore.doc(`users/${uid}`);
     const batch = admin.firestore().batch();
 
