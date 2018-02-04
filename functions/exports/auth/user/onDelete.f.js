@@ -5,13 +5,12 @@ module.exports = ({ admin, functions, firestore }) => {
     const user = event.data;
     const uid = user.uid;
     const email = user.email;
-    const appRef = firestore.doc(`apps/${uid}`);
-    const newUserRef = firestore.doc(`users/${uid}`);
+    const appsRef = firestore.doc(`apps/${uid}`);
+    const usersRef = firestore.doc(`users/${uid}`);
     const batch = admin.firestore().batch();
 
-    batch.delete(appRef);
-    batch.delete(newUserRef);
-
+    batch.delete(appsRef);
+    batch.delete(usersRef);
 
     return batch.commit().then(() => {
       console.log(`User, ${email} deleted.`);
