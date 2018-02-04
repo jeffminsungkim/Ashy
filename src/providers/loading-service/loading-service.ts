@@ -15,10 +15,6 @@ export class LoadingServiceProvider {
       content: `<img src=${this.svgPath}>`
     });
     this.loader.present();
-
-    setTimeout(() => {
-      this.loader.dismiss();
-    }, 3000);
   }
   dismiss() { return this.loader.dismiss(); }
 
