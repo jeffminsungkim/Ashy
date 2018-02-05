@@ -25,10 +25,10 @@ module.exports = ({ admin, cors, express, functions }) => {
 
   app.post('/api/v1/friend-requests/', (req, res) => {
     const recipientId = req.body.uid;
-    const frRef = db.doc(recipientId).collection('receiveFrom');
+    const frRef = db.doc(recipientId).collection('receiveFrom').doc(req.user.user_id);
     console.log('request body:', req.body);
     console.log('requester:', req.user);
-    frRef.add({
+    frRef.set({
       uid: req.user.user_id,
       displayName: req.user.name,
       photoURL: req.user.picture,
