@@ -6,13 +6,13 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { ENV } from '@ashy-env';
+import { environment } from '@ashy-env';
 
 
 @NgModule({
   declarations: [],
   imports: [
-    AngularFireModule.initializeApp(ENV.firebase),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule
