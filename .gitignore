@@ -35,6 +35,7 @@ $RECYCLE.BIN/
 # Custom
 firebase-rules.json
 .editorconfig
+certificate/
 
 # Cloud functions
 functions/node_modules
