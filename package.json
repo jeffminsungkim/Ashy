@@ -55,6 +55,7 @@
     "cordova-plugin-screen-orientation": "^3.0.1",
     "cordova-plugin-splashscreen": "^5.0.1",
     "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-sqlite-storage": "^2.2.0",
     "es6-promise-plugin": "^4.2.2",
     "firebase": "4.8.0",
     "font-awesome": "4.7.0",
@@ -111,7 +112,8 @@
       "twitter-connect-plugin": {
         "FABRIC_KEY": "a896cced8f0aad8db8f97a94e97e1fd78455a91a"
       },
-      "cordova-plugin-fcm": {}
+      "cordova-plugin-fcm": {},
+      "cordova-sqlite-storage": {}
     },
     "platforms": [
       "android",
