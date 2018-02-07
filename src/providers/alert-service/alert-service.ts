@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 
-import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
-import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
+import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
+import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
 import { ErrorDetectionServiceProvider } from '../error-detection-service/error-detection-service';
 
 @Injectable()

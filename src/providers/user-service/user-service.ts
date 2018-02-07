@@ -1,8 +1,8 @@
 // import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Ashy } from '@ashy-models/ashy';
-import { User } from '@ashy-models/user';
+import { Ashy } from '@ashy/models/ashy';
+import { User } from '@ashy/models/user';
 
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';

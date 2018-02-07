@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
-import { Upload } from '@ashy-models/upload';
+import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
+import { Upload } from '@ashy/models/upload';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
 declare var window: any;

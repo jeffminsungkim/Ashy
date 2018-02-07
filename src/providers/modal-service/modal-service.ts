@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
-import { User } from '@ashy-models/user';
+import { User } from '@ashy/models/user';
 
 @Injectable()
 export class ModalServiceProvider {
