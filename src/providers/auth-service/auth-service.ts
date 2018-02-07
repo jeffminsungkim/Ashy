@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { EmailSignup } from '@ashy-models/emailsignup';
-import { User } from '@ashy-models/user';
+import { EmailSignup } from '@ashy/models/emailsignup';
+import { User } from '@ashy/models/user';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
