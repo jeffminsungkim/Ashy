@@ -202,15 +202,20 @@ export class UserServiceProvider {
     this.getAppRef(this.currentUserId).update(notificationState);
   }
 
-  initializeUserProfile(name: string, photoURL: string) {
-    let data = {
+  updateNotificationToken(token: string, uid: string) {
+    let deviceToken = { notificationToken: token };
+    this.getUsersRef(uid).update(deviceToken).then(() => console.log('Updated device token'));
+  }
+
+  updateUserProfile(name: string, photoURL: string) {
+    const data = {
       displayName: name,
       photoURL: photoURL
     };
 
     this.afAuth.auth.currentUser.updateProfile(data).then(() => {
-      this.getUsersRef(this.currentUserId).update(data);
-      console.log('Updated user profile.');
+      this.afAuth.auth.currentUser.getIdToken(true); // Force refresh regardless of token expiration
+      console.log('Updated Default User Profile');
     }).catch((err) => console.log(err));
   }
 
