@@ -35,7 +35,7 @@ module.exports = ({ admin, cors, express, functions }) => {
       timestamp: admin.firestore.FieldValue.serverTimestamp(),
       message: "Let's be friends!"
     }).then(() => {
-      res.status(200).send({message: 'Friend Requested!'});
+      res.status(201).send({message: 'Friend Requested!'});
     }).catch((error) => console.log("Error writing document: ", error));
   });
 
