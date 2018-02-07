@@ -35,7 +35,7 @@ export class UserServiceProvider {
 
       this.rtdb = firebase.database();
       this.fs = firebase.firestore();
-      this.appRef = this.afs.collection<Ashy>('app');
+      this.appRef = this.afs.collection<Ashy>('apps');
       this.usersRef = this.afs.collection<User>('users');
       this.usernamesRef = this.afs.collection('usernames');
       this.afAuth.authState.do(user => {
