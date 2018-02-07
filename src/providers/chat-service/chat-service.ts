@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
-import { User } from '@ashy-models/user';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
+import { User } from '@ashy/models/user';
 
 @Injectable()
 export class ChatServiceProvider {
