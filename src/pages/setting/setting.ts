@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
-import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
-import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
-import { User } from '@ashy-models/user';
+import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
+import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
+import { UploadServiceProvider } from '@ashy/services/upload-service/upload-service';
+import { User } from '@ashy/models/user';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';

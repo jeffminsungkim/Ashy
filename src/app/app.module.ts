@@ -13,11 +13,12 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { NativePageTransitions } from '@ionic-native/native-page-transitions';
 import { IonicImageLoader } from 'ionic-image-loader';
 
-import { MyApp } from './app.component';
-import { CoreModule } from '@ashy-core/core.module';
-import { SharedModule } from '@ashy-shared/shared.module';
+import { MyApp } from '@ashy/app/app.component';
+import { CoreModule } from '@ashy/core/core.module';
+import { SharedModule } from '@ashy/shared/shared.module';
 
-import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-service/error-detection-service';
+import { ErrorDetectionServiceProvider } from '@ashy/services/error-detection-service/error-detection-service';
+import { NotificationServiceProvider } from '../providers/notification-service/notification-service';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { ErrorDetectionServiceProvider } from '@ashy-services/error-detection-se
 		{provide: ErrorHandler, useClass: IonicErrorHandler},
     Camera,
     File,
-    Keyboard
+    Keyboard,
+    NotificationServiceProvider
   ]
 })
 export class AppModule {}

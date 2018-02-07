@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { User } from '@ashy-models/user';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { User } from '@ashy/models/user';
 
 import { ReversePipe } from 'ngx-pipes';
 
@@ -35,7 +35,7 @@ export class NotificationPage implements OnDestroy {
     this.segment = 'friends';
   }
 
-  ionViewDidLoad() {
+  /*ionViewDidLoad() {
     console.log('ionViewDidLoad NotificationPage');
   }
 
@@ -46,7 +46,7 @@ export class NotificationPage implements OnDestroy {
 
   getUser() {
     this.userService.getCurrentUserObject().take(1).subscribe((user: any) => {
-     this.user = user; 
+     this.user = user;
      console.log("NOTIFICATION:", this.user);
    });
   }
@@ -71,7 +71,7 @@ export class NotificationPage implements OnDestroy {
 
   declineFriendRequest(requestSenderInfo) {
     this.userService.rejectFriendRequest(requestSenderInfo.uid);
-  }
+  }*/
 
   ngOnDestroy() {
     if (this.subscription !== undefined) {

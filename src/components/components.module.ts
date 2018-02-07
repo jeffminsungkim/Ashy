@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
-import { UserStatusComponent } from '@ashy-components/user-status/user-status';
+import { UserStatusComponent } from '@ashy/components/user-status/user-status';
 
 
 @NgModule({

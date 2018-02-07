@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ProfilePresetPage } from './profile-preset';
-import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
+import { ProfilePresetPage } from '@ashy/pages/profile-preset/profile-preset';
+import { UploadServiceProvider } from '@ashy/services/upload-service/upload-service';
 
 
 @NgModule({

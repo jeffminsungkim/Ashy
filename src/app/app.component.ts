@@ -6,9 +6,8 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-
+import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 
 @Component({
   templateUrl: 'app.html'
@@ -30,6 +29,7 @@ export class MyApp {
     platform.ready().then((readySource) => {
       afAuth.auth.onAuthStateChanged(user => {
         console.log("App User", user);
+
         if (user && user.displayName) {
           userService.getUserStatus().once('value').then((snapshot) => {
             const status = snapshot.val().currentActiveStatus;

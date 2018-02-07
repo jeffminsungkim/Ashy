@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { AddFriendPage } from '@ashy-pages/add-friend/add-friend';
+import { AddFriendPage } from '@ashy/pages/add-friend/add-friend';
 import { IonicImageLoader } from 'ionic-image-loader';
 
 

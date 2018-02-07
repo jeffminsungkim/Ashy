@@ -1,11 +1,11 @@
 import { Component, ViewChild, Renderer } from '@angular/core';
 import { IonicPage, NavController, ViewController, NavParams, Platform, Content } from 'ionic-angular';
 
-import { ChatServiceProvider } from '@ashy-services/chat-service/chat-service';
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
-import { AlertServiceProvider } from '@ashy-services/alert-service/alert-service';
-import { User } from '@ashy-models/User';
+import { ChatServiceProvider } from '@ashy/services/chat-service/chat-service';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
+import { AlertServiceProvider } from '@ashy/services/alert-service/alert-service';
+import { User } from '@ashy/models/User';
 
 import { Keyboard } from '@ionic-native/keyboard';
 
@@ -53,14 +53,14 @@ export class FriendChatPage {
     console.log('constructor toUser', this.toUser);
     console.log('constructor roomId', this.roomId);
 
-    this.getCurrentUser();
+    // this.getCurrentUser();
   }
 
-  ionViewDidLoad() {
+  /*ionViewDidLoad() {
 
     if (this.platform.is('ios'))
       this.addKeyboardListeners();
-    
+
     this.scrollContentElement = this.content.getScrollElement();
     this.footerElement = document.getElementsByTagName('page-friend-chat')[0].getElementsByTagName('ion-footer')[0];
     this.inputElement = document.getElementsByTagName('page-friend-chat')[0].getElementsByTagName('textarea')[0];
@@ -149,7 +149,7 @@ export class FriendChatPage {
     //     this.chatService.pushMessage(this.message, res[0].key, this.fromUser, this.toUser);
     //     this.message = '';
     //     console.log('sendMessage()');
-    //   } 
+    //   }
     // });
   }
 
@@ -203,6 +203,6 @@ export class FriendChatPage {
       if (this.platform.is('ios'))
         this.removeKeyboardListeners();
     });
-  }
+  }*/
 
 }

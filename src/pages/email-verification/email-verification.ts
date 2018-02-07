@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AlertServiceProvider } from "@ashy-services/alert-service/alert-service";
-import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
-import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
+import { AlertServiceProvider } from "@ashy/services/alert-service/alert-service";
+import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
+import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
 
 
 @IonicPage()

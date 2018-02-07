@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, Events } from 'ionic-angular';
 
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
@@ -36,7 +36,7 @@ export class HomePage {
         this.newFriends = this.addedFriend + newFriends;
         this.addedFriend += newFriends;
       }
-      
+
       setTimeout(() => {
         this.newFriends = '';
         this.addedFriend = 0;

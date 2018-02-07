@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { ChatServiceProvider } from '@ashy-services/chat-service/chat-service';
-import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
-import { User } from '@ashy-models/User';
+import { ChatServiceProvider } from '@ashy/services/chat-service/chat-service';
+import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
+import { User } from '@ashy/models/User';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
@@ -27,10 +27,10 @@ export class ChatPage {
     public modalService: ModalServiceProvider) {}
 
   ionViewWillEnter() {
-    this.displayListOfChatRooms();
+    // this.displayListOfChatRooms();
   }
 
-  displayListOfChatRooms() {
+  /*displayListOfChatRooms() {
     this.friendChats$ = this.chatService.fetchChatRoomsKeys().switchMap(room => {
       return Observable.combineLatest(room.map(friendChat => this.chatService.fetchFriendChatRooms(friendChat.key, friendChat.payload.val())));
     });
@@ -44,6 +44,6 @@ export class ChatPage {
   destroyChatroom(chat: any) {
     console.log('Destroy chat room:', chat);
     this.chatService.removeFriendChat(chat.roomId, chat.uid);
-  }
+  }*/
 
 }

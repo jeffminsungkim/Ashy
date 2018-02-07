@@ -1,12 +1,12 @@
 import { Component, Input, ViewChild } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 
-import { AlertServiceProvider } from "@ashy-services/alert-service/alert-service";
-import { AuthServiceProvider } from "@ashy-services/auth-service/auth-service";
-import { LoadingServiceProvider } from "@ashy-services/loading-service/loading-service";
-import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
-import { UserServiceProvider } from "@ashy-services/user-service/user-service";
-import { EmailSignup } from "@ashy-models/emailsignup";
+import { AlertServiceProvider } from "@ashy/services/alert-service/alert-service";
+import { AuthServiceProvider } from "@ashy/services/auth-service/auth-service";
+import { LoadingServiceProvider } from "@ashy/services/loading-service/loading-service";
+import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
+import { UserServiceProvider } from "@ashy/services/user-service/user-service";
+import { EmailSignup } from "@ashy/models/emailsignup";
 import * as firebase from 'firebase/app';
 
 @IonicPage()

@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import { EmojiServiceProvider } from '@ashy-services/emoji-service/emoji-service';
+import { EmojiServiceProvider } from '@ashy/services/emoji-service/emoji-service';
 
 export const EMOJI_PICKER_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -43,7 +43,7 @@ export class EmojiPickerComponent implements ControlValueAccessor {
   }
 
   setValue(val: any): any {
-   
+
     if (val === null) {
        console.log('setValue val is null', val);
        return;

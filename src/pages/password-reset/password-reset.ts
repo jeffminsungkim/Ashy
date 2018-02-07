@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { AlertServiceProvider } from '@ashy-services/alert-service/alert-service';
+import { AlertServiceProvider } from '@ashy/services/alert-service/alert-service';
 
 @IonicPage()
 @Component({

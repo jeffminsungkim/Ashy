@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { HomePage } from '@ashy-pages/home/home';
+import { HomePage } from '@ashy/pages/home/home';
 
 @NgModule({
   declarations: [

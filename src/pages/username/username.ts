@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/take';
@@ -28,7 +28,7 @@ export class UsernamePage implements OnDestroy {
     this.currentUsername = this.navParams.get('username');
   }
 
-  saveUsername() {
+  /*saveUsername() {
     this.hasSetUsername = true;
     this.userService.removeDeprecatedUsername(this.currentUsername);
     this.userService.updateUsername(this.usernameText);
@@ -57,7 +57,7 @@ export class UsernamePage implements OnDestroy {
         console.log("GOOD", this.usernameText);
       }
     }
-    
+
     this.subscription = this.userService.checkUsername(this.usernameText).take(1).subscribe(username => {
       console.log("uid:", username);
       if (username === null)
@@ -65,7 +65,7 @@ export class UsernamePage implements OnDestroy {
       else
         this.isUsernameAvailable = false;
     });
-  }
+  }*/
 
   ngOnDestroy() {
     if (this.subscription !== undefined) {

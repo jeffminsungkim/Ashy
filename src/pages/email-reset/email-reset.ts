@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
-import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
-import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
+import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
+import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
 import { ErrorDetectionServiceProvider } from '../../providers/error-detection-service/error-detection-service';
 
 

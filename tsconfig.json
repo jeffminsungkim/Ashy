@@ -17,16 +17,16 @@
     ],
     "baseUrl": "./src",
      "paths": {
-       "@ashy-app/*": ["app/*"],
-       "@ashy-components/*": ["components/*"],
-       "@ashy-core/*": ["core/*"],
-       "@ashy-env": ["environments/environment"],
-       "@ashy-mocks/*": ["mocks/*"],
-       "@ashy-models/*": ["models/*"],
-       "@ashy-pages/*": ["pages/*"],
-       "@ashy-pipes/*": ["pipes/*"],
-       "@ashy-services/*": ["providers/*"],
-       "@ashy-shared/*": ["shared/shared.module"]
+       "@ashy/app/*": ["app/*"],
+       "@ashy/components/*": ["components/*"],
+       "@ashy/core/*": ["core/*"],
+       "@ashy/env": ["environments/environment"],
+       "@ashy/mocks/*": ["mocks/*"],
+       "@ashy/models/*": ["models/*"],
+       "@ashy/pages/*": ["pages/*"],
+       "@ashy/pipes/*": ["pipes/*"],
+       "@ashy/services/*": ["providers/*"],
+       "@ashy/shared/*": ["shared/shared.module"],
      }
   },
   "include": [

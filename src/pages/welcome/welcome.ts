@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
 
-import { AuthServiceProvider } from "@ashy-services/auth-service/auth-service";
-import { LoadingServiceProvider } from '@ashy-services/loading-service/loading-service';
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
+import { AuthServiceProvider } from "@ashy/services/auth-service/auth-service";
+import { LoadingServiceProvider } from '@ashy/services/loading-service/loading-service';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 
 @IonicPage()
 @Component({

@@ -2,10 +2,10 @@ import { Component, ViewChild, Renderer, ElementRef, OnDestroy } from '@angular/
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { IonicPage, NavController, NavParams, ActionSheetController, ViewController } from 'ionic-angular';
 
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
-import { LoadingServiceProvider } from '@ashy-services/loading-service/loading-service';
-import { Upload } from '@ashy-models/upload';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { UploadServiceProvider } from '@ashy/services/upload-service/upload-service';
+import { LoadingServiceProvider } from '@ashy/services/loading-service/loading-service';
+import { Upload } from '@ashy/models/upload';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
@@ -51,10 +51,10 @@ export class ProfileDetailPage implements OnDestroy {
     public uploadService: UploadServiceProvider,
     public loadingService: LoadingServiceProvider) {
 
-    this.getUserProfile();
+    // this.getUserProfile();
   }
 
-  getUserProfile() {
+  /*getUserProfile() {
     this.subscription = this.userService.getCurrentUserObject().subscribe((user: any) => {
       console.log("Current user:", user);
       this.avatar = user.photoURL;
@@ -62,7 +62,7 @@ export class ProfileDetailPage implements OnDestroy {
       this.gender = user.gender;
       this.username = user.username;
     });
-  }
+  }*/
 
   changeDisplayName() {
     console.log("changeDisplayName()");
@@ -91,7 +91,7 @@ export class ProfileDetailPage implements OnDestroy {
     this.previewImage = null;
   }*/
 
-  deleteUploadFile() {
+  /*deleteUploadFile() {
     if (this.avatar !== this.previewImage) {
         this.uploadService.deleteUpload();
         this.avatar = this.userService.currentUserPhotoURL;
@@ -115,7 +115,7 @@ export class ProfileDetailPage implements OnDestroy {
     }).then((uploadSnapshot: any) => {
        console.log("Saved as a reference!!");
     });
-    
+
   }
 
   presentActionSheet() {
@@ -167,7 +167,7 @@ export class ProfileDetailPage implements OnDestroy {
 
   editUsername() {
     this.navCtrl.push('UsernamePage', { 'username': this.username });
- }
+  }*/
 
   closeModal() { this.navCtrl.pop(); }
 
