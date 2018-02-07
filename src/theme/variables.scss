@@ -59,6 +59,9 @@ $colors: (
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
+$tabs-ios-background: transparent;
+$tabs-ios-border-color: lightgray;
+
 $tabs-ios-tab-color-active: color($colors, pastelred);
 $tabs-ios-tab-color-inactive: color($colors, ashygray);
 
@@ -71,6 +74,8 @@ $loading-ios-background: transparent;
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
+$tabs-md-background: transparent;
+$tabs-md-border-color: transparent;
 
 $tabs-md-tab-color-active: color($colors, pastelred);
 $tabs-md-tab-color-inactive: color($colors, ashygray);
