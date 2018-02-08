@@ -180,9 +180,14 @@ export class UserServiceProvider {
 
   // Updates status when connection to Firebase starts
   updateOnConnect() {
-    return this.rtdb.ref('.info/connected').on('value', snapshot => {
-      this.updateCurrentUserActiveStatusTo('online');
-      this.updateLastLoginTime();
+
+    this.storage.get('accessToken').then((token) => {
+      if (!token) return;
+
+      return this.rtdb.ref('.info/connected').on('value', snapshot => {
+        this.updateCurrentUserActiveStatusTo('online');
+        this.updateLastLoginTime();
+      });
     });
   }
 
