@@ -23,7 +23,7 @@ module.exports = ({ admin, cors, express, functions }) => {
     });
   });
 
-  app.post('/api/v1/friend-requests/', (req, res) => {
+  app.post('/', (req, res) => {
     const recipientId = req.body.uid;
     const frRef = db.doc(recipientId).collection('receiveFrom').doc(req.user.user_id);
     console.log('request body:', req.body);

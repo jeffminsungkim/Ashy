@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { UtilityServiceProvider } from '@ashy-services/utility-service/utility-service';
-import { User } from '@ashy-models/user';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
+import { User } from '@ashy/models/user';
 
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -71,22 +71,17 @@ export class AddFriendPage implements OnDestroy {
     });
   }
   sendFriendRequest(user: User) {
-    console.log('request user:', user);
-
     this.afAuth.auth.currentUser.getIdToken().then(idToken => {
+      const url = 'https://us-central1-ashy-dev-3662f.cloudfunctions.net/addFriendDbFriendRequests/';
       console.log('idToken:', idToken);
       console.log('json format:', JSON.stringify(user));
-      this.http.post('https://us-central1-ashy-dev-3662f.cloudfunctions.net/sendfrDbFriendRequests/api/v1/friend-requests/', JSON.stringify(user), {
+      this.http.post(url, JSON.stringify(user), {
         headers: {'Authorization': idToken, 'Content-Type': 'application/json; charset=utf-8'}
       }).subscribe((res) => {
         console.log('res?', res);
+        // this.isUserAllowedToSendRequest = false;
       });
     });
-
-    // this.userService.sendFriendRequest(this.recipientUid, this.user).then((res: any) => {
-    //   if (res.status)
-    //     this.isUserAllowedToSendRequest = false;
-    // });
   }
 
   /*verifyUserSentRequestOrNot(uid: string) {
