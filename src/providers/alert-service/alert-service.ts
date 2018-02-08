@@ -43,7 +43,8 @@ export class AlertServiceProvider {
   notifyToCheckVerificationEmail() {
     this.alertCtrl.create({
       title: 'Email has sent!',
-      message: 'Please wait this might take a few minutes. Try it again if you have not received an email.',
+      subTitle: 'Please wait this might take a few minutes.',
+      message: 'Try it again if you have not received an email.',
       buttons: [
         {
           text: 'OK',
