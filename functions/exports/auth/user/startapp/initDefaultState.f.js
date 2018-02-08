@@ -11,8 +11,8 @@ module.exports = ({ admin, cors, express, functions }) => {
 
     let jwt = req.headers.authorization.trim();
 
-    return admin.auth().verifyIdToken(jwt).then((decodedToken) => {
-      req.user = decodedToken;
+    return admin.auth().verifyIdToken(jwt).then((claims) => {
+      req.user = claims;
       next();
     }).catch((err) => {
       return res.status(400).json({
