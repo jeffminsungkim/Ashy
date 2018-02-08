@@ -1,6 +1,8 @@
 // import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { Storage } from '@ionic/storage';
+
 import { Ashy } from '@ashy/models/ashy';
 import { User } from '@ashy/models/user';
 
@@ -31,7 +33,8 @@ export class UserServiceProvider {
 
   constructor(
     public afAuth: AngularFireAuth,
-    public afs: AngularFirestore) {
+    public afs: AngularFirestore,
+    private storage: Storage) {
 
       this.rtdb = firebase.database();
       this.fs = firebase.firestore();
@@ -213,10 +216,18 @@ export class UserServiceProvider {
       photoURL: photoURL
     };
 
-    this.afAuth.auth.currentUser.updateProfile(data).then(() => {
-      this.afAuth.auth.currentUser.getIdToken(true); // Force refresh regardless of token expiration
-      console.log('Updated Default User Profile');
-    }).catch((err) => console.log(err));
+    return this.afAuth.auth.currentUser.updateProfile(data)
+      .then(() => {
+        console.log('Successfully updated default user profile');
+
+        // Force refresh regardless of token expiration
+        return this.afAuth.auth.currentUser.getIdToken(true);
+      })
+      .then(accessToken => {
+        console.log('Token refreshed!', accessToken);
+        return this.storage.set('accessToken', accessToken);
+      })
+      .catch((err) => console.log(err));
   }
 
   /*updateGender(selectedGender: string) {
