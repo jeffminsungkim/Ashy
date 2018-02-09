@@ -1,4 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { IonicStorageModule } from '@ionic/storage';
 import { AlertServiceProvider } from '@ashy/services/alert-service/alert-service';
 import { LoadingServiceProvider } from '@ashy/services/loading-service/loading-service';
 import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
@@ -8,7 +9,7 @@ import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-s
 
 @NgModule({
   declarations: [],
-  imports: [],
+  imports: [IonicStorageModule.forRoot({name: '__ashydb'})],
   exports: []
 })
 
