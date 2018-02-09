@@ -37,8 +37,8 @@ export class WelcomePage {
     });
   }
 
-  goToRegisterPage() {
-    this.navCtrl.push('RegisterPage');
+  goToSignupPage() {
+    this.navCtrl.push('SignupPage');
   }
 
   goToLoginPage() {

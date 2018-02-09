@@ -25,7 +25,7 @@ export class LoginPage {
     this.registrationForm.handleDynamicSubmitFunc('login');
   }
 
-  goToPasswordReset() { this.navCtrl.push("PasswordResetPage"); }
+  goToPasswordReset() { this.navCtrl.push('PasswordResetPage'); }
 
-  goToRegister() { this.navCtrl.push("RegisterPage"); }
+  goToRegister() { this.navCtrl.push('SignupPage'); }
 }
