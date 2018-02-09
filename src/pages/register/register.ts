@@ -1,12 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, NavController } from "ionic-angular";
+import { RegistrationFormComponent } from "@ashy/components/registration-form/registration-form";
 
-import { AuthServiceProvider } from "@ashy/services/auth-service/auth-service";
-import { ToastServiceProvider } from "@ashy/services/toast-service/toast-service";
-import { AlertServiceProvider } from "@ashy/services/alert-service/alert-service";
-import { LoadingServiceProvider } from "@ashy/services/loading-service/loading-service";
-import { ErrorDetectionServiceProvider } from "@ashy/services/error-detection-service/error-detection-service";
-import { EmailSignup } from "@ashy/models/emailsignup";
 
 @IonicPage()
 @Component({
@@ -15,52 +10,20 @@ import { EmailSignup } from "@ashy/models/emailsignup";
 })
 export class RegisterPage {
 
-  @ViewChild('emailInput') emailInput;
-  public user: EmailSignup = {
-    email: "",
-    password: "",
-    displayName: ""
-  };
+  @ViewChild(RegistrationFormComponent) registrationForm: RegistrationFormComponent;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public authService: AuthServiceProvider,
-    public toastService: ToastServiceProvider,
-    public alertService: AlertServiceProvider,
-    public loadingService: LoadingServiceProvider,
-    public errorDetectionService: ErrorDetectionServiceProvider
-  ) {}
+  constructor(public navCtrl: NavController) {}
 
   ionViewDidEnter() {
+    this.registrationForm.changeSumitButtonLabelTo('Sign In');
+    this.registrationForm.handleDynamicSubmitFunc('signup');
+  }
+
+  ionViewDidLoad() {
     setTimeout(() => {
-      this.emailInput.setFocus();
-    }, 500);
+      this.registrationForm.emailInput.setFocus();
+    }, 600);
   }
 
-  async onSubmit({ value, valid }: { value: EmailSignup; valid: boolean }) {
-    if (!valid) {
-      this.toastService.allFieldsRequired();
-    } else {
-      this.loadingService.showWaitLoader();
-      try {
-        const res: any = await this.authService.emailSignUp(value);
-
-        if (res) {
-          this.toastService.show(res.message);
-          this.alertService.notifyToCheckVerificationEmail();
-          this.loadingService.dismiss();
-        }
-      } catch (error) {
-        console.error(error);
-        this.loadingService.dismiss();
-        let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
-        this.toastService.show(errorMessage);
-      }
-    }
-  }
-
-  backToRoot() {
-    this.navCtrl.pop();
-  }
+  backToRoot() { this.navCtrl.pop(); }
 }
