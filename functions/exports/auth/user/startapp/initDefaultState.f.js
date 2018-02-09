@@ -2,6 +2,10 @@
 
 module.exports = ({ admin, cors, express, functions }) => {
   const app = express();
+  const fireStore = admin.firestore();
+  const rtdb = admin.database();
+  const apps = fireStore.collection('apps');
+  const users = fireStore.collection('users');
 
   app.use(cors({ origin: true }));
 
@@ -22,10 +26,6 @@ module.exports = ({ admin, cors, express, functions }) => {
   });
 
   app.post('/', (req, res) => {
-    const fireStore = admin.firestore();
-    const rtdb = admin.database();
-    const apps = fireStore.collection('apps');
-    const users = fireStore.collection('users');
     const batch = admin.firestore().batch();
     const uid = req.user.user_id;
     const data = req.body;
