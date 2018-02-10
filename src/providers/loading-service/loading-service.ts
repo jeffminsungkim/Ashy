@@ -5,7 +5,7 @@ import { LoadingController } from 'ionic-angular';
 export class LoadingServiceProvider {
 
   loader: any;
-  public svgPath: string = 'assets/svgs/manhatten-pastel-red-200.svg';
+  svgPath: string = 'assets/svgs/manhatten-pastel-red-200.svg';
 
   constructor(public loadingCtrl: LoadingController) { }
 
