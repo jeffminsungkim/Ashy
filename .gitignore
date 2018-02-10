@@ -40,12 +40,13 @@ certificate/
 storage.rules
 firestore.rules
 rtdb-rules.json
+rtdb-rules-old.json
 
 # Cloud functions
 functions/node_modules
 
 # Service account credentials
-ashy-dev-3662f-firebase-adminsdk-hw09n-81434c603b.json
+ashy-development-firebase-adminsdk-1ogwh-5b7804f269.json
 
 # Android
 google-services.json
