@@ -33,9 +33,12 @@ environments/
 $RECYCLE.BIN/
 
 # Custom
-firebase-rules.json
 .editorconfig
 certificate/
+
+# DB Rules
+firestore.rules
+rtdb-rules.json
 
 # Cloud functions
 functions/node_modules
