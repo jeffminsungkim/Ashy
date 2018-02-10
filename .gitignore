@@ -36,7 +36,8 @@ $RECYCLE.BIN/
 .editorconfig
 certificate/
 
-# DB Rules
+# Rules
+storage.rules
 firestore.rules
 rtdb-rules.json
 
