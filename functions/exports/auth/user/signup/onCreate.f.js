@@ -2,13 +2,13 @@
 
 module.exports = ({ admin, functions, firestore }) => {
   return functions.auth.user().onCreate(event => {
-    const BASE_URL = 'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2F';
+    const BASE_URL = 'https://firebasestorage.googleapis.com/v0/b/ashy-development.appspot.com/o/default-profilephoto%2F';
     const user = event.data;
     const uid = user.uid;
     const email = user.email;
     const displayName = user.displayName || null;
     const photoURL = user.photoURL || null;
-    const thumbnail = user.photoURL || `${BASE_URL}thumb_avatar.jpg?alt=media&token=0e1d9733-a87d-4bf7-be4a-072dd1c20c50`;
+    const thumbnail = user.photoURL || `${BASE_URL}thumb_avatar.jpg?alt=media&token=e982270b-f905-4a72-9cb7-13973713953c`;
     const username = generateRandomUsername().toLowerCase();
     const appsRef = firestore.doc(`apps/${uid}`);
     const newUserRef = firestore.doc(`users/${uid}`);
