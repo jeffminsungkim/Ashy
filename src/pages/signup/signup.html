@@ -10,6 +10,6 @@
         <h2>Create your account</h2>
       </ion-col>
     </ion-row>
-    <registration-form></registration-form>
+    <registration-form [buttonLabel]="signupLabel" (onSubmit)="signup($event)"></registration-form>
   </ion-list>
 </ion-content>
