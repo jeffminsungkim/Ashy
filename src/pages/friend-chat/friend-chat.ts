@@ -4,7 +4,6 @@ import { IonicPage, NavController, ViewController, NavParams, Platform, Content 
 import { ChatServiceProvider } from '@ashy/services/chat-service/chat-service';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
-import { AlertServiceProvider } from '@ashy/services/alert-service/alert-service';
 import { User } from '@ashy/models/User';
 
 import { Keyboard } from '@ionic-native/keyboard';
@@ -45,8 +44,7 @@ export class FriendChatPage {
     public keyboard: Keyboard,
     public chatService: ChatServiceProvider,
     public userService: UserServiceProvider,
-    public utilityService: UtilityServiceProvider,
-    public alertService: AlertServiceProvider) {
+    public utilityService: UtilityServiceProvider) {
 
     this.toUser = this.navParams.get('toUser');
     this.roomId = this.navParams.get('roomId');
