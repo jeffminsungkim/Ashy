@@ -1,15 +1,13 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { IonicStorageModule } from '@ionic/storage';
-import { AlertServiceProvider } from '@ashy/services/alert-service/alert-service';
-import { LoadingServiceProvider } from '@ashy/services/loading-service/loading-service';
+import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
+import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
 import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
-import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
 import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
 
 
 @NgModule({
   declarations: [],
-  imports: [IonicStorageModule.forRoot({name: '__ashydb'})],
+  imports: [],
   exports: []
 })
 
@@ -18,10 +16,9 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        AlertServiceProvider,
-        LoadingServiceProvider,
+        LocalStorageServiceProvider,
+        InterfaceOption,
         ModalServiceProvider,
-        ToastServiceProvider,
         UtilityServiceProvider
       ]
     };
