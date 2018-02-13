@@ -6,7 +6,6 @@ import { AlertServiceProvider } from "@ashy/services/alert-service/alert-service
 import { AuthServiceProvider } from "@ashy/services/auth-service/auth-service";
 import { LoadingServiceProvider } from "@ashy/services/loading-service/loading-service";
 import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
-import { ErrorDetectionServiceProvider } from "@ashy/services/error-detection-service/error-detection-service";
 
 
 @IonicPage()
@@ -23,7 +22,6 @@ export class SignupPage {
     public navCtrl: NavController,
     public alertService: AlertServiceProvider,
     public authService: AuthServiceProvider,
-    public errorDetectionService: ErrorDetectionServiceProvider,
     public loadingService: LoadingServiceProvider,
     public toastService: ToastServiceProvider) {}
 
@@ -46,8 +44,8 @@ export class SignupPage {
     } catch (error) {
       console.error(error);
       this.loadingService.dismiss();
-      let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
-      this.toastService.show(errorMessage);
+      // let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
+      this.toastService.show(error.message);
     }
   }
 

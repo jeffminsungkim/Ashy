@@ -66,8 +66,7 @@ export class EmailResetPage {
       this.toastService.show(`Address changed to ${newEmail}`);
       this.viewCtrl.dismiss({'email': this.newEmail});
     } catch(error) {
-      let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
-      this.toastService.show(errorMessage);
+      this.toastService.show(error.message);
     }
   }
 }

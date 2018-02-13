@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -17,8 +18,7 @@ import { MyApp } from '@ashy/app/app.component';
 import { CoreModule } from '@ashy/core/core.module';
 import { SharedModule } from '@ashy/shared/shared.module';
 
-import { ErrorDetectionServiceProvider } from '@ashy/services/error-detection-service/error-detection-service';
-import { NotificationServiceProvider } from '../providers/notification-service/notification-service';
+import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
 
 
 @NgModule({
@@ -30,6 +30,7 @@ import { NotificationServiceProvider } from '../providers/notification-service/n
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    AsyncLocalStorageModule,
     IonicModule.forRoot(MyApp, {
       backButtonText: "",
       iconMode: 'ios',
@@ -52,13 +53,12 @@ import { NotificationServiceProvider } from '../providers/notification-service/n
     StatusBar,
     SplashScreen,
     FCM,
-    ErrorDetectionServiceProvider,
     NativePageTransitions,
 		{provide: ErrorHandler, useClass: IonicErrorHandler},
     Camera,
     File,
     Keyboard,
-    NotificationServiceProvider
+    LocalStorageServiceProvider,
   ]
 })
 export class AppModule {}

@@ -93,8 +93,7 @@ export class AlertServiceProvider {
         this.notifyPasswordResetEmailhasSent();
     } catch(error) {
       console.log("error:", error);
-      let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
-      this.toastService.show(errorMessage);
+      this.toastService.show(error.message);
     }
   }
 

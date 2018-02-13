@@ -41,7 +41,6 @@ export class LoginPage {
         this.localStorageService.reStoreAccessToken('accessToken');
         this.loadingService.dismiss();
       }
-
     } catch (err) {
       this.alertService.notifyErrorMessage(err.message);
       this.loadingService.dismiss();

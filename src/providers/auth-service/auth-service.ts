@@ -7,8 +7,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 
-import { ErrorDetectionServiceProvider } from '../error-detection-service/error-detection-service';
-
 import { Observable } from 'rxjs/Observable';
 
 
@@ -20,8 +18,7 @@ export class AuthServiceProvider {
 
   constructor(
     public afAuth: AngularFireAuth,
-    public afs: AngularFirestore,
-    public errorDetectionService: ErrorDetectionServiceProvider) {
+    public afs: AngularFirestore) {
       this.usersRef = this.afs.collection<User>('users');
       this.afAuth.authState.subscribe((auth) => this.authState = auth);
   }
@@ -41,6 +38,7 @@ export class AuthServiceProvider {
 
   sendEmailVerification() {
     this.currentUser.sendEmailVerification();
+    console.log('Verification email has sent');
   }
 
   resetPassword(email: string) {
@@ -58,23 +56,17 @@ export class AuthServiceProvider {
 
   emailSignUp(user: EmailSignup) {
     return new Promise((resolve, reject) => {
-      this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password).then((auth) => {
-        if (auth && !auth.emailVerified)
-          auth.sendEmailVerification().then(() => {
-            console.log('Verification email has sent.');
-            resolve({status: true, message: `Signed up as ${auth.email}`});
-          }).catch(err => reject(err));
-        }).catch(err => reject(err));
-      });
-    }
+      this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
+      .then(auth => resolve({status: true, message: `Signed up as ${auth.email}`}))
+      .catch(err => reject(err));
+    });
+  }
 
   emailLogin(user: EmailSignup) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
-      .then(user => resolve(user)).catch((error) => {
-        let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
-        reject({message: errorMessage});
-      });
+      .then(user => resolve(user))
+      .catch(err => reject(err));
     });
   }
 
