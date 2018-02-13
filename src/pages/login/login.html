@@ -8,12 +8,5 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-list>
-    <ion-row>
-      <ion-col>
-        <h2>Welcome back!</h2>
-      </ion-col>
-    </ion-row>
-    <registration-form [buttonLabel]="loginLabel" (onSubmit)="login($event)"></registration-form>
-  </ion-list>
+  <registration-form [heading]="title" [buttonLabel]="loginLabel" (onSubmit)="login($event)"></registration-form>
 </ion-content>

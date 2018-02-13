@@ -17,6 +17,7 @@ import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service
 export class LoginPage {
 
   @ViewChild(RegistrationFormComponent) registrationForm: RegistrationFormComponent;
+  title: string = 'Welcome back!';
   loginLabel: string = 'Log In';
 
   constructor(
