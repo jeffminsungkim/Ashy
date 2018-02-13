@@ -44,7 +44,6 @@ export class SignupPage {
     } catch (error) {
       console.error(error);
       this.loadingService.dismiss();
-      // let errorMessage = this.errorDetectionService.inspectAnyErrors(error.code);
       this.toastService.show(error.message);
     }
   }
