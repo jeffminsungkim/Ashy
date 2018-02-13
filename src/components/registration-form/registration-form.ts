@@ -10,7 +10,7 @@ export class RegistrationFormComponent {
   @ViewChild('emailInput') emailInput;
   @Input('buttonLabel') labelName: string;
   @Output() onSubmit = new EventEmitter<EmailSignup>();
-  public user = {} as EmailSignup;
+  user = {} as EmailSignup;
 
   constructor() {}
 
