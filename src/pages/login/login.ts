@@ -1,12 +1,10 @@
 import { Component, ViewChild } from "@angular/core";
-import { IonicPage, NavController } from "ionic-angular";
+import { IonicPage, NavController, AlertController, LoadingController } from "ionic-angular";
 import { RegistrationFormComponent } from "@ashy/components/registration-form/registration-form";
 
-import { AlertServiceProvider } from "@ashy/services/alert-service/alert-service";
+import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
 import { AuthServiceProvider } from "@ashy/services/auth-service/auth-service";
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
-import { LoadingServiceProvider } from "@ashy/services/loading-service/loading-service";
-import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
 
 
 @IonicPage()
@@ -22,9 +20,10 @@ export class LoginPage {
 
   constructor(
     public navCtrl: NavController,
-    public alertService: AlertServiceProvider,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
+    private interfaceOpt: InterfaceOption,
     public authService: AuthServiceProvider,
-    public loadingService: LoadingServiceProvider,
     private localStorageService: LocalStorageServiceProvider) {}
 
   ionViewDidLoad() {
@@ -34,17 +33,18 @@ export class LoginPage {
   }
 
   async login($event) {
-    this.loadingService.showWaitLoader();
+    let loader = this.loadingCtrl.create(this.interfaceOpt.makeWaitLoaderOpt());
+    loader.present();
     try {
       const res = await this.authService.emailLogin($event);
 
       if (res) {
         this.localStorageService.reStoreAccessToken('accessToken');
-        this.loadingService.dismiss();
+        loader.dismiss();
       }
     } catch (err) {
-      this.alertService.notifyErrorMessage(err.message);
-      this.loadingService.dismiss();
+      this.alertCtrl.create(this.interfaceOpt.makeErrorMessageOpt(err.message)).present();
+      loader.dismiss();
     }
   }
 
