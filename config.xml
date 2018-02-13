@@ -21,8 +21,8 @@
     <preference name="SplashScreenDelay" value="3000" />
     <preference name="orientation" value="portrait" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
-    <preference name="TwitterConsumerKey" value="xOSG7ze1lcYMMHc86zFpUAqwY" />
-    <preference name="TwitterConsumerSecret" value="o8snLcDqMAaMqzi3HfOPIFXg0zE6KJp8Htn0gCErqrtTDWlZ2j" />
+    <preference name="TwitterConsumerKey" value="pmUOFZXGZRFXrC6IfFolg3mv2" />
+    <preference name="TwitterConsumerSecret" value="LUOv6zD9HvlSLpIQ7dJJPCvgSfikKt36227Tm4jzDNXG5miZHp" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -96,4 +96,5 @@
         <variable name="FABRIC_KEY" value="a896cced8f0aad8db8f97a94e97e1fd78455a91a" />
     </plugin>
     <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
+    <plugin name="cordova-sqlite-storage" spec="^2.2.0" />
 </widget>
