@@ -3,7 +3,6 @@ import { AlertController } from 'ionic-angular';
 
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
-import { ErrorDetectionServiceProvider } from '../error-detection-service/error-detection-service';
 
 @Injectable()
 export class AlertServiceProvider {
@@ -11,8 +10,7 @@ export class AlertServiceProvider {
   constructor(
     public alertCtrl: AlertController,
     public authService: AuthServiceProvider,
-    public toastService: ToastServiceProvider,
-    public errorDetectionService: ErrorDetectionServiceProvider) { }
+    public toastService: ToastServiceProvider) { }
 
   notifyErrorMessage(message: string) {
     this.alertCtrl.create({

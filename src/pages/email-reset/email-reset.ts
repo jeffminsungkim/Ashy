@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
-import { ErrorDetectionServiceProvider } from '../../providers/error-detection-service/error-detection-service';
 
 
 @IonicPage()
@@ -21,8 +20,7 @@ export class EmailResetPage {
     public alertCtrl: AlertController,
     public viewCtrl: ViewController,
     private authService: AuthServiceProvider,
-    private toastService: ToastServiceProvider,
-    private errorDetectionService: ErrorDetectionServiceProvider) {
+    private toastService: ToastServiceProvider) {
 
     this.oldEmail = this.navParams.get('oldEmail');
   }
