@@ -4,7 +4,6 @@ import { IonicPage, NavController, NavParams, ActionSheetController, ViewControl
 
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 import { UploadServiceProvider } from '@ashy/services/upload-service/upload-service';
-import { LoadingServiceProvider } from '@ashy/services/loading-service/loading-service';
 import { Upload } from '@ashy/models/upload';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -48,8 +47,7 @@ export class ProfileDetailPage implements OnDestroy {
     public renderer: Renderer,
     public camera: Camera,
     public userService: UserServiceProvider,
-    public uploadService: UploadServiceProvider,
-    public loadingService: LoadingServiceProvider) {
+    public uploadService: UploadServiceProvider) {
 
     // this.getUserProfile();
   }

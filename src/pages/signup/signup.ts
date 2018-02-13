@@ -1,11 +1,9 @@
 import { Component, Input, ViewChild } from "@angular/core";
-import { IonicPage, NavController } from "ionic-angular";
+import { IonicPage, NavController, AlertController, LoadingController, ToastController } from "ionic-angular";
 import { RegistrationFormComponent } from "@ashy/components/registration-form/registration-form";
 
-import { AlertServiceProvider } from "@ashy/services/alert-service/alert-service";
 import { AuthServiceProvider } from "@ashy/services/auth-service/auth-service";
-import { LoadingServiceProvider } from "@ashy/services/loading-service/loading-service";
-import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
+import { InterfaceOption } from '@ashy/services/interface-option/interface-option';
 
 
 @IonicPage()
@@ -21,10 +19,11 @@ export class SignupPage {
 
   constructor(
     public navCtrl: NavController,
-    public alertService: AlertServiceProvider,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
+    public toastCtrl: ToastController,
     public authService: AuthServiceProvider,
-    public loadingService: LoadingServiceProvider,
-    public toastService: ToastServiceProvider) {}
+    private interfaceOpt: InterfaceOption) {}
 
   ionViewDidLoad() {
     setTimeout(() => {
@@ -33,19 +32,20 @@ export class SignupPage {
   }
 
   async signup($event) {
-    this.loadingService.showWaitLoader();
+    let loader = this.loadingCtrl.create(this.interfaceOpt.makeWaitLoaderOpt());
+    loader.present();
     try {
       const res: any = await this.authService.emailSignUp($event);
 
       if (res) {
-        this.toastService.show(res.message);
-        this.alertService.notifyToCheckVerificationEmail();
-        this.loadingService.dismiss();
+        this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(res.message)).present();
+        this.alertCtrl.create(this.interfaceOpt.makeEmailVerificationOpt()).present();
+        loader.dismiss();
       }
     } catch (error) {
       console.error(error);
-      this.loadingService.dismiss();
-      this.toastService.show(error.message);
+      loader.dismiss();
+      this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(error.message)).present();
     }
   }
 

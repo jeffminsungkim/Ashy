@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
+import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
+import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
-import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
 import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
 import { UploadServiceProvider } from '@ashy/services/upload-service/upload-service';
 import { User } from '@ashy/models/user';
@@ -27,9 +28,11 @@ export class SettingPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public toastCtrl: ToastController,
+    private interfaceOpt: InterfaceOption,
+    private localStorageService: LocalStorageServiceProvider,
     public authService: AuthServiceProvider,
     public userService: UserServiceProvider,
-    public toastService: ToastServiceProvider,
     public modalService: ModalServiceProvider,
     public uploadService: UploadServiceProvider) { this.uid = this.userService.currentUserId; }
 
@@ -43,16 +46,16 @@ export class SettingPage {
   }
 
   async logout() {
+    this.localStorageService.clearStorage();
     this.userService.updateCurrentUserActiveStatusTo('signout');
     this.userService.updateCurrentUserAppUsageStatusTo(false, 'signout');
     const user: any = await this.authService.signOut();
-    this.toastService.show(`Signed out as ${user.email}`);
+    this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(`Signed out as ${user.email}`));
   }
 
   deleteAccount() {
-    // TODO: DELETE ACCOUNT FROM THE FOLLOWING CONDITION:
-    // USER SHOULD TYPE THEIR EMAIL ACCOUNT IN TEXT INPUT
-    // AND INPUT STRING MUST MATCH WITH THE USER'S EMAIL ACCOUNT.
+    // TODO: Add a confirm button
+    this.localStorageService.clearStorage();
     this.authService.deleteAccount();
   }
 }

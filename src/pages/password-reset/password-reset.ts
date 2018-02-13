@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
+import { InterfaceOption } from '@ashy/services/interface-option/interface-option';
 
-import { AlertServiceProvider } from '@ashy/services/alert-service/alert-service';
 
 @IonicPage()
 @Component({
@@ -15,13 +16,43 @@ export class PasswordResetPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public alertService: AlertServiceProvider) { }
+    public alertCtrl: AlertController,
+    private interfaceOpt: InterfaceOption,
+    private authService: AuthServiceProvider) { }
 
   ionViewDidLoad() {
 
   }
 
   sendEmail() {
-    this.alertService.confirmSendPasswordResetEmail(this.email.toLowerCase());
+    this.alertCtrl.create({
+      title: this.email,
+      message: 'Please confirm the verification link from your email account.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Send',
+          handler: () => {
+            this.sendPasswrodResetEmail();
+          }
+        }
+      ]
+    }).present();
+  }
+
+  async sendPasswrodResetEmail() {
+    console.log('sendPasswrodResetEmail() called');
+    try {
+      const res: any = await this.authService.resetPassword(this.email);
+
+      if (res.status)
+        this.alertCtrl.create(this.interfaceOpt.makePasswordResetOpt()).present();
+    } catch(error) {
+      console.log("error:", error);
+      this.alertCtrl.create(this.interfaceOpt.makeErrorMessageOpt(error.message)).present();
+    }
   }
 }

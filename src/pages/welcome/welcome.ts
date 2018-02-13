@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 import { AuthServiceProvider } from "@ashy/services/auth-service/auth-service";
-import { LoadingServiceProvider } from '@ashy/services/loading-service/loading-service';
+import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 
 @IonicPage()
@@ -16,15 +16,17 @@ export class WelcomePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public loadingCtrl: LoadingController,
     private authService: AuthServiceProvider,
-    private loadingService: LoadingServiceProvider,
+    private interfaceOpt: InterfaceOption,
     private twitterConnect: TwitterConnect,
     private userService: UserServiceProvider) {
   }
 
   loginWithTwitter() {
+    let loader = this.loadingCtrl.create(this.interfaceOpt.makeWaitLoaderOpt());
     this.twitterConnect.login().then((res) => {
-      this.loadingService.showWaitLoader();
+      loader.present();
       console.log('token:',res.token);
       console.log('secret:',res.secret);
       this.authService.twitterLogin(res.token, res.secret).then(user => {
@@ -32,8 +34,8 @@ export class WelcomePage {
         this.userService.updateCurrentUserActiveStatusTo('online');
         this.userService.updateCurrentUserAppUsageStatusTo(true, 'signout');
         this.navCtrl.setRoot('HomePage');
-        this.loadingService.dismiss();
-      }).catch(error => this.loadingService.dismiss());
+        loader.dismiss();
+      }).catch(error => loader.dismiss());
     });
   }
 

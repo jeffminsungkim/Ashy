@@ -3,7 +3,6 @@ import { IonicPage, App, NavParams, NavController, Events, ActionSheetController
 
 import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/native-page-transitions';
 
-import { AlertServiceProvider } from '@ashy/services/alert-service/alert-service';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 import { ChatServiceProvider } from '@ashy/services/chat-service/chat-service';
 import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
@@ -36,7 +35,6 @@ export class ProfilePage {
     public nativePageTransitions: NativePageTransitions,
     public authService: AuthServiceProvider,
     public userService: UserServiceProvider,
-    public alertService: AlertServiceProvider,
     public uploadService: UploadServiceProvider,
     public modalService: ModalServiceProvider,
     public chatService: ChatServiceProvider) {

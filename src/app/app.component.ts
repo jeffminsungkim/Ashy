@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, ToastController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
+import { InterfaceOption } from '@ashy/services/interface-option/interface-option';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+
 
 @Component({
   templateUrl: 'app.html'
@@ -18,11 +19,12 @@ export class MyApp {
 
   constructor(
     platform: Platform,
+    toastCtrl: ToastController,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     keyboard: Keyboard,
     afAuth: AngularFireAuth,
-    toastService: ToastServiceProvider,
+    interfaceOpt: InterfaceOption,
     userService: UserServiceProvider,
     imageLoaderConfig: ImageLoaderConfig) {
 
@@ -36,15 +38,14 @@ export class MyApp {
             const userSignedIn = snapshot.val().usingApp;
 
             if (status && !userSignedIn || userSignedIn === undefined) {
-              toastService.show(`Signed in as ${user.email}`);
+              toastCtrl.create(interfaceOpt.makeShowToastOpt(`Signed in as ${user.email}`)).present();
               userService.updateCurrentUserAppUsageStatusTo(true, status);
             }
           });
-          console.log('HomePage');
           this.rootPage = 'HomePage';
         }
         else if (user && !user.emailVerified) {
-          console.log('EmailVerificationPage');
+          user.sendEmailVerification();
           this.intervalId = setInterval(() => {
             afAuth.auth.currentUser.reload().then(() => {
               console.log('Verification State:', user.emailVerified);
