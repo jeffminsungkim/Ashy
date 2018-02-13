@@ -18,8 +18,6 @@ import { MyApp } from '@ashy/app/app.component';
 import { CoreModule } from '@ashy/core/core.module';
 import { SharedModule } from '@ashy/shared/shared.module';
 
-import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
-
 
 @NgModule({
   declarations: [
@@ -58,7 +56,6 @@ import { LocalStorageServiceProvider } from '@ashy/services/local-storage-servic
     Camera,
     File,
     Keyboard,
-    LocalStorageServiceProvider,
   ]
 })
 export class AppModule {}
