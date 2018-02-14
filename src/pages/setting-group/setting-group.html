@@ -1,0 +1,36 @@
+<ion-content>
+  <ion-navbar>
+    <ion-title>Quick Settings</ion-title>
+    <ion-buttons left>
+      <button ion-button (click)="dismissModal()">
+        <i class="fa fa-times"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-list>
+    <ion-item (click)="changeDisplayName()">
+      <span class="item-text-center">Display Name</span>
+      <span class="item-icon-center">
+        <i class="fa fa-edit"></i>
+      </span>
+    </ion-item>
+    <ion-item (click)="changeStatusMessage()">
+      <span class="item-text-center">Status Message</span>
+      <span class="item-icon-center">
+        <i class="fa fa-edit"></i>
+      </span>
+    </ion-item>
+    <ion-item (click)="changeUsername()">
+      <span class="item-text-center">Change Username</span>
+      <span class="item-icon-center">
+        <i class="fa fa-edit"></i>
+      </span>
+    </ion-item>
+    <ion-item (click)="goToSetting()">
+      <span class="item-text-center">Settings</span>
+      <span class="item-icon-center">
+        <i class="fa fa-cog rotate"></i>
+      </span>
+    </ion-item>
+  </ion-list>
+</ion-content>

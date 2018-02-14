@@ -1,0 +1,88 @@
+page-setting-group {
+
+  ion-navbar.toolbar .button-inner {
+    font-size: 25px;
+    -webkit-text-stroke: 3px white;
+  }
+
+  ion-content {
+    &.content {
+      div.scroll-content {
+        top: 44%;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+
+    &.content-md {
+      background-color: rgba(0, 0, 0, 0.7);
+
+      div.scroll-content {
+        background-color: #fafafa;
+        border-radius: 10px;
+        box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4);
+        padding: 10px;
+      }
+    }
+
+    &.content-ios {
+      background-color: rgba(0, 0, 0, 0.7);
+
+      div.scroll-content {
+        background-color: #f8f8f8;
+        border-radius: 10px;
+        padding: 10px;
+      }
+    }
+  }
+
+  ion-item.item.item-block.item-md {
+    padding: 0;
+    background-color: transparent;
+    padding-top: 5%;
+  }
+
+  ion-item.item.item-block.item-ios {
+    padding: 0;
+    background-color: transparent;
+    padding-top: 5%;
+  }
+  .item-text-center {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    font-size: 1.6rem;
+  }
+
+  .item-icon-center {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    right: 6%;
+    color: color($colors, ashygray, base);
+    font-size: 1.6rem;
+  }
+}
