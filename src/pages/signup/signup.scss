@@ -17,7 +17,13 @@ page-signup {
       padding-right: 0;
     }
     .button-md {
+      font-size: 15px;
+      box-shadow: 0 10px 10px -7px darkslategrey;
       background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
+    }
+    .button-md:active {
+      top: 1px;
+      box-shadow: 0 1px 0 color($colors, ashygray, base);
     }
     .note-md {
       color: green;
@@ -33,10 +39,13 @@ page-signup {
       padding-right: 0;
     }
     .button-ios {
+      font-size: 15px;
+      box-shadow: 0 10px 10px -7px darkslategrey;
       background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
     }
-    .button-ios {
-      background-color: color($colors, pastelred, base);
+    .button-ios:active {
+      top: 1px;
+      box-shadow: 0 1px 0 color($colors, ashygray, base);
     }
     .note-ios {
       color: green;

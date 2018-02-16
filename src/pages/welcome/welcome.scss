@@ -18,23 +18,36 @@ page-welcome {
 
     .section-b {
       display: block;
-      padding: 100% 10%;
+      padding: 100% 8%;
 
       .button-md-twitter {
+        font-size: 15px;
+        box-shadow: 0 10px 10px -7px darkslategrey;
         background: repeating-linear-gradient(90deg, color($colors, dodger, base), color($colors, twitter, base));
       }
       .button-md-twitter:hover {
         color: color($colors, ashygray, base);
       }
+      .button-md-twitter:active {
+        top: 1px;
+        box-shadow: 0 1px 0 color($colors, ashygray, base);
+      }
       .button-md-blank {
         color: white;
+        font-size: 15px;
+        box-shadow: 0 10px 10px -7px darkslategrey;
         background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
       }
       .button-md:hover {
         color: color($colors, ashygray, base);
       }
+      .button-md:active {
+        top: 1px;
+        box-shadow: 0 1px 0 color($colors, ashygray, base);
+      }
       .button-clear-md-lightgray {
         color: white;
+        font-size: 15px;
       }
       .button-clear-md-lightgray:hover {
         color: color($colors, mac, base);
@@ -45,20 +58,33 @@ page-welcome {
       }
 
       .button-ios-twitter {
+        font-size: 15px;
+        box-shadow: 0 10px 10px -7px darkslategrey;
         background: repeating-linear-gradient(90deg, color($colors, dodger, base), color($colors, twitter, base));
       }
       .button-ios-twitter:hover {
         color: color($colors, ashygray, base);
       }
+      .button-ios-twitter:active {
+        top: 1px;
+        box-shadow: 0 1px 0 color($colors, ashygray, base);
+      }
       .button-ios-blank {
         color: white;
+        font-size: 15px;
+        box-shadow: 0 10px 10px -7px darkslategrey;
         background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
       }
       .button-ios:hover {
         color: color($colors, ashygray, base);
       }
+      .button-ios:active {
+        top: 1px;
+        box-shadow: 0 1px 0 color($colors, ashygray, base);
+      }
       .button-clear-ios-lightgray {
         color: white;
+        font-size: 15px;
       }
       .button-clear-ios-lightgray:hover {
         color: color($colors, mac, base);
@@ -68,6 +94,7 @@ page-welcome {
       }
     }
     .section-c {
+      font-size: 13px;
       left: 0;
       bottom: 0;
       position: absolute;
