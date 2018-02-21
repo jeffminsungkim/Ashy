@@ -31,6 +31,7 @@
     "@angular/http": "5.2.0",
     "@angular/platform-browser": "5.2.0",
     "@angular/platform-browser-dynamic": "5.2.0",
+    "@ionic-native/app-version": "^4.5.3",
     "@ionic-native/camera": "^4.5.2",
     "@ionic-native/core": "4.5.2",
     "@ionic-native/fcm": "^4.5.3",
@@ -47,6 +48,7 @@
     "com.telerik.plugins.nativepagetransitions": "^0.6.5",
     "cordova-android": "6.3.0",
     "cordova-ios": "4.5.4",
+    "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-camera": "^4.0.1",
     "cordova-plugin-device": "^2.0.1",
     "cordova-plugin-fcm": "^2.1.2",
@@ -116,7 +118,8 @@
         "FABRIC_KEY": "a896cced8f0aad8db8f97a94e97e1fd78455a91a"
       },
       "cordova-plugin-fcm": {},
-      "cordova-sqlite-storage": {}
+      "cordova-sqlite-storage": {},
+      "cordova-plugin-app-version": {}
     },
     "platforms": [
       "android",
