@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController, ModalController, ViewController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController, ModalController, ViewController, ToastController, Platform } from 'ionic-angular';
+import { AppVersion } from '@ionic-native/app-version';
 
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
@@ -24,6 +25,7 @@ import 'rxjs/add/operator/take';
 })
 export class SettingPage {
   @ViewChild('avatarHolder') avatarHolder: ElementRef;
+  version: string;
   user: User;
   avatar: string;
   identicon: string;
@@ -47,6 +49,8 @@ export class SettingPage {
     public modalCtrl: ModalController,
     public viewCtrl: ViewController,
     public toastCtrl: ToastController,
+    private platform: Platform,
+    private appVersion: AppVersion,
     public camera: Camera,
     private interfaceOpt: InterfaceOption,
     private localStorageService: LocalStorageServiceProvider,
@@ -60,11 +64,16 @@ export class SettingPage {
   }
 
   ionViewWillEnter() {
+    this.retrieveAppVersion();
     this.retrieveHash();
   }
 
   ionViewDidLoad() {
     this.setIdenticon(); // Put setIdenticon() in ionViewDidLoad lifecycle to prevent nativeElement undefined
+  }
+
+  retrieveAppVersion() {
+    if (this.platform.is('cordova')) this.appVersion.getVersionNumber().then(version => this.version = "Version " + version);
   }
 
   retrieveHash() {
@@ -168,6 +177,10 @@ export class SettingPage {
     this.userService.updateCurrentUserAppUsageStatusTo(false, 'signout');
     const user: any = await this.authService.signOut();
     this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(`Signed out as ${user.email}`));
+  }
+
+  checkVersionOfApp() {
+    console.log('clicked!!!!!');
   }
 
   deleteAccount() {
