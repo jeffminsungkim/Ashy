@@ -3,35 +3,45 @@
 module.exports = ({ admin, functions, firestore, fs, gcs, mkdirp, os, path, spawn }) => {
   return functions.storage.object().onChange((event) => {
     const THUMB_PREFIX = 'thumb_';
-    const THUMB_MAX_HEIGHT = 200;
-    const THUMB_MAX_WIDTH = 200;
-    const BASE_URL = 'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2F';
-    const ORIGINAL_PLACEHOLDER = `${BASE_URL}avatar.jpg?alt=media&token=210aa481-209b-4374-a494-13bdbdc17b54`;
-    const THUMBNAIL_PLACEHOLDER = `${BASE_URL}thumb_avatar.jpg?alt=media&token=0e1d9733-a87d-4bf7-be4a-072dd1c20c50`;
-    const contentType = event.data.contentType; // This is the image Mimme type
-    const filePath = event.data.name; // A full path including a file name
-    const fileDir = path.dirname(filePath); // Directory path ex) user-profile/tWB4bLrVqsSGAAQf7pQGTlbS3oy2
-    const fileName = path.basename(filePath);
-    const thumbFilePath = path.normalize(path.join(fileDir, `${THUMB_PREFIX}${fileName}`));
+    const THUMB_MAX_HEIGHT = 150;
+    const THUMB_MAX_WIDTH = 150;
+    const BASE_URL = 'https://firebasestorage.googleapis.com/v0/b/';
+    const contentType = event.data.contentType; // This is the image Mimme type ex) image/jpeg
+    const filePath = event.data.name; // A full path including a file name ex) user-profile/qcjPTIR28CY3AzPD4K4E6Mk8zeF3.jpeg
+    const fileDir = path.dirname(filePath); // Directory path ex) user-profile/
+    const fileName = path.basename(filePath); // ex) qcjPTIR28CY3AzPD4K4E6Mk8zeF3.jpeg
+    const thumbFilePath = path.normalize(path.join(fileDir, `${THUMB_PREFIX}${fileName}`)); // ex) user-profile/thumb_qcjPTIR28CY3AzPD4K4E6Mk8zeF3.jpeg
     const tempLocalFile = path.join(os.tmpdir(), filePath);
     const tempLocalDir = path.dirname(tempLocalFile);
     const tempLocalThumbFile = path.join(os.tmpdir(), thumbFilePath);
+    // const uid = fileName.split(".")[0];
     const uid = fileDir.split('/').pop(); // split() converts a string into an array
     const userRef = firestore.doc(`users/${uid}`);
     const batch = admin.firestore().batch();
 
-    // Cloud Storage files.
-    const bucket = gcs.bucket(event.data.bucket);
-    const file = bucket.file(filePath);
-    const thumbFile = bucket.file(thumbFilePath);
-    const metadata = { contentType: contentType };
+    console.log('event data:', event.data);
     console.log('resource state:', event.data.resourceState);
+
+    if (event.data.resourceState === 'exists' && event.data.metageneration > 1) {
+      console.log('This is a metadata change event.');
+      return null;
+    }
+
+    if (!contentType.startsWith('image/')) {
+      console.log('This is not an image type.');
+      return null;
+    }
+
+    if (fileName.startsWith(THUMB_PREFIX) || uid.startsWith(THUMB_PREFIX)) {
+      console.log('Already a thumbnail.');
+      return null;
+    }
 
     if (event.data.resourceState === 'not_exists') {
       console.log('This is a deletion event.');
       const urls = {
-        photoURL: ORIGINAL_PLACEHOLDER,
-        thumbnailURL: THUMBNAIL_PLACEHOLDER
+        photoURL: null,
+        thumbnailURL: null
       };
       batch.update(userRef, urls);
       return batch.commit().then(() => {
@@ -40,15 +50,21 @@ module.exports = ({ admin, functions, firestore, fs, gcs, mkdirp, os, path, spaw
       });
     }
 
-    if (!contentType.startsWith('image/')) {
-      console.log('This is not an image type.');
-      return;
-    }
-
-    if (fileName.startsWith(THUMB_PREFIX)) {
-      console.log('Already a thumbnail.');
-      return;
-    }
+    // Cloud Storage files.
+    const bucketId = event.data.bucket; // ex) ashy-development.appspot.com
+    const token = event.data.metadata.firebaseStorageDownloadTokens;
+    // event.data.selfLink ex) https://www.googleapis.com/storage/v1/b/ashy-development.appspot.com/o/user-profile%2FVyFdopAiWKXvGqEJtrX3FYFlfIP2%2FVyFdopAiWKXvGqEJtrX3FYFlfIP2.jpeg
+    // const originalImageUrl = event.data.selfLink + '?alt=media&token=' + token;
+    const originalImageUrl = BASE_URL + bucketId + "/o/" +  encodeURIComponent(filePath) + '?alt=media&token=' + token;
+    const bucket = gcs.bucket(event.data.bucket);
+    const file = bucket.file(filePath);
+    const thumbFile = bucket.file(thumbFilePath);
+    const metadata = {
+      contentType: contentType,
+      metadata: {
+        firebaseStorageDownloadTokens: token
+      }
+    };
 
     // Create the temp directory where the storage file will be downloaded.
     return mkdirp(tempLocalDir).then(() => {
@@ -61,32 +77,23 @@ module.exports = ({ admin, functions, firestore, fs, gcs, mkdirp, os, path, spaw
     }).then(() => {
       console.log('Thumbnail created at', tempLocalThumbFile);
       // Uploading the thumbnail.
-      return bucket.upload(tempLocalThumbFile, { destination: thumbFilePath, metadata: metadata });
+      return bucket.upload(tempLocalThumbFile, {destination: thumbFilePath, metadata: metadata});
     }).then(() => {
       console.log('Thumbnail uploaded to Storage at', thumbFilePath);
       // Once the image has been uploaded delete the local files to free up disk space.
       fs.unlinkSync(tempLocalFile);
       fs.unlinkSync(tempLocalThumbFile);
-      // Get the Signed URLs for the thumbnail and original image.
-      const config = {
-        action: 'read',
-        expires: '03-01-2500'
-      };
-      return Promise.all([
-        thumbFile.getSignedUrl(config),
-        file.getSignedUrl(config)
-      ]);
-    }).then(results => {
-      console.log('Got Signed URLs!');
-      const thumbResult = results[0];
-      const originalResult = results[1];
-      const thumbFileUrl = thumbResult[0];
-      const fileUrl = originalResult[0];
+
+      return Promise.resolve(BASE_URL + bucketId + "/o/" + encodeURIComponent(thumbFile.name) + "?alt=media&token=" + token);
+    }).then((thumbnailUrl) => {
+      console.log('Got Thumbnail URL!', thumbnailUrl);
+
       // Add the URLs to the Firestore.
       const photoURLs = {
-        photoURL: fileUrl,
-        thumbnailURL: thumbFileUrl
+        photoURL: originalImageUrl,
+        thumbnailURL: thumbnailUrl
       };
+
       batch.update(userRef, photoURLs);
       return batch.commit().then(() => console.log('Photo URLs saved to Firestore!'));
     });
