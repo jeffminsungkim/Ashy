@@ -28,9 +28,10 @@ const os = require('os');
 const fs = require('fs');
 const cors = require('cors');
 const express = require('express');
+const Hashes = require('jshashes');
 // const stripe = require('stripe')(functions.config().stripe.token);
 
 module.exports = require('./exports')({
-  admin, cors, express, functions, firestore, fs, gcs, logging, mkdirp, os, path, spawn
+  admin, cors, express, functions, firestore, fs, gcs, Hashes, logging, mkdirp, os, path, spawn
 });
 
