@@ -33,19 +33,19 @@ export class UploadServiceProvider {
     });
   }
 
-  uploadImageToCurrentUserDir(imageBlob, userDir: string) {
+  uploadImageToStorage(imageBlob, uid: string) {
     return new Promise((resolve, reject) => {
       const storageRef = firebase.storage().ref();
-       this.uploadTask = storageRef.child(`${this.rootDir}/${userDir}/${this.utilityService.generateRandomString()}.jpeg`).put(imageBlob);
-       console.log('upload task:', this.uploadTask);
-        this.uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot: any) => {
-          console.log('snapshot:', snapshot);
-        }, (error) => {
-          console.log('uploadimage error', error);
-        }, () => {
-          resolve(this.uploadTask.snapshot);
-        });
+      this.uploadTask = storageRef.child(`${this.rootDir}/${uid}/${uid}.jpeg`).put(imageBlob);
+      console.log('upload task:', this.uploadTask);
+      this.uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, (snapshot: any) => {
+        console.log('snapshot:', snapshot);
+      }, (error) => {
+        console.log('uploadimage error', error);
+      }, () => {
+        resolve(this.uploadTask.snapshot);
       });
+    });
   }
 
   deleteFileStorage(uid: string) {
