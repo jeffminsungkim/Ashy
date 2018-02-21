@@ -1,94 +1,83 @@
-<ion-header>
-
-  <ion-navbar color="cherry">
-    <ion-title>Edit Profile</ion-title>
-     <ion-buttons left>
-        <button ion-button (click)="closeModal()">
-            Close
-        </button>
+<ion-header no-border>
+  <ion-navbar transparent>
+    <ion-title>Your Account</ion-title>
+    <ion-buttons left>
+      <button ion-button (click)="dismissModal()">
+        <i class="fa fa-times"></i>
+      </button>
     </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
-
-    <ion-row align-items-center>
-        <ion-col col-12>
-            <input type="file" id="file-input" showWhen="core" (change)="detectFiles($event)">
-            <img *ngIf="previewImage;then previewImg else customImg">
-            <ng-template #previewImg><img [src]="previewImage" (click)="presentActionSheet()"></ng-template>
-            <ng-template #customImg><img [src]="avatar" (click)="presentActionSheet()"></ng-template>
-        </ion-col>
-
-        <ion-col col-12>
-            <button ion-button clear color="dark" (click)="changeDisplayName()">
-                <h3>{{displayName}}</h3>
-            </button>
-        </ion-col>
-    </ion-row>
-
-<ion-row class="section-b">
+<ion-content>
+  <ion-row class="edit-account">
     <ion-list>
-        <button ion-item>
-          <ion-icon name='quote' item-start></ion-icon>
-          Status Message
-          <ion-note item-end>
-            Edit
+      <button ion-item (click)="goToEditDisplayname()">
+        Display Name
+        <ion-note item-end>
+          {{user.displayName}}
+        </ion-note>
+      </button>
+      <button ion-item (click)="goToEditStatusMessage()">
+        Status Message
+        <ion-note *ngIf="user.statusMessage" item-end>
+            {{(user.statusMessage.length > 15)? (user.statusMessage | slice:0:15)+'...' : (user.statusMessage)}}
           </ion-note>
-        </button>
-
-        <button ion-item>
-          <ion-icon name='star' item-start></ion-icon>
-          Interest
-          <ion-note item-end>
-            Edit
-          </ion-note>
-        </button>
-
-        <ion-item>
-          <ion-toggle checked="false"></ion-toggle>
-          <ion-label>
-            Hide Interests
-          </ion-label>
-          <ion-icon name='eye' item-start></ion-icon>
-        </ion-item>
-
-
-        <button ion-item (click)="editUsername()">
-           <ion-icon ios="ios-finger-print" md="md-finger-print" item-start></ion-icon>
-            Username
-          <ion-note *ngIf="username == null" item-end>
-            Create Username
-          </ion-note>
-          <ion-note *ngIf="username != null" item-end>
-            {{username}}
-          </ion-note>
-        </button>
-
-        <ion-item>
-          <ion-toggle checked="false"></ion-toggle>
-          <ion-label>
-            Hide Username
-          </ion-label>
-          <ion-icon name='eye' item-start></ion-icon>
-        </ion-item>
-
-        <ion-item class="gender" *ngIf="gender == null">
-            <ion-icon ios="ios-female" md="md-female" item-start></ion-icon>
-            Gender
-             <button ion-button #genderMale item-end (click)="selectMale()">Male</button>
-             <button ion-button #genderFemale color="pink-accent-2" item-end (click)="selectFemale()">Female</button>
-        </ion-item>
-
-        <ion-item *ngIf="gender != null">
-            <ion-icon ios="ios-female" md="md-female" item-start></ion-icon>
-            Gender
-             <button ion-button #finalGender [disabled]="gender != null" color="dark" item-end>{{gender}}</button>
-        </ion-item>
-   
+      </button>
+      <ion-item>
+        Last seen
+        <ion-note class="last-seen" item-end>
+          {{user.lastLoginAt | relativeTime}}
+        </ion-note>
+      </ion-item>
+      <button ion-item (click)="goToEditUsername()">
+        Your Username
+        <ion-note item-end>
+          {{user.username}}
+        </ion-note>
+      </button>
+      <button ion-item (click)="goToChangeEmail()">
+        Email
+        <ion-note item-end>
+          {{user.email}}
+        </ion-note>
+      </button>
+      <button ion-item (click)="goToChangePassword()">
+        Change Password
+      </button>
+      <ion-item>
+        <ion-toggle color="dodger" [(ngModel)]="hideUsername" (ionChange)="hideMyUsername($event)"></ion-toggle>
+        <ion-label *ngIf="!hideUsername">
+          Make my username
+          <span class="private-username">private</span>
+        </ion-label>
+        <ion-label *ngIf="hideUsername">
+          Make username back to
+          <span class="public-username">public</span>
+        </ion-label>
+      </ion-item>
     </ion-list>
-</ion-row>
+    <p *ngIf="!user.gender">Once you selected, gender
+      <span>cannot change again</span>
+    </p>
+    <div *ngIf="user.gender;then yourgender else pickgender"></div>
+
+    <ion-list radio-group>
+      <ng-template #pickgender>
+        <ion-item>
+          <ion-label>Male</ion-label>
+          <ion-radio (ionSelect)="chooseGender('male')" checked="pickedGender" [disabled]="pickedGender"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Female</ion-label>
+          <ion-radio (ionSelect)="chooseGender('female')" checked="pickedGender" [disabled]="pickedGender"></ion-radio>
+        </ion-item>
+      </ng-template>
+      <ng-template #yourgender>
+        <p>Your gender is {{user.gender}}</p>
+      </ng-template>
+    </ion-list>
+  </ion-row>
 
 </ion-content>
