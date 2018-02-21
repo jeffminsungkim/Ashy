@@ -1,3 +1,80 @@
 page-setting {
 
+  ion-navbar.toolbar .button-inner {
+    font-size: 25px;
+    -webkit-text-stroke: 3px white;
+  }
+
+  ::-webkit-scrollbar{
+    display:none;
+  }
+
+  img {
+    height: 100px;
+    width: 100px;
+    border-radius:50%;
+    border: 4px solid rgba(255,255,255,0.4);
+    -webkit-box-shadow: 0px 0px 142px -37px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 142px -37px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 142px -37px rgba(0,0,0,0.5);
+  }
+
+  ion-col {
+    text-align: center;
+  }
+
+  ion-item.names {
+    text-align: center;
+    p {
+      color: black;
+      font-size: 1.7rem;
+    }
+    span {
+      color: color($colors, ashygray, base);
+      font-size: 1.5rem;
+    }
+  }
+
+  .input-wrapper {
+    font-size: 1.5rem;
+  }
+
+  .item-group-border {
+    border-top: 1px solid lightgray;
+  }
+
+  button.item.item-block.item-md {
+    border-bottom: 1px solid lightgray;
+  }
+
+  .item-md.item-block .item-inner {
+    border-bottom: none;
+  }
+
+  button.item.item-block.item-ios {
+    border-bottom: 1px solid lightgray;
+  }
+
+  .item-ios.item-block .item-inner {
+    border-bottom: none;
+  }
+
+  .button-outline-md-lightgray {
+    color: black;
+    font-size: 1.5rem;
+  }
+
+  .button-outline-ios-lightgray {
+    color: black;
+    font-size: 1.5rem;
+  }
+
+
+
+
+
+
+
+
+
 }
