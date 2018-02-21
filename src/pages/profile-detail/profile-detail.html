@@ -22,11 +22,11 @@
       <button ion-item (click)="goToEditStatusMessage()">
         Status Message
         <ion-note *ngIf="user.statusMessage" item-end>
-            {{(user.statusMessage.length > 15)? (user.statusMessage | slice:0:15)+'...' : (user.statusMessage)}}
+            {{(user.statusMessage.length > 11)? (user.statusMessage | slice:0:11)+'...' : (user.statusMessage)}}
           </ion-note>
       </button>
       <ion-item>
-        Last seen
+        You've been signed in
         <ion-note class="last-seen" item-end>
           {{user.lastLoginAt | relativeTime}}
         </ion-note>
