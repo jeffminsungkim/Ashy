@@ -15,8 +15,8 @@ import 'rxjs/add/observable/interval';
 export class HomePage {
   firstTab: string = 'FriendPage';
   secondTab: string = 'ChatPage';
-  thirdTab: string = 'NotificationPage';
-  lastTab: string = 'SettingPage';
+  thirdTab: string = 'RandomPage';
+  lastTab: string = 'NotificationPage';
   totalRequests: string;
   newFriends: string;
   addedFriend: number = 0;
