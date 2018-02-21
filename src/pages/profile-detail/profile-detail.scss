@@ -70,5 +70,15 @@
       color: color($colors, primary, base);
     }
 
+    @media screen and (max-width: 320px) {
+      p {
+        font-size: 1.3rem;
+        color: color($colors, ashygray, base);
+      }
+      span {
+        font-size: 1.3rem;
+        color: color($colors, danger, base);
+      }
+    }
   }
 }
