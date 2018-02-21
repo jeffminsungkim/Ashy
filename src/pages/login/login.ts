@@ -5,6 +5,7 @@ import { RegistrationFormComponent } from "@ashy/components/registration-form/re
 import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
 import { AuthServiceProvider } from "@ashy/services/auth-service/auth-service";
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
+import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
 
 
 @IonicPage()
@@ -24,7 +25,8 @@ export class LoginPage {
     public loadingCtrl: LoadingController,
     private interfaceOpt: InterfaceOption,
     public authService: AuthServiceProvider,
-    private localStorageService: LocalStorageServiceProvider) {}
+    private localStorageService: LocalStorageServiceProvider,
+    private utilityService: UtilityServiceProvider) {}
 
   ionViewDidLoad() {
     setTimeout(() => {
@@ -40,6 +42,8 @@ export class LoginPage {
 
       if (res) {
         this.localStorageService.reStoreAccessToken('accessToken');
+        const hash = this.utilityService.convertEmailToHash($event.email);
+        this.localStorageService.storeIdenticonHash(hash);
         loader.dismiss();
       }
     } catch (err) {

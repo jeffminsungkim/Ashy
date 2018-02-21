@@ -4,7 +4,8 @@ import { RegistrationFormComponent } from "@ashy/components/registration-form/re
 
 import { AuthServiceProvider } from "@ashy/services/auth-service/auth-service";
 import { InterfaceOption } from '@ashy/services/interface-option/interface-option';
-
+import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
+import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
 
 @IonicPage()
 @Component({
@@ -23,7 +24,9 @@ export class SignupPage {
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     public authService: AuthServiceProvider,
-    private interfaceOpt: InterfaceOption) {}
+    private interfaceOpt: InterfaceOption,
+    private localStorageService: LocalStorageServiceProvider,
+    private utilityService: UtilityServiceProvider) {}
 
   ionViewDidLoad() {
     setTimeout(() => {
@@ -36,8 +39,10 @@ export class SignupPage {
     loader.present();
     try {
       const res: any = await this.authService.emailSignUp($event);
+      const hash = this.convertEmailToIdenticonHash($event.email);
 
       if (res) {
+        this.saveIdenticonHash(hash);
         this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(res.message)).present();
         this.alertCtrl.create(this.interfaceOpt.makeEmailVerificationOpt()).present();
         loader.dismiss();
@@ -47,6 +52,14 @@ export class SignupPage {
       loader.dismiss();
       this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(error.message)).present();
     }
+  }
+
+  convertEmailToIdenticonHash(email: string) {
+    return this.utilityService.convertEmailToHash(email);
+  }
+
+  saveIdenticonHash(hash: string) {
+    this.localStorageService.storeIdenticonHash(hash);
   }
 
   backToRoot() { this.navCtrl.pop(); }

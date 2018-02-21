@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { sha256 } from 'js-sha256';
+import * as Hashes from 'jshashes';
 
 @Injectable()
 export class UtilityServiceProvider {
@@ -30,6 +31,11 @@ export class UtilityServiceProvider {
 
   generateRandomString() {
     return Math.random().toString(36).substr(2, 6);
+  }
+
+  convertEmailToHash(email: string) {
+    const MD5 = new Hashes.MD5;
+    return MD5.hex(email);
   }
 
 }
