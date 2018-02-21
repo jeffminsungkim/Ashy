@@ -8,31 +8,40 @@ page-setting-group {
   ion-content {
     &.content {
       div.scroll-content {
-        top: 44%;
+        top: 0;
         width: 100%;
-        height: 100%;
+        height: 50%;
         overflow: hidden;
       }
     }
 
     &.content-md {
-      background-color: rgba(0, 0, 0, 0.7);
+      top: 46%;
+      border-radius: 14px;
 
       div.scroll-content {
-        background-color: #fafafa;
-        border-radius: 10px;
-        box-shadow: 0 16px 20px rgba(0, 0, 0, 0.4);
+        background-color: white;
+        border-radius: 14px;
         padding: 10px;
+      }
+      .toolbar-background-md {
+        background-color: white;
+        border-bottom: 1px solid lightgray;
       }
     }
 
     &.content-ios {
-      background-color: rgba(0, 0, 0, 0.7);
+      top: 46%;
+      border-radius: 14px;
 
       div.scroll-content {
-        background-color: #f8f8f8;
-        border-radius: 10px;
+        background-color: white;
+        border-radius: 14px;
         padding: 10px;
+      }
+      .toolbar-background-ios {
+        background-color: white;
+        border-bottom: 1px solid lightgray;
       }
     }
   }
@@ -48,7 +57,7 @@ page-setting-group {
     background-color: transparent;
     padding-top: 5%;
   }
-  .item-text-center {
+  .item-text-middle {
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -62,11 +71,12 @@ page-setting-group {
     align-items: center;
     position: absolute;
     top: 0;
+    left: 14px;
     height: 100%;
     font-size: 1.6rem;
   }
 
-  .item-icon-center {
+  .item-icon-middle {
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -80,8 +90,8 @@ page-setting-group {
     align-items: center;
     position: absolute;
     top: 0;
+    right: 14px;
     height: 100%;
-    right: 6%;
     color: color($colors, ashygray, base);
     font-size: 1.6rem;
   }
