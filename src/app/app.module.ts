@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+import { AppVersion } from '@ionic-native/app-version';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
@@ -48,6 +49,7 @@ import { SharedModule } from '@ashy/shared/shared.module';
     MyApp
   ],
   providers: [
+    AppVersion,
     StatusBar,
     SplashScreen,
     FCM,
