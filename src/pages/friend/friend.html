@@ -2,49 +2,67 @@
   <ion-navbar transparent>
     <ion-title>Friends</ion-title>
     <ion-buttons left>
-        <button ion-button (click)="showQuickSetting()">
-          <i class="fa fa-cog rotate" aria-hidden="true"></i>
-        </button>
+      <button ion-button (click)="showQuickSetting()">
+        <i class="fa fa-cog rotate" aria-hidden="true"></i>
+      </button>
     </ion-buttons>
     <ion-buttons right>
-        <button ion-button (click)="addFriend()">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
+      <button ion-button (click)="addFriend()">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <ion-list>
-        <ion-list-header>Me</ion-list-header>
-        <ion-item (click)="viewUserProfile(user)">
-            <ion-avatar item-start>
-                <img-loader [src]="(me$ | async)?.thumbnailURL"></img-loader>
-            </ion-avatar>
-            <h2>{{ (me$ | async)?.displayName }}</h2>
-            <p>{{ (me$ | async)?.statusMessage }}</p>
-            <ion-note item-end><user-status [status]="(me$ | async)?.currentActiveStatus"></user-status></ion-note>
-        </ion-item>
-    </ion-list>
+  <ion-list>
+    <ion-list-header>Me</ion-list-header>
 
-    <ion-list>
-        <ion-list-header>Friends <span class="total-friends"></span></ion-list-header>
-        <ion-item-sliding *ngFor="let user of friends$ | async">
-            <ion-item *ngIf="user" (click)="viewUserProfile(user)">
-                <ion-avatar (click)="showOriginalAvatarImage()" item-start>
-                    <img-loader [src]="user.thumbnailURL" [spinner]="true"></img-loader>
-                </ion-avatar>
-                <h2>{{user.displayName}}</h2>
-                <p>{{user.statusMessage}}</p>
-                <ion-note item-end><user-status [status]="user.currentActiveStatus"></user-status></ion-note>
-            </ion-item>
-             <ion-item-options side="right">
-                <button ion-button color="dark" (click)="deleteUserFromFriendList(user)"><ion-icon name="trash"></ion-icon>Delete</button>
-                <button ion-button color="danger" (click)="share(item)"><ion-icon name="hand"></ion-icon>Block</button>
-            </ion-item-options>
-            <ion-item-options side="left">
-                <button ion-button color="cherry" (click)="unread(item)"><ion-icon name="star"></ion-icon></button>
-            </ion-item-options>
-        </ion-item-sliding>
-        <p class="default-list" *ngIf="(friends$ | async)?.length === 0">Start making new friends :)</p>
-    </ion-list>
+    <ion-item (click)="viewMyProfile()">
+      <ion-avatar item-start>
+        <img *ngIf="thumbnailURL;then custom else identicon">
+        <ng-template #identicon>
+          <img #avatarHolder data-jdenticon-hash="identiconHash" (click)="presentActionSheetUploadProfilePicture()">
+        </ng-template>
+        <ng-template #custom>
+          <img-loader [src]="thumbnailURL"></img-loader>
+        </ng-template>
+      </ion-avatar>
+      <h2>{{ (me$ | async)?.displayName }}</h2>
+      <p>{{ (me$ | async)?.statusMessage }}</p>
+      <ion-note item-end>
+        <user-status [status]="(me$ | async)?.currentActiveStatus"></user-status>
+      </ion-note>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>Friends
+      <span class="total-friends"></span>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let user of friends$ | async">
+      <ion-item *ngIf="user" (click)="viewUserProfile(user)">
+        <ion-avatar (click)="showOriginalAvatarImage()" item-start>
+          <img-loader [src]="user.thumbnailURL" [spinner]="true"></img-loader>
+        </ion-avatar>
+        <h2>{{user.displayName}}</h2>
+        <p>{{user.statusMessage}}</p>
+        <ion-note item-end>
+          <user-status [status]="user.currentActiveStatus"></user-status>
+        </ion-note>
+      </ion-item>
+      <ion-item-options side="right">
+        <button ion-button color="dark" (click)="deleteUserFromFriendList(user)">
+          <ion-icon name="trash"></ion-icon>Delete</button>
+        <button ion-button color="danger" (click)="share(item)">
+          <ion-icon name="hand"></ion-icon>Block</button>
+      </ion-item-options>
+      <ion-item-options side="left">
+        <button ion-button color="cherry" (click)="unread(item)">
+          <ion-icon name="star"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+    <p class="default-list" *ngIf="(friends$ | async)?.length === 0">Start making new friends :)</p>
+  </ion-list>
 </ion-content>

@@ -3,10 +3,13 @@
     <ion-grid>
       <ion-row class="section-a">
         <h2>You are almost there!</h2>
-        <img *ngIf="placeholder;then previewImg else customImg">
-        <ng-template #previewImg>
-          <img [src]="placeholder" (click)="presentActionSheetUploadProfilePicture()">
+        <img *ngIf="photoURL;then custom else identicon">
+        <ng-template #identicon>
+          <img #avatarHolder data-jdenticon-hash="identiconHash" (click)="presentActionSheetUploadProfilePicture()">
         </ng-template>
+        <ng-template #custom>
+            <img [src]="photoURL">
+          </ng-template>
       </ion-row>
       <ion-row class="section-b">
         <ion-input type="text" minlength="1" maxlength="20" [(ngModel)]="displayName" placeholder="Choose your display name" onfocus="this.placeholder = ''"

@@ -1,18 +1,24 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ActionSheetController, Events, Platform, ModalController } from 'ionic-angular';
 
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
-import { ModalServiceProvider } from '@ashy-services/modal-service/modal-service';
-import { User } from '@ashy-models/user';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
+import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
+import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
+import { User } from '@ashy/models/user';
+
+import * as jdenticon from 'jdenticon';
 
 import { Observable } from 'rxjs/Observable';
+import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
+import { interval } from 'rxjs/observable/interval';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/take'
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/observable/from';
 
 
 @IonicPage()
@@ -21,25 +27,31 @@ import 'rxjs/add/observable/combineLatest';
   templateUrl: 'friend.html',
 })
 export class FriendPage {
-
+  @ViewChild('avatarHolder') avatarHolder: ElementRef;
   subscription: Subscription;
-  friends$: Observable<any[]>;
+  friends$: Observable<User[]>;
   me$: Observable<User>;
   me: User;
-  uid: string;
+  thumbnailURL: string;
+  identicon: string;
+  identiconHash: string;
+  identiconElemRef: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public actionSheetCtrl: ActionSheetController,
+    public modalCtrl: ModalController,
+    public elementRef: ElementRef,
     public events: Events,
+    public platform: Platform,
+    private localStorageService: LocalStorageServiceProvider,
     public userService: UserServiceProvider,
     public authService: AuthServiceProvider,
     public modalService: ModalServiceProvider) {
 
-      this.me$ = this.userService.getCurrentUser();
-    }
-
-  ionViewDidLoad() { }
+    this.me$ = this.userService.getCurrentUser();
+  }
 
   // getRequestFromUser() {
   //   this.subscription = this.userService.fetchFriendRequest().subscribe((req: any) => {
@@ -52,7 +64,7 @@ export class FriendPage {
   // }
 
   ionViewWillEnter() {
-    // Runs when the page is about to enter and become the active page.;
+    this.retrieveHash();
     this.getUserProfile();
     this.getMyFriendList();
     // this.getRequestFromUser();
@@ -63,31 +75,67 @@ export class FriendPage {
     if (this.subscription !== undefined) this.subscription.unsubscribe();
   }
 
+  retrieveHash() {
+    this.localStorageService.getIdenticonHash().subscribe(hash => this.identiconHash = hash);
+  }
+
+  setIdenticon() {
+    if (this.identiconHash) {
+      let width = 30;
+      let height = 30;
+      let svg = jdenticon.toSvg(this.identiconHash, Math.min(width, height));
+      this.identicon = "data:image/svg+xml," + encodeURIComponent(svg);
+      this.avatarHolder.nativeElement.src = this.identicon;
+    }
+  }
+
   getMyFriendList() {
-    this.friends$ = this.userService.getMyFriendsId().switchMap(data => {
-      return Observable.combineLatest(data.map(friend => this.userService.getFriends(friend.key)));
-    });
+    this.friends$ = this.userService.getMyFriendsId().switchMap(friendKeys => {
+      console.log('friendKeyList:', friendKeys);
+      return friendKeys.length === 0 ? Observable.of(friendKeys) :
+      Observable.combineLatest(friendKeys.map(user => this.userService.getFriends(user.key)));
+    })
   }
 
   getUserProfile() {
-    this.subscription = this.me$.subscribe(user => this.me = user);
+    this.subscription = this.me$.subscribe(user => {
+      this.me = user;
+      this.thumbnailURL = user.thumbnailURL;
+      if (this.thumbnailURL === null) this.setIdenticon();
+    });
   }
 
   deleteUserFromFriendList(user) {
     this.userService.removeUserFromFriendList(user.uid);
-    // this.getMyFriendList();
   }
 
   showOriginalAvatarImage() {
     console.log("showOriginalAvatarImage()");
   }
 
-  addFriend() {
-    this.modalService.showAddFriendModal();
+  showQuickSetting() {
+    this.rotateCogAnimation();
+    let settingGroup = this.modalCtrl.create('SettingGroupPage', { user: this.me, identicon: this.identicon });
+    settingGroup.onDidDismiss(() => {
+
+    });
+    settingGroup.present();
   }
 
-  viewUserProfile() {
-    console.log('me:', this.me);
-    this.modalService.showProfileModal(this.me);
+  private rotateCogAnimation() {
+    let rotate = document.querySelector('.rotate');
+    rotate.classList.toggle('fa-rotate-180');
+  }
+
+  addFriend() {
+    this.modalService.showAddFriendModal(this.me);
+  }
+
+  viewMyProfile() {
+    console.log('view my profile:', this.me);
+  }
+
+  viewUserProfile(user: User) {
+    console.log('view user profile:', user);
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
+import { User } from '@ashy/models/user';
 
 
 @IonicPage()
@@ -8,8 +9,12 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
   templateUrl: 'setting-group.html',
 })
 export class SettingGroupPage {
+  user: User;
+  identicon: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public viewCtrl: ViewController) {
+    this.user = this.navParams.get('user');
+    this.identicon = this.navParams.get('identicon');
   }
 
   ionViewDidLoad() {
@@ -29,7 +34,8 @@ export class SettingGroupPage {
   }
 
   goToSetting() {
-    console.log('go to setting page');
+    this.modalCtrl.create('SettingPage', { user: this.user, identicon: this.identicon }).present();
+    this.dismissModal();
   }
 
   dismissModal() {

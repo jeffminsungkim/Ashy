@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, Platform } from 'ionic-angular';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController, ToastController, Platform, Loading } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { AuthServiceProvider } from '@ashy-services/auth-service/auth-service';
-import { LoadingServiceProvider } from '@ashy-services/loading-service/loading-service';
-import { ToastServiceProvider } from '@ashy-services/toast-service/toast-service';
-import { UserServiceProvider } from '@ashy-services/user-service/user-service';
-import { UploadServiceProvider } from '@ashy-services/upload-service/upload-service';
-import { AngularFireAuth } from 'angularfire2/auth';
+
+import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
+import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
+import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { UploadServiceProvider } from '@ashy/services/upload-service/upload-service';
+
+import * as jdenticon from 'jdenticon';
+import 'rxjs/add/operator/take'
+import 'rxjs/add/operator/switchMap';
 
 
 @IonicPage()
@@ -15,12 +19,12 @@ import { AngularFireAuth } from 'angularfire2/auth';
   templateUrl: 'profile-preset.html',
 })
 export class ProfilePresetPage {
-
-  public avatar: string;
-  public displayName: string;
-  public photoURL: string;
-  public placeholder: string = 'assets/avatar/placeholder.jpg';
-  public uid: string;
+  @ViewChild('avatarHolder') avatarHolder: ElementRef;
+  displayName: string;
+  // defaultAvatar: string;
+  photoURL: string;
+  uid: string;
+  identiconHash: string;
 
   cameraOptions: CameraOptions = {
     quality: 100,
@@ -34,44 +38,54 @@ export class ProfilePresetPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public afAuth: AngularFireAuth,
+    public elementRef: ElementRef,
+    public loadingCtrl: LoadingController,
+    public toastCtrl: ToastController,
+    private http: HttpClient,
     public actionSheetCtrl: ActionSheetController,
     public camera: Camera,
     public platform: Platform,
-    private authService: AuthServiceProvider,
-    private loadingService: LoadingServiceProvider,
-    private toastService: ToastServiceProvider,
+    private localStorageService: LocalStorageServiceProvider,
+    private interfaceOpt: InterfaceOption,
     private userService: UserServiceProvider,
     private uploadService: UploadServiceProvider) {
+      this.retrieveHash(); // Must be called from the construtor
       this.uid = this.userService.currentUserId;
-      const BASE_URL = 'https://firebasestorage.googleapis.com/v0/b/ashy-dev-3662f.appspot.com/o/avatar-placeholder%2F';
-      this.photoURL = `${BASE_URL}thumb_avatar.jpg?alt=media&token=0e1d9733-a87d-4bf7-be4a-072dd1c20c50`;
+      this.photoURL = '';
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePresetPage');
+  ionViewWillEnter() {
+    this.setIdenticon();
+  }
+
+  retrieveHash() {
+    this.localStorageService.getIdenticonHash().subscribe(hash => this.identiconHash = hash);
+  }
+
+  setIdenticon() {
+    if (this.identiconHash) {
+      let width = 100;
+      let height = 100;
+      let svg = jdenticon.toSvg(this.identiconHash, Math.min(width, height));
+      let encodeSvg = "data:image/svg+xml," + encodeURIComponent(svg);
+      this.avatarHolder.nativeElement.src = encodeSvg;
+    }
   }
 
   uploadProfilePicture() {
+    let loader = this.loadingCtrl.create(this.interfaceOpt.makeWaitLoaderOpt());
     this.camera.getPicture(this.cameraOptions).then((imagePath) => {
-      this.loadingService.showWaitLoader();
+      loader.present();
       console.log("IMAGE PATH", imagePath);
       return this.uploadService.convertImageIntoBlob(imagePath);
     }).then((imageBlob) => {
       console.log("IMAGE BLOB", imageBlob);
-      return this.uploadService.uploadImageToCurrentUserDir(imageBlob, this.uid);
+      return this.uploadService.uploadImageToStorage(imageBlob, this.uid);
     }).then((snapshot: any) => {
-      console.log('downloadurl:', snapshot.downloadURL);
-      this.avatar = snapshot.downloadURL;
+      this.photoURL = snapshot.downloadURL;
       console.log("FILE UPLOAD SUCCESSFULLY", snapshot.downloadURL);
-      this.placeholder = null;
-      this.loadingService.dismiss();
-    });
-  }
-
-  removeProfilePicture() {
-    this.placeholder = 'assets/avatar/placeholder.jpg';
-    this.avatar = null;
+      loader.dismiss();
+    }).catch((err) => console.log('Error:', err));
   }
 
   presentActionSheetUploadProfilePicture() {
@@ -97,15 +111,37 @@ export class ProfilePresetPage {
   }
 
   startApp() {
-    this.loadingService.showWaitLoader();
-    this.userService.initializeUserProfile(this.displayName, this.photoURL);
-    this.userService.updateCurrentUserAppUsageStatusTo(true, 'signout');
-    this.userService.updateCurrentUserActiveStatusTo('online');
-    this.userService.updateLastLoginTime();
-    this.userService.updateEmailVerificationState();
-    this.toastService.show(`Signed in as ${this.userService.currentUserEmail}`);
-    this.navCtrl.setRoot('HomePage');
-    this.loadingService.dismiss();
-  }
+    let loader = this.loadingCtrl.create(this.interfaceOpt.makeWaitLoaderOpt());
+    loader.present();
+    const data = {
+      activityState: {
+        currentActiveStatus: "online",
+        usingApp: "true"
+      },
+      user: {
+        displayName: this.displayName,
+        photoURL: this.photoURL,
+        currentActiveStatus: "online",
+        emailVerified: "true"
+      }
+    };
+    console.log('data:', JSON.stringify(data));
 
+    this.userService.updateUserProfile(this.displayName, this.photoURL).then(accessToken => {
+      console.log('new Token?:', accessToken);
+      this.localStorageService.storeToken('accessToken', { accessToken: accessToken });
+      const url = 'https://us-central1-ashy-development.cloudfunctions.net/initDefaultStateAuthUserStartapp/';
+      this.http.post(url, JSON.stringify(data), {
+        headers: {'Authorization': accessToken, 'Content-Type': 'application/json; charset=utf-8'}
+      }).subscribe((res) => {
+        console.log('res?', res);
+        loader.dismiss();
+        this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(`Signed in as ${this.userService.currentUserEmail}`)).present();
+        this.navCtrl.setRoot('HomePage');
+      }, (err) => {
+        loader.dismiss();
+        console.log('HTTP POST Error', err);
+      });
+    });
+  }
 }
