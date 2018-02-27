@@ -5,6 +5,7 @@ import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
 import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
+import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
 
 
 @IonicPage()
@@ -26,7 +27,8 @@ export class EmailVerificationPage {
     private authService: AuthServiceProvider,
     private interfaceOpt: InterfaceOption,
     private modalService: ModalServiceProvider,
-    private userService: UserServiceProvider) { }
+    private userService: UserServiceProvider,
+    private localStorageService: LocalStorageServiceProvider) { }
 
   ionViewDidLoad() {
     this.email = this.userService.currentUserEmail;
@@ -47,6 +49,7 @@ export class EmailVerificationPage {
   }
 
   async logout() {
+    this.localStorageService.clearStorage();
     this.userService.updateCurrentUserActiveStatusTo('signout');
     this.userService.updateCurrentUserAppUsageStatusTo(false, 'signout');
     const user: any = await this.authService.signOut();
