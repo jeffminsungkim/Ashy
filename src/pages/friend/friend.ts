@@ -13,12 +13,9 @@ import { Observable } from 'rxjs/Observable';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import { interval } from 'rxjs/observable/interval';
 import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/take'
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/observable/combineLatest';
-import 'rxjs/add/observable/from';
+import { of } from 'rxjs/observable/of';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { tap, map, take, switchMap } from 'rxjs/operators';
 
 
 @IonicPage()
@@ -64,6 +61,7 @@ export class FriendPage {
   // }
 
   ionViewWillEnter() {
+    console.log("friends ionViewWillEnter");
     this.retrieveHash();
     this.getUserProfile();
     this.getMyFriendList();
@@ -92,16 +90,16 @@ export class FriendPage {
   getMyFriendList() {
     this.friends$ = this.userService.getMyFriendsId().switchMap(friendKeys => {
       console.log('friendKeyList:', friendKeys);
-      return friendKeys.length === 0 ? Observable.of(friendKeys) :
-      Observable.combineLatest(friendKeys.map(user => this.userService.getFriends(user.key)));
-    })
+      return friendKeys.length === 0 ? of(friendKeys) :
+      combineLatest(friendKeys.map(user => this.userService.getFriends(user.key)));
+    });
   }
 
   getUserProfile() {
     this.subscription = this.me$.subscribe(user => {
       this.me = user;
       this.thumbnailURL = user.thumbnailURL;
-      if (this.thumbnailURL === null) this.setIdenticon();
+      if (this.thumbnailURL === null) setTimeout(() => {this.setIdenticon();}, 1000);
     });
   }
 
