@@ -42,8 +42,14 @@
     </ion-list-header>
     <ion-item-sliding *ngFor="let user of friends$ | async">
       <ion-item *ngIf="user" (click)="viewUserProfile(user)">
-        <ion-avatar (click)="showOriginalAvatarImage()" item-start>
-          <img-loader [src]="user.thumbnailURL" [spinner]="true"></img-loader>
+        <ion-avatar item-start (click)="showOriginalAvatarImage()">
+            <img *ngIf="user.thumbnailURL;then custom else identicon">
+            <ng-template #identicon>
+              <img [src]="user.identiconURL">
+            </ng-template>
+            <ng-template #custom>
+              <img-loader [src]="user.thumbnailURL" [spinner]="true"></img-loader>
+            </ng-template>
         </ion-avatar>
         <h2>{{user.displayName}}</h2>
         <p>{{user.statusMessage}}</p>
