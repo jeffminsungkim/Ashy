@@ -32,6 +32,7 @@ module.exports = ({ admin, functions, firestore }) => {
       gender: null,
       lastLoginAt: null,
       statusMessage: null,
+      signupAt: admin.firestore.FieldValue.serverTimestamp(),
       currentActiveStatus: 'signout'
     };
 
