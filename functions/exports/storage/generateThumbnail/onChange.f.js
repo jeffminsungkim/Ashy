@@ -3,8 +3,8 @@
 module.exports = ({ admin, functions, firestore, fs, gcs, mkdirp, os, path, spawn }) => {
   return functions.storage.object().onChange((event) => {
     const THUMB_PREFIX = 'thumb_';
-    const THUMB_MAX_HEIGHT = 150;
-    const THUMB_MAX_WIDTH = 150;
+    const THUMB_MAX_HEIGHT = 120;
+    const THUMB_MAX_WIDTH = 120;
     const BASE_URL = 'https://firebasestorage.googleapis.com/v0/b/';
     const contentType = event.data.contentType; // This is the image Mimme type ex) image/jpeg
     const filePath = event.data.name; // A full path including a file name ex) user-profile/qcjPTIR28CY3AzPD4K4E6Mk8zeF3.jpeg
@@ -45,7 +45,7 @@ module.exports = ({ admin, functions, firestore, fs, gcs, mkdirp, os, path, spaw
       };
       batch.update(userRef, urls);
       return batch.commit().then(() => {
-        console.log('Use default placeholder.');
+        console.log('Use Identicon.');
         console.log('resource state2:', event.data.resourceState);
       });
     }
