@@ -26,9 +26,9 @@
           </ion-note>
       </button>
       <ion-item>
-        You've been signed in
-        <ion-note class="last-seen" item-end>
-          {{user.lastLoginAt | relativeTime}}
+        Member for
+        <ion-note class="signup-date" item-end>
+          {{user.signupAt | simpleRelativeTime}}
         </ion-note>
       </ion-item>
       <button ion-item (click)="goToEditUsername()">
