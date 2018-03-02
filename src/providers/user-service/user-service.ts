@@ -1,7 +1,7 @@
-// import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { Storage } from '@ionic/storage';
+import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
 
 import { Ashy } from '@ashy/models/ashy';
 import { User } from '@ashy/models/user';
@@ -9,7 +9,8 @@ import { User } from '@ashy/models/user';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-
+import { debounceTime } from 'rxjs/operators/debounceTime';
+import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import { firestore } from 'firebase/app';
@@ -30,12 +31,13 @@ export class UserServiceProvider {
   user$: any;
   friendsListRef$: AngularFirestoreCollection<any>;
   friends$: Observable<any[]>;
+  validTokenExists: boolean;
 
   constructor(
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,
-    private storage: Storage) {
-
+    protected http: HttpClient,
+    protected localStorageService: LocalStorageServiceProvider) {
       this.rtdb = firebase.database();
       this.fs = firebase.firestore();
       this.appRef = this.afs.collection<Ashy>('apps');
@@ -48,6 +50,11 @@ export class UserServiceProvider {
           this.updateOnDisconnect();
         }
       }).subscribe();
+
+      // this.localStorageService.getToken('accessToken').subscribe((user) => {
+      //   console.log('Access Token?', user);
+      //   (user !== null) ? this.validTokenExists = true : this.validTokenExists = false;
+      // });
   }
 
   get authenticated(): boolean {
@@ -180,14 +187,9 @@ export class UserServiceProvider {
 
   // Updates status when connection to Firebase starts
   updateOnConnect() {
-
-    this.storage.get('accessToken').then((token) => {
-      if (!token) return;
-
-      return this.rtdb.ref('.info/connected').on('value', snapshot => {
-        this.updateCurrentUserActiveStatusTo('online');
-        this.updateLastLoginTime();
-      });
+    return this.rtdb.ref('.info/connected').on('value', snapshot => {
+      this.updateCurrentUserActiveStatusTo('online');
+      this.updateLastLoginTime();
     });
   }
 
@@ -210,29 +212,38 @@ export class UserServiceProvider {
     this.getAppRef(this.currentUserId).update(notificationState);
   }
 
-  updateNotificationToken(token: string, uid: string) {
-    let deviceToken = { notificationToken: token };
-    this.getUsersRef(uid).update(deviceToken).then(() => console.log('Updated device token'));
-  }
+  // updateNotificationToken(token: string, uid: string) {
+  //   let deviceToken = { notificationToken: token };
+  //   this.getUsersRef(uid).update(deviceToken).then(() => console.log('Updated device token'));
+  // }
 
-  updateUserProfile(name: string, photoURL: string) {
+  updateUserProfile(name: string, photoURL?: string) {
     const data = {
       displayName: name,
-      photoURL: photoURL
+      photoURL: photoURL || ""
     };
 
     return this.afAuth.auth.currentUser.updateProfile(data)
       .then(() => {
+        console.log('name:', name, 'photoURL:', photoURL);
         console.log('Successfully updated default user profile');
-
         // Force refresh regardless of token expiration
         return this.afAuth.auth.currentUser.getIdToken(true);
       })
-      .then(accessToken => {
-        console.log('Token refreshed!', accessToken);
-        return this.storage.set('accessToken', accessToken);
+      .then(newToken => {
+        console.log('Token refreshed!', newToken);
+        return newToken;
       })
       .catch((err) => console.log(err));
+  }
+
+  useIdenticon() {
+    const profilePhoto = { thumbnailURL: null, photoURL: null };
+    return this.usersRef.doc(this.currentUserId).update(profilePhoto);
+  }
+
+  setIdenticon(identiconURL: string) {
+    return this.usersRef.doc(this.currentUserId).update({identiconURL: identiconURL});
   }
 
   /*updateGender(selectedGender: string) {
@@ -243,6 +254,7 @@ export class UserServiceProvider {
 
   checkUsername(username: string) {
     username = username.toLowerCase();
+    // return this.getUsernamesRef(username).valueChanges().pipe(debounceTime(500), take(1));
     return this.getUsernamesRef(username).valueChanges();
   }
 
