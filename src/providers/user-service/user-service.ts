@@ -220,7 +220,7 @@ export class UserServiceProvider {
   updateUserProfile(name: string, photoURL?: string) {
     const data = {
       displayName: name,
-      photoURL: photoURL || ""
+      photoURL: photoURL || this.currentUserPhotoURL
     };
 
     return this.afAuth.auth.currentUser.updateProfile(data)
@@ -235,6 +235,11 @@ export class UserServiceProvider {
         return newToken;
       })
       .catch((err) => console.log(err));
+  }
+
+  updateStatusMessage(message: string) {
+    const statusMessage = { statusMessage: message };
+    return this.usersRef.doc(this.currentUserId).update(statusMessage);
   }
 
   useIdenticon() {
