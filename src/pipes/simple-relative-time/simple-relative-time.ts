@@ -45,6 +45,11 @@ export class SimpleRelativeTimePipe implements PipeTransform {
             extraEpoch: 'month'
           };
         } else {
+          console.log('Else', interval);
+          if (interval === 12) {
+            interval = 1;
+            unit = 'year'
+          }
           return {
             interval: interval,
             epoch: unit,
