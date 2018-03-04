@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController, Toast } from 'ionic-angular';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { IonicPage, AlertController, ToastController, ModalController, Toast } from 'ionic-angular';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
-import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
 import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
@@ -19,14 +17,11 @@ export class EmailVerificationPage {
   private intervalId: number;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    private afAuth: AngularFireAuth,
+    public modalCtrl: ModalController,
     private authService: AuthServiceProvider,
     private interfaceOpt: InterfaceOption,
-    private modalService: ModalServiceProvider,
     private userService: UserServiceProvider,
     private localStorageService: LocalStorageServiceProvider) { }
 
@@ -35,7 +30,7 @@ export class EmailVerificationPage {
   }
 
   setNewEmailAddress() {
-    let erModal = this.modalService.showEmailResetModal(this.email);
+    let erModal = this.modalCtrl.create('EmailResetPage', { currentEmail: this.email, showCloseBtn: true });
     erModal.onDidDismiss(data => {
       console.log(data);
       this.email = data.email;
