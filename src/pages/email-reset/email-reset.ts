@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
+import { IonicPage, NavParams, AlertController, ViewController, ToastController } from 'ionic-angular';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
-import { ToastServiceProvider } from '@ashy/services/toast-service/toast-service';
+import { InterfaceOption } from '@ashy/services/interface-option/interface-option';
 
 
 @IonicPage()
@@ -13,16 +13,18 @@ export class EmailResetPage {
 
   public oldEmail: string;
   public newEmail: string;
+  public showCloseBtn: boolean;
 
   constructor(
-    public navCtrl: NavController,
     public navParams: NavParams,
+    public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public viewCtrl: ViewController,
     private authService: AuthServiceProvider,
-    private toastService: ToastServiceProvider) {
+    private interfaceOpt: InterfaceOption) {
 
-    this.oldEmail = this.navParams.get('oldEmail');
+    this.showCloseBtn = navParams.get('showCloseBtn');
+    this.oldEmail = navParams.get('currentEmail');
   }
 
   ionViewDidLoad() {
@@ -61,10 +63,10 @@ export class EmailResetPage {
   async updateEmailAddress(newEmail: string) {
     try {
       await this.authService.updateEmailAddress(newEmail);
-      this.toastService.show(`Address changed to ${newEmail}`);
+      this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(`Address changed to ${newEmail}`)).present();
       this.viewCtrl.dismiss({'email': this.newEmail});
     } catch(error) {
-      this.toastService.show(error.message);
+      this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(error.message)).present();
     }
   }
 }

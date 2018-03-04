@@ -1,14 +1,14 @@
 <ion-header no-border>
   <ion-navbar transparent>
-    <ion-title>EmailReset</ion-title>
-    <ion-buttons left>
+    <ion-title>Reset Email</ion-title>
+    <ion-buttons left *ngIf="showCloseBtn">
         <button ion-button color="dark" (click)="closeModal()">
-            CLOSE
+            Close
         </button>
     </ion-buttons>
     <ion-buttons right>
-        <button ion-button color="dark" [disabled]="!userEmail.valid" (click)="confirmUpdate()">
-            SAVE
+        <button ion-button class="save-button" color="dark" [disabled]="!userEmail.valid" (click)="confirmUpdate()">
+            Save
         </button>
     </ion-buttons>
   </ion-navbar>
@@ -24,7 +24,7 @@
             <ion-note item-end *ngIf="userEmail.valid"><ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon></ion-note>
         </ion-item>
     </ion-col>
-    <ion-col>
+    <ion-col *ngIf="showCloseBtn">
         <p class="ashy-info">Please click <span class="primary">Re-send</span> button after updating the new email</p>
     </ion-col>
   </ion-row>

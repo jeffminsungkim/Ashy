@@ -45,7 +45,7 @@ export class ProfileDetailPage {
   }
 
   goToChangeEmail() {
-
+    this.navCtrl.push('EmailResetPage', { currentEmail: this.user.email, showCloseBtn: false });
   }
 
   goToChangePassword() {
