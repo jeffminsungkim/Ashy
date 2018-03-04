@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 import { InterfaceOption } from '@ashy/services/interface-option/interface-option';
@@ -10,49 +11,66 @@ import { InterfaceOption } from '@ashy/services/interface-option/interface-optio
   templateUrl: 'password-reset.html',
 })
 export class PasswordResetPage {
-
-  email: string;
+  @ViewChild('inputBox') inputBox;
+  title: string;
+  infoMessage: string;
+  currentPassword: string;
+  passwordGroup: FormGroup;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
+    public formBuilder: FormBuilder,
     private interfaceOpt: InterfaceOption,
-    private authService: AuthServiceProvider) { }
+    private authService: AuthServiceProvider) {
+    this.title = 'New Password';
+    this.infoMessage = 'Strong passwords use a combination of lowercase and uppercase letters, numbers and symbols.';
+    this.currentPassword = navParams.get('currentPassword');
+    this.createFormGroup();
+  }
 
   ionViewDidLoad() {
-
+    setTimeout(() => {
+      this.inputBox.setFocus();
+    }, 600);
   }
 
-  sendEmail() {
-    this.alertCtrl.create({
-      title: this.email,
-      message: 'Please confirm the verification link from your email account.',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        },
-        {
-          text: 'Send',
-          handler: () => {
-            this.sendPasswrodResetEmail();
-          }
-        }
-      ]
-    }).present();
+  createFormGroup() {
+    this.passwordGroup = this.formBuilder.group({
+      newPassword: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validator: PasswordValidation.passwordInspector(this.currentPassword)
+    })
   }
 
-  async sendPasswrodResetEmail() {
-    console.log('sendPasswrodResetEmail() called');
-    try {
-      const res: any = await this.authService.resetPassword(this.email);
+  get newPassword() {
+    return this.passwordGroup.get('newPassword');
+  }
 
-      if (res.status)
-        this.alertCtrl.create(this.interfaceOpt.makePasswordResetOpt()).present();
-    } catch(error) {
-      console.log("error:", error);
-      this.alertCtrl.create(this.interfaceOpt.makeErrorMessageOpt(error.message)).present();
+  get confirmPassword() {
+    return this.passwordGroup.get('confirmPassword');
+  }
+}
+
+export class PasswordValidation {
+  static passwordInspector(currentPassword: string) {
+    return (abstractCtrl: AbstractControl) => {
+      let password = abstractCtrl.get('newPassword').value;
+      let confirmPassword = abstractCtrl.get('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        console.log('Password does not matched');
+        return {invalid: true};
+      } else if (currentPassword === password) {
+        console.log('New password matched with an old password');
+        return {invalid: true};
+      } else {
+        console.log('Good!');
+        return null;
+      }
     }
   }
+
 }
