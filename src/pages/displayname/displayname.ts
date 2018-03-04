@@ -14,7 +14,8 @@ export class DisplaynamePage {
   @ViewChild('inputBox') inputBox;
   title: string = 'Name';
   smControl: FormControl;
-  name: string = '';
+  pristineName: string;
+  newName: string;
   showCloseBtn: boolean;
 
   constructor(
@@ -24,7 +25,8 @@ export class DisplaynamePage {
     private events: Events,
     private userService: UserServiceProvider) {
     this.showCloseBtn = navParams.get('showCloseBtn');
-    this.name = navParams.get('displayName');
+    this.pristineName = navParams.get('displayName');
+    this.newName = this.pristineName;
     this.createFormGroup();
   }
 
@@ -48,11 +50,11 @@ export class DisplaynamePage {
   }
 
   updateTypedWord() {
-    this.name = this.inputBox.value;
+    this.newName = this.inputBox.value;
   }
 
   ionViewWillLeave() {
-    this.events.publish('displayName', this.name);
+    this.events.publish('displayName', this.newName);
   }
 
   dismissModal() {
