@@ -27,7 +27,7 @@ export class DisplaynamePage {
     this.showCloseBtn = navParams.get('showCloseBtn');
     this.pristineName = navParams.get('displayName');
     this.newName = this.pristineName;
-    this.createFormGroup();
+    this.createSingleForm();
   }
 
   ionViewDidLoad() {
@@ -36,7 +36,7 @@ export class DisplaynamePage {
     }, 600);
   }
 
-  createFormGroup() {
+  createSingleForm() {
     this.smControl = new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(20)]);
   }
 

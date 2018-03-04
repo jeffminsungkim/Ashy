@@ -25,7 +25,7 @@ export class StatusMessagePage {
     private userService: UserServiceProvider) {
 
     this.showCloseBtn = navParams.get('showCloseBtn');
-    this.createFormGroup();
+    this.createSingleForm();
   }
 
   ionViewDidLoad() {
@@ -34,7 +34,7 @@ export class StatusMessagePage {
     }, 600);
   }
 
-  createFormGroup() {
+  createSingleForm() {
     this.smControl = new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(60)]);
   }
 
