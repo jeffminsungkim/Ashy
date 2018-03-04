@@ -38,7 +38,11 @@ export class AuthServiceProvider {
 
   sendEmailVerification() {
     this.currentUser.sendEmailVerification();
-    console.log('Verification email has sent');
+  }
+
+  reAuthenticate(password: string) {
+    const credentials = firebase.auth.EmailAuthProvider.credential(this.currentUserEmail, password);
+    return this.currentUser.reauthenticateWithCredential(credentials);
   }
 
   resetPassword(email: string) {
@@ -57,7 +61,7 @@ export class AuthServiceProvider {
   emailSignUp(user: EmailSignup) {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
-      .then(auth => resolve({status: true, message: `Signed up as ${auth.email}`}))
+      .then(auth => resolve({status: true, uid: auth.uid, message: `Signed up as ${auth.email}`}))
       .catch(err => reject(err));
     });
   }
