@@ -18,13 +18,13 @@ module.exports = ({ admin, functions, firestore }) => {
     };
 
     const appData = {
-      emailVerified: false,
       signupAt: admin.firestore.FieldValue.serverTimestamp()
     };
 
     const userData = {
       uid: uid,
       email: email,
+      emailVerified: false,
       displayName: displayName,
       photoURL: null,
       thumbnailURL: null,
