@@ -1,11 +1,54 @@
 page-email-verification {
+
   ::-webkit-scrollbar{
     display: none;
   }
   .scroll-content {
+    overflow: hidden;
     margin-top: 50%;
     text-align: center;
     color: #b9b7b7;
+
+    p {
+      font-size: 14px;
+    }
+
+    ion-col {
+      color: color($colors, ashygray, base);
+      p {
+        font-size: 14px;
+      }
+    }
+
+    .button-clear-md {
+      font-size: 17px;
+      color: color($colors, fadedred, base);
+    }
+
+    .button-clear-ios {
+      font-size: 17px;
+      color: color($colors, fadedred, base);
+    }
+
+    @media screen and (max-width: 320px) {
+      p {
+        font-size: 12px;
+      }
+
+      ion-col {
+        p {
+          font-size: 12px;
+        }
+      }
+
+      .button-clear-md {
+        font-size: 15px;
+      }
+
+      .button-clear-ios {
+        font-size: 15px;
+      }
+    }
   }
 
 
