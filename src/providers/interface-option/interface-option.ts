@@ -29,9 +29,8 @@ export class InterfaceOption {
 
   makeEmailVerificationOpt() {
     return {
-      title: 'Email has sent!',
-      subTitle: 'Please wait this might take a few minutes.',
-      message: 'Try it again if you have not received an email.',
+      title: 'Email has been sent!',
+      message: 'Please wait, this might take a few seconds or minutes.',
       buttons: [
         {
           text: 'OK',
