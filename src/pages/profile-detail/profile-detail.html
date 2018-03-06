@@ -35,7 +35,7 @@
         Email
         <ion-note class="user-email" item-end>
           {{user.email}}
-          &nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf="!emailVerified"><i class="fa fa-exclamation fa-lg"></i></span>
+          <span *ngIf="!emailVerified">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-exclamation fa-lg"></i></span>
         </ion-note>
       </button>
       <button ion-item (click)="goToChangePassword()">
@@ -62,7 +62,7 @@
     <p *ngIf="!user.gender">Once you selected, gender
       <span>cannot change again</span>
     </p>
-    <div *ngIf="user.gender;then yourgender else pickgender"></div>
+    <div hidden *ngIf="user.gender;then yourgender else pickgender"></div>
 
     <ion-list radio-group>
       <ng-template #pickgender>
@@ -80,5 +80,4 @@
       </ng-template>
     </ion-list>
   </ion-row>
-
 </ion-content>
