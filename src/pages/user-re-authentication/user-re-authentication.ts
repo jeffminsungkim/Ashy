@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
-import { EmailProviderCredential } from '@ashy/models/emailprovidercredential';
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
@@ -23,7 +22,6 @@ export class UserReAuthenticationPage {
   passwordControl: FormControl;
   formError: string;
   incorrectPasswd: boolean = false;
-  credential = {} as EmailProviderCredential;
 
   constructor(
     public navCtrl: NavController,
@@ -33,6 +31,7 @@ export class UserReAuthenticationPage {
     private localStorage: LocalStorageServiceProvider,
     private userService: UserServiceProvider,
     private utilityService: UtilityServiceProvider) {
+
     this.currentEmail = navParams.get('currentEmail');
     console.log('authentication, currentEmail:', this.currentEmail);
     this.title = navParams.get('credential');
