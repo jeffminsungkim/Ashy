@@ -1,0 +1,24 @@
+<ion-header no-border>
+  <ion-navbar transparent>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons left *ngIf="showCloseBtn">
+      <button ion-button color="dark" (click)="closeModal()">
+        Close
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <single-email-form
+      [infoMsg]="infoMessage"
+      [warningMsg]="warningMessage"
+      [verifiedMsg]="verifiedMessage"
+      [email]="currentEmail"
+      [pristineEmail]="pristineEmail"
+      [verifiedState]="verifiedState"
+      [buttonLabel]="labelName"
+      (emailLink)="sendVerificationLink($event)"
+      (onSubmit)="authenticateCredential($event)">
+    </single-email-form>
+</ion-content>

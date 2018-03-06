@@ -1,8 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 import { InterfaceOption } from '@ashy/services/interface-option/interface-option';
+import { CustomValidator } from '@ashy/shared/customvalidator';
 
 
 @IonicPage()
@@ -20,7 +21,7 @@ export class PasswordResetPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
     public formBuilder: FormBuilder,
     private interfaceOpt: InterfaceOption,
     private authService: AuthServiceProvider) {
@@ -41,8 +42,24 @@ export class PasswordResetPage {
       newPassword: ['', Validators.required],
       confirmPassword: ['', Validators.required]
     }, {
-      validator: PasswordValidation.passwordInspector(this.currentPassword)
+      validator: CustomValidator.passwordInspector(this.currentPassword)
     })
+  }
+
+  backToProfileDetail() { this.navCtrl.popToRoot(); }
+
+  changePassword() {
+    // TODO: Need to create a success page.
+    const newPassword = this.passwordGroup.get('confirmPassword').value;
+    let loader = this.loadingCtrl.create(this.interfaceOpt.makeWaitLoaderOpt());
+    loader.present();
+    this.authService.updatePassword(newPassword).then(() => {
+      loader.dismiss();
+      this.backToProfileDetail(); // Workaround method.
+    }).catch((err) => {
+      loader.dismiss();
+      console.log('Updating password fail', err);
+    });
   }
 
   get newPassword() {
@@ -54,23 +71,3 @@ export class PasswordResetPage {
   }
 }
 
-export class PasswordValidation {
-  static passwordInspector(currentPassword: string) {
-    return (abstractCtrl: AbstractControl) => {
-      let password = abstractCtrl.get('newPassword').value;
-      let confirmPassword = abstractCtrl.get('confirmPassword').value;
-
-      if (password !== confirmPassword) {
-        console.log('Password does not matched');
-        return {invalid: true};
-      } else if (currentPassword === password) {
-        console.log('New password matched with an old password');
-        return {invalid: true};
-      } else {
-        console.log('Good!');
-        return null;
-      }
-    }
-  }
-
-}

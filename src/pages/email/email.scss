@@ -1,0 +1,106 @@
+page-email {
+
+  .scroll-content {
+    overflow: hidden;
+
+    ion-list {
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    ion-col {
+      padding-left: 7%;
+      padding-right: 7%;
+      p {
+        color: color($colors, ashygray, base);
+      }
+    }
+
+    .form-error {
+      padding: 5px;
+      border-radius: 4px;
+      display: table;
+      width:100%;
+      background: color($colors, warning, base);
+      color: white;
+      p {
+        color: white;
+        font-size: 12px;
+        margin: 0;
+        float: left;
+      }
+      .email-input {
+        border-bottom: none;
+      }
+    }
+
+    .email-input {
+      display: block;
+      border-bottom: 0.55px solid rgb(200, 199, 204);
+    }
+
+    .button-wrapper {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .button-clear-md.clear-error {
+      color: white;
+      font-size: 18px;
+      padding: 0;
+    }
+    .button-clear-ios.clear-error {
+      color: white;
+      font-size: 18px;
+      padding: 0;
+    }
+
+    .item-md {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .button-md {
+      font-size: 15px;
+      box-shadow: 0 10px 10px -7px darkslategrey;
+      background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
+    }
+    .button-md:active {
+      top: 1px;
+      box-shadow: 0 1px 0 color($colors, ashygray, base);
+    }
+    .button-clear-md {
+      box-shadow: none;
+      background: none;
+      color: color($colors, primary, base);
+      font-size: 15px;
+    }
+    .button-clear-md:active {
+      box-shadow: none;
+      background-color: transparent;
+    }
+
+    .item-ios {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .button-ios {
+      font-size: 15px;
+      box-shadow: 0 10px 10px -7px darkslategrey;
+      background: repeating-linear-gradient(30deg,  color($colors, fadedred, base), color($colors, mac, base));
+    }
+    .button-ios:active {
+      top: 1px;
+      box-shadow: 0 1px 0 color($colors, ashygray, base);
+    }
+    .button-clear-ios {
+      box-shadow: none;
+      background: none;
+      color: color($colors, primary, base);
+      font-size: 15px;
+    }
+    .button-clear-ios:active {
+      box-shadow: none;
+      background-color: transparent;
+    }
+  }
+}
