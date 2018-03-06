@@ -1,0 +1,41 @@
+<ion-header no-border>
+  <ion-navbar transparent>
+    <ion-title>{{title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-row>
+      <ion-col>
+        <p>{{infoMessage}}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <div [ngClass]="formError">
+          <ion-input class="password-input" #inputBox [formControl]="passwordControl" type="password" placeholder="Password" (ionChange)="touchClearkey()"></ion-input>
+          <span item-content *ngIf="incorrectPasswd">
+            <p>Oops! Your password is incorrect.</p>
+          </span>
+          <div class="button-wrapper" *ngIf="incorrectPasswd">
+            <button ion-button outline clear class="clear-error" (click)="clearFormError()">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </ion-col>
+      <ion-col col-12>
+        <button ion-button block [disabled]="passwordControl.invalid || incorrectPasswd" (click)="changePassword(passwordControl)">
+          Continue
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button outline clear (click)="goToPasswordReset()">
+          Forgot your password?
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-list>
+
+</ion-content>
