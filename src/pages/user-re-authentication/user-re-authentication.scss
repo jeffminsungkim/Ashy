@@ -72,7 +72,7 @@ page-user-re-authentication {
       box-shadow: none;
       background: none;
       color: color($colors, primary, base);
-      font-size: 13px;
+      font-size: 15px;
     }
     .button-clear-md:active {
       box-shadow: none;
@@ -96,11 +96,21 @@ page-user-re-authentication {
       box-shadow: none;
       background: none;
       color: color($colors, primary, base);
-      font-size: 13px;
+      font-size: 15px;
     }
     .button-clear-ios:active {
       box-shadow: none;
       background-color: transparent;
+    }
+
+    @media screen and (max-width: 320px) {
+      .button-clear-md {
+        font-size: 13px;
+      }
+
+      .button-clear-ios {
+        font-size: 13px;
+      }
     }
   }
 }

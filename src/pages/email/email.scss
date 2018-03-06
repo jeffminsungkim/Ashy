@@ -111,5 +111,15 @@ page-email {
       box-shadow: none;
       background-color: transparent;
     }
+
+    @media screen and (max-width: 320px) {
+      .button-clear-md {
+        font-size: 13px;
+      }
+
+      .button-clear-ios {
+        font-size: 13px;
+      }
+    }
   }
 }
