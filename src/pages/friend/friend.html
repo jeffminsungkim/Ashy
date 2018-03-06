@@ -21,7 +21,7 @@
       <ion-avatar item-start>
         <img *ngIf="thumbnailURL;then custom else identicon">
         <ng-template #identicon>
-          <img #avatarHolder data-jdenticon-hash="identiconHash" (click)="presentActionSheetUploadProfilePicture()">
+          <img #avatarHolder data-jdenticon-hash="identiconHash">
         </ng-template>
         <ng-template #custom>
           <img-loader [src]="thumbnailURL"></img-loader>
