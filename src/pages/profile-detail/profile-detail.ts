@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, ActionSheetController, ViewController } from 'ionic-angular';
-
+import { IonicPage, NavController, Events } from 'ionic-angular';
 import { ModalWrapperPage } from '@ashy/pages/modal-wrapper/modal-wrapper';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
-
 import { User } from '@ashy/models/user';
 
 
@@ -16,18 +14,28 @@ export class ProfileDetailPage {
   user: User;
   pickedGender: boolean;
   hideUsername: boolean;
+  emailVerified: boolean;
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     private events: Events,
-    public modalWrapper: ModalWrapperPage,
-    public viewCtrl: ViewController,
+    private modalWrapper: ModalWrapperPage,
     public userService: UserServiceProvider) {
 
     this.pickedGender = false;
     this.hideUsername = false;
-    this.user = this.modalWrapper.modalParams;
+    this.user = this.modalWrapper.modalParams.user;
+  }
+
+  ionViewWillEnter() {
+    this.checkEmailVerifiedState();
+    console.log('Your account emailVerified:', this.emailVerified);
+  }
+
+  ionViewWillUnload() { this.unsubscribeEvent('email'); }
+
+  checkEmailVerifiedState() {
+    this.userService.currentUserEmailVerified ? this.emailVerified = true : this.emailVerified = false;
   }
 
   goToEditDisplayname() {
@@ -44,16 +52,15 @@ export class ProfileDetailPage {
     this.navCtrl.push('UsernamePage');
   }
 
-  goToChangeEmail() {
-    this.navCtrl.push('EmailResetPage', { currentEmail: this.user.email, showCloseBtn: false });
+  goToUserEmail() {
+    this.subscribeEvent('email', this.user);
+    this.navCtrl.push('EmailPage', { showCloseBtn: false });
   }
 
-  goToChangePassword() {
+  goToChangePassword() { this.navCtrl.push('UserReAuthenticationPage', { credential: 'Password' }); }
 
-  }
-
-  hideMyUsername(event: any) {
-    console.log('Hide my username', event.checked);
+  hideMyUsername() {
+    console.log('hide my username', this.hideUsername);
   }
 
   chooseGender(gender: string) {
@@ -63,15 +70,14 @@ export class ProfileDetailPage {
 
   private subscribeEvent(topic: string, user: User) {
     this.events.subscribe(topic, (eventData) => {
-      console.log('eventData:', eventData);
       user[topic] = eventData;
-      this.unsubscribeEvent(topic);
+      if (topic !== 'email') this.unsubscribeEvent(topic);
     });
   }
 
   private unsubscribeEvent(topic: string) {
     this.events.unsubscribe(topic);
-    console.log('unsubscribed event');
+    console.log(`Unsubscribe to ${topic}`);
   }
 
   dismissModal() { this.modalWrapper.dismissModal(); }
