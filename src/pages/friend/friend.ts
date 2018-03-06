@@ -1,21 +1,20 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, Events, Platform, ModalController } from 'ionic-angular';
+import { IonicPage, Events, ModalController } from 'ionic-angular';
 
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
-import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
 import { User } from '@ashy/models/user';
 
 import * as jdenticon from 'jdenticon';
 
 import { Observable } from 'rxjs/Observable';
-import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import { interval } from 'rxjs/observable/interval';
 import { Subscription } from 'rxjs/Subscription';
 import { of } from 'rxjs/observable/of';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { tap, map, take, switchMap } from 'rxjs/operators';
+import { empty } from "rxjs/observable/empty";
 
 
 @IonicPage()
@@ -32,20 +31,12 @@ export class FriendPage {
   thumbnailURL: string;
   identicon: string;
   identiconHash: string;
-  identiconElemRef: any;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
-    public elementRef: ElementRef,
-    public events: Events,
-    public platform: Platform,
+    private events: Events,
     private localStorageService: LocalStorageServiceProvider,
-    public userService: UserServiceProvider,
-    public authService: AuthServiceProvider,
-    public modalService: ModalServiceProvider) {
+    private userService: UserServiceProvider) {
 
     this.me$ = this.userService.getCurrentUser();
   }
@@ -62,7 +53,8 @@ export class FriendPage {
 
   ionViewWillEnter() {
     console.log("friends ionViewWillEnter");
-    this.retrieveHash();
+    this.retrieveHash(); // Retriving hash method should be called from ionViewWillEnter() not the constructor
+    this.subscribeNewHash();
     this.getUserProfile();
     this.getMyFriendList();
     // this.getRequestFromUser();
@@ -73,12 +65,11 @@ export class FriendPage {
     if (this.subscription !== undefined) this.subscription.unsubscribe();
   }
 
-  retrieveHash() {
-    this.localStorageService.getIdenticonHash().subscribe(hash => this.identiconHash = hash);
-  }
+  retrieveHash() { this.localStorageService.getIdenticonHash().subscribe(hash => this.identiconHash = hash) }
 
   setIdenticon() {
     if (this.identiconHash) {
+      console.log('FriendPage hash', this.identiconHash);
       let width = 30;
       let height = 30;
       let svg = jdenticon.toSvg(this.identiconHash, Math.min(width, height));
@@ -90,7 +81,7 @@ export class FriendPage {
   getMyFriendList() {
     this.friends$ = this.userService.getMyFriendsId().switchMap(friendKeys => {
       console.log('friendKeyList:', friendKeys);
-      return friendKeys.length === 0 ? of(friendKeys) :
+      return friendKeys.length === 0 ? of(friendKeys).pipe(take(1)) :
       combineLatest(friendKeys.map(user => this.userService.getFriends(user.key)));
     });
   }
@@ -99,7 +90,7 @@ export class FriendPage {
     this.subscription = this.me$.subscribe(user => {
       this.me = user;
       this.thumbnailURL = user.thumbnailURL;
-      if (this.thumbnailURL === null) setTimeout(() => {this.setIdenticon();}, 1000);
+      if (this.thumbnailURL === null) setTimeout(() => { this.setIdenticon(); }, 1000);
     });
   }
 
@@ -112,12 +103,25 @@ export class FriendPage {
   }
 
   showQuickSetting() {
-    this.rotateCogAnimation();
-    let settingGroup = this.modalCtrl.create('SettingGroupPage', { user: this.me, identicon: this.identicon });
-    settingGroup.onDidDismiss(() => {
+    if (this.me && this.identicon) {
+      this.rotateCogAnimation();
+      this.modalCtrl.create('SettingGroupPage', { user: this.me, identicon: this.identicon }).present();
+    }
+  }
 
+  private subscribeNewHash() {
+    this.events.subscribe('new:identiconHash', (hash) => {
+      if (hash) {
+        this.identiconHash = hash;
+        this.setIdenticon();
+        this.unsubscribeEvent();
+      }
     });
-    settingGroup.present();
+  }
+
+  private unsubscribeEvent() {
+    this.events.unsubscribe('new:identiconHash');
+    console.log('unsubscribed new:identiconHash event');
   }
 
   private rotateCogAnimation() {
@@ -125,9 +129,7 @@ export class FriendPage {
     rotate.classList.toggle('fa-rotate-180');
   }
 
-  addFriend() {
-    this.modalService.showAddFriendModal(this.me);
-  }
+  goToAddFriend() { this.modalCtrl.create('AddFriendPage', { me: this.me }).present(); }
 
   viewMyProfile() {
     console.log('view my profile:', this.me);
