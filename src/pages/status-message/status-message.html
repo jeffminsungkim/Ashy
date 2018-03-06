@@ -17,7 +17,7 @@
   <ion-row>
     <ion-col col-12>
       <ion-item>
-        <ion-input #inputBox [formControl]="smControl" type="text" (keyup)="updateTypedWord()" placeholder="Change your {{title | lowercase}}"></ion-input>
+        <ion-input #inputBox [formControl]="smControl" type="text" (keyup)="updateTypedWord()" placeholder="Type {{title | lowercase}}"></ion-input>
         <ion-note item-end>
           {{newSm | wordcounter:60}}
         </ion-note>
