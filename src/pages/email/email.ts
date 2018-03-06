@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
 import { CustomValidator } from '@ashy/shared/customvalidator';
 import { SingleEmailFormComponent } from '@ashy/components/single-email-form/single-email-form';
+import { ModalWrapperPage } from '@ashy/pages/modal-wrapper/modal-wrapper';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 
 
@@ -31,17 +32,20 @@ export class EmailPage {
     public navParams: NavParams,
     private events: Events,
     private viewCtrl: ViewController,
+    private modalWrapper: ModalWrapperPage,
     private authService: AuthServiceProvider) {
-    this.showCloseBtn = navParams.get('showCloseBtn');
-    this.pristineEmail = navParams.get('currentEmail');
+
+    this.showCloseBtn = this.modalWrapper.modalParams.showCloseBtn;
+    this.pristineEmail = this.authService.currentUserEmail;
     this.title = 'Email';
     this.labelName = 'Continue';
     this.infoMessage = 'You can use this email address to log in, or for password recovery.';
-    this.warningMessage = `By verifying a new email address ${this.pristineEmail} will no longer be associated with your account.`;
+    this.noteWarningMessage(this.pristineEmail);
     this.currentEmail = this.pristineEmail;
   }
 
   ionViewWillEnter() {
+    console.log('enter email page');
     this.checkEmailVerificationState();
     this.subscribeUpdatedEmail();
   }
@@ -52,8 +56,8 @@ export class EmailPage {
     }, 600);
   }
 
-  ionViewWillLeave() {
-    if (this.pristineEmail !== this.currentEmail && this.showCloseBtn) this.events.publish(this.title.toLowerCase(), this.currentEmail);
+  noteWarningMessage(email: string) {
+    this.warningMessage = `By verifying a new email address ${email} will no longer be associated with your account.`;
   }
 
   checkEmailVerificationState() {
@@ -68,16 +72,12 @@ export class EmailPage {
   private subscribeUpdatedEmail() {
     this.events.subscribe('email', (email) => {
       if (email) {
+        this.sendVerificationLink(email);
+        this.noteWarningMessage(email);
         this.pristineEmail = email;
         this.currentEmail = email;
-        this.unsubscribeEvent();
       }
     });
-  }
-
-  private unsubscribeEvent() {
-    this.events.unsubscribe('email');
-    console.log('unsubscribed email event');
   }
 
   authenticateCredential($event) {
@@ -90,6 +90,5 @@ export class EmailPage {
     });
   }
 
-  closeModal() { this.viewCtrl.dismiss({ email: this.pristineEmail }); }
-
+  dismissModal() { this.modalWrapper.dismissModal({ email: this.pristineEmail }); }
 }

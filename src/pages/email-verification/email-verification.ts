@@ -30,7 +30,8 @@ export class EmailVerificationPage {
   }
 
   goToMyEmail() {
-    let erModal = this.modalCtrl.create('EmailPage', { currentEmail: this.email, showCloseBtn: true });
+
+    let erModal = this.modalCtrl.create('ModalWrapperPage', { page: 'EmailPage', params: { currentEmail: this.email, showCloseBtn: true } });
     erModal.onDidDismiss(data => this.email = data.email);
     erModal.present();
   }
