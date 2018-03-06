@@ -12,16 +12,15 @@ export class ModalWrapperPage {
   modalParams: any = {};
 
   constructor(public navParams: NavParams, public viewCtrl: ViewController) {
-    this.modalParams = this.navParams.get('user');
-    console.log('modalparams:', this.modalParams);
+    this.modalParams = this.navParams.get('params');
   }
 
   ionViewDidLoad() {
     this.modalPage = this.navParams.get('page');
   }
 
-  dismissModal() {
-    this.viewCtrl.dismiss();
+  dismissModal(params?: any) {
+    params !== undefined ? this.viewCtrl.dismiss(params) : this.viewCtrl.dismiss();
   }
 
 }
