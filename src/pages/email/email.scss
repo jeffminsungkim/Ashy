@@ -21,6 +21,7 @@ page-email {
       padding-left: 7%;
       padding-right: 7%;
       p {
+        font-size: 15px;
         color: color($colors, ashygray, base);
       }
     }
@@ -113,6 +114,11 @@ page-email {
     }
 
     @media screen and (max-width: 320px) {
+      ion-col {
+        p {
+          font-size: 13px;
+        }
+      }
       .button-clear-md {
         font-size: 13px;
       }

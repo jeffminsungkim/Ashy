@@ -12,6 +12,7 @@ page-user-re-authentication {
       padding-left: 7%;
       padding-right: 7%;
       p {
+        font-size: 15px;
         color: color($colors, ashygray, base);
       }
     }
@@ -104,6 +105,11 @@ page-user-re-authentication {
     }
 
     @media screen and (max-width: 320px) {
+      ion-col {
+        p {
+          font-size: 13px;
+        }
+      }
       .button-clear-md {
         font-size: 13px;
       }
