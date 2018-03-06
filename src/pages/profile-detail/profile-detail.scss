@@ -28,13 +28,21 @@
       overflow: hidden;
     }
 
+    .require-verification {
+      color: color($colors, warning, base);
+      .note.user-email {
+        font-size: 1.2rem;
+        color: color($colors, warning, base);
+      }
+    }
+
     .edit-account {
       display: block;
       border-bottom: 1px solid lightgray;
     }
 
     .input-wrapper {
-      font-size: 1.5rem;
+      font-size: 1.7rem;
     }
 
     ion-item.item.item-block.item-toggle {
@@ -43,26 +51,31 @@
 
     .note {
       font-size: 1.5rem;
-      color: color($colors, fadedred, base);
+      color: color($colors, ashygray, base);
     }
 
     .note.signup-date {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
+      color: color($colors, ashygray, base);
+    }
+
+    .note.user-email {
+      font-size: 1.4rem;
       color: color($colors, ashygray, base);
     }
 
     p {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       color: color($colors, ashygray, base);
     }
     span {
-      font-size: 1.4rem;
-      color: color($colors, danger, base);
+      font-size: 1.5rem;
+      color: color($colors, warning, base);
     }
 
     span.private-username {
       font-size: 1.5rem;
-      color: color($colors, danger, base);
+      color: color($colors, warning, base);
     }
 
     span.public-username {
@@ -77,7 +90,23 @@
       }
       span {
         font-size: 1.3rem;
-        color: color($colors, danger, base);
+        color: color($colors, warning, base);
+      }
+      .input-wrapper {
+        font-size: 1.5rem;
+      }
+      .note {
+        font-size: 1.3rem;
+        color: color($colors, ashygray, base);
+      }
+      .note.signup-date {
+        font-size: 1.2rem;
+        color: color($colors, ashygray, base);
+      }
+
+      .note.user-email {
+        font-size: 1.2rem;
+        color: color($colors, ashygray, base);
       }
     }
   }

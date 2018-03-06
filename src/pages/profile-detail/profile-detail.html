@@ -31,23 +31,24 @@
           {{user.signupAt | simpleRelativeTime}}
         </ion-note>
       </ion-item>
+      <button ion-item [ngClass]="{'require-verification': !emailVerified}" (click)="goToUserEmail()">
+        Email
+        <ion-note class="user-email" item-end>
+          {{user.email}}
+          &nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf="!emailVerified"><i class="fa fa-exclamation fa-lg"></i></span>
+        </ion-note>
+      </button>
+      <button ion-item (click)="goToChangePassword()">
+        Password
+      </button>
       <button ion-item (click)="goToEditUsername()">
         Your Username
         <ion-note item-end>
           {{user.username}}
         </ion-note>
       </button>
-      <button ion-item (click)="goToChangeEmail()">
-        Email
-        <ion-note item-end>
-          {{user.email}}
-        </ion-note>
-      </button>
-      <button ion-item (click)="goToChangePassword()">
-        Password
-      </button>
       <ion-item>
-        <ion-toggle color="dodger" [(ngModel)]="hideUsername" (ionChange)="hideMyUsername($event)"></ion-toggle>
+        <ion-toggle color="dodger" [(ngModel)]="hideUsername" (ionChange)="hideMyUsername()"></ion-toggle>
         <ion-label *ngIf="!hideUsername">
           Make my username
           <span class="private-username">private</span>
