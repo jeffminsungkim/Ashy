@@ -217,6 +217,11 @@ export class UserServiceProvider {
   //   this.getUsersRef(uid).update(deviceToken).then(() => console.log('Updated device token'));
   // }
 
+  updateUserEmailAddress(email: string) {
+    let newEmailAddress = { email: email };
+    return this.getUsersRef(this.currentUserId).update(newEmailAddress);
+  }
+
   updateUserProfile(name: string, photoURL?: string) {
     const data = {
       displayName: name,
