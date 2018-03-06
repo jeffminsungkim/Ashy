@@ -51,12 +51,19 @@ page-setting-group {
     background-color: transparent;
     padding-top: 5%;
   }
+  ion-item.item.item-block.item-md:active {
+    background-color: lightgray;
+  }
 
   ion-item.item.item-block.item-ios {
     padding: 0;
     background-color: transparent;
     padding-top: 5%;
   }
+  ion-item.item.item-block.item-ios:active {
+    background-color: lightgray;
+  }
+
   .item-text-middle {
     display: -webkit-box;
     display: -webkit-flex;
