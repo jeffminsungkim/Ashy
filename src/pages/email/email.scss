@@ -1,5 +1,14 @@
 page-email {
 
+  .modal-button {
+    font-size: 25px;
+    -webkit-text-stroke: 3px white;
+  }
+
+  ::-webkit-scrollbar{
+    display:none;
+  }
+
   .scroll-content {
     overflow: hidden;
 

@@ -2,8 +2,8 @@
   <ion-navbar transparent>
     <ion-title>{{title}}</ion-title>
     <ion-buttons left *ngIf="showCloseBtn">
-      <button ion-button color="dark" (click)="closeModal()">
-        Close
+      <button ion-button class="modal-button" (click)="dismissModal()">
+        <i class="fa fa-times"></i>
       </button>
     </ion-buttons>
   </ion-navbar>
