@@ -29,18 +29,16 @@ export class EmailVerificationPage {
     this.email = this.userService.currentUserEmail;
   }
 
-  setNewEmailAddress() {
-    let erModal = this.modalCtrl.create('EmailResetPage', { currentEmail: this.email, showCloseBtn: true });
-    erModal.onDidDismiss(data => {
-      console.log(data);
-      this.email = data.email;
-    });
+  goToMyEmail() {
+    let erModal = this.modalCtrl.create('EmailPage', { currentEmail: this.email, showCloseBtn: true });
+    erModal.onDidDismiss(data => this.email = data.email);
     erModal.present();
   }
 
-  requestVerificationEmail() {
-    this.authService.sendEmailVerification();
-    this.alertCtrl.create(this.interfaceOpt.makeEmailVerificationOpt()).present();
+  reSendVerificationLink() {
+    this.authService.sendEmailVerification().then(() => {
+      this.alertCtrl.create(this.interfaceOpt.makeEmailVerificationOpt()).present();
+    });
   }
 
   async logout() {
