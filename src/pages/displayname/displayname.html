@@ -10,8 +10,8 @@
       <button
         ion-button
         class="save-button"
-        [disabled]="smControl.invalid || smControl.pristine || smControl.value === pristineName"
         color="dark"
+        [disabled]="smControl.invalid || smControl.pristine || smControl.value === pristineName"
         (click)="saveModification(smControl)">
         Save
       </button>
@@ -25,11 +25,11 @@
       <ion-item>
         <ion-input
           #inputBox
+          type="text"
+          placeholder="Change your {{title | lowercase}}"
           [formControl]="smControl"
           [(ngModel)]="newName"
-          type="text"
-          (keyup)="updateTypedWord()"
-          placeholder="Change your {{title | lowercase}}">
+          (keyup)="updateTypedWord()">
         </ion-input>
         <ion-note item-end>
           {{newName | wordcounter}}
