@@ -1,8 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { IonicPage, NavController, NavParams, Events, ViewController } from 'ionic-angular';
-import { CustomValidator } from '@ashy/shared/customvalidator';
-import { SingleEmailFormComponent } from '@ashy/components/single-email-form/single-email-form';
+import { IonicPage, NavController, Events } from 'ionic-angular';
 import { ModalWrapperPage } from '@ashy/pages/modal-wrapper/modal-wrapper';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 
@@ -13,7 +10,6 @@ import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
   templateUrl: 'email.html',
 })
 export class EmailPage {
-  @ViewChild(SingleEmailFormComponent) emailForm: SingleEmailFormComponent;
   public title: string;
   public labelName: string;
   public infoMessage: string;
@@ -21,17 +17,12 @@ export class EmailPage {
   public verifiedMessage: string;
   public currentEmail: string;
   public pristineEmail:string;
-  public newEmail: string;
-  public formError: boolean;
   public verifiedState: boolean;
   public showCloseBtn: boolean;
-  public emailControl: FormControl;
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     private events: Events,
-    private viewCtrl: ViewController,
     private modalWrapper: ModalWrapperPage,
     private authService: AuthServiceProvider) {
 
@@ -50,18 +41,12 @@ export class EmailPage {
     this.subscribeUpdatedEmail();
   }
 
-  ionViewDidLoad() {
-    setTimeout(() => {
-      this.emailForm.emailInput.setFocus();
-    }, 600);
-  }
-
   noteWarningMessage(email: string) {
     this.warningMessage = `By verifying a new email address ${email} will no longer be associated with your account.`;
   }
 
   checkEmailVerificationState() {
-    this.verifiedState = this.navParams.get('emailVerified');
+    this.verifiedState = this.authService.currentUserEmailVerified;
     if (this.verifiedState) {
       this.verifiedMessage = 'Your email address is verified';
     } else {
