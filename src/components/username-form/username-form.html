@@ -1,0 +1,16 @@
+<ion-row>
+    <ion-col>
+      <ion-searchbar
+        type="search"
+        #searchInput
+        placeholder="Search"
+        [(ngModel)]="newUserName"
+        [formControl]="usernameControl"
+        (ionInput)="findUserWithUsername()">
+      </ion-searchbar>
+      <ion-item *ngIf="!usernameControl.value">
+        <p class="user-info">{{unNotice}}</p>
+        <p class="user-info">{{dnNotice}}</p>
+      </ion-item>
+    </ion-col>
+</ion-row>
