@@ -36,7 +36,6 @@ export class UserReAuthenticationPage implements OnInit {
     private utilityService: UtilityServiceProvider) {
 
     this.currentEmail = navParams.get('currentEmail');
-    console.log('authentication, currentEmail:', this.currentEmail);
     this.title = navParams.get('credential');
     this.emailOrPasswd = this.title.toLowerCase();
   }
