@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
@@ -12,14 +12,14 @@ import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-s
   selector: 'page-user-re-authentication',
   templateUrl: 'user-re-authentication.html',
 })
-export class UserReAuthenticationPage {
-  @ViewChild('inputBox') inputBox;
+export class UserReAuthenticationPage implements OnInit {
+  @ViewChild('inputBox') passwordInput;
+  passwordControl: FormControl;
   title: string;
   infoMessage: string;
   emailOrPasswd: string;
   currentEmail: string;
   hash: string;
-  passwordControl: FormControl;
   formError: string;
   incorrectPasswd: boolean = false;
 
@@ -36,19 +36,20 @@ export class UserReAuthenticationPage {
     console.log('authentication, currentEmail:', this.currentEmail);
     this.title = navParams.get('credential');
     this.emailOrPasswd = this.title.toLowerCase();
-    this.createSingleForm();
   }
 
   ionViewWillEnter() {
     this.setInfoMessage();
-    this.clearInputBox();
+    this.clearPasswordForm();
   }
 
-  ionViewDidLoad() {
-    setTimeout(() => {
-      this.inputBox.setFocus();
-    }, 600);
-  }
+  // ionViewDidLoad() {
+  //   setTimeout(() => {
+  //     this.passwordInput.setFocus();
+  //   }, 1500);
+  // }
+
+  ngOnInit() { this.createPasswordForm(); }
 
   saveIdenticonHash(hash: string) { this.localStorage.storeIdenticonHash(hash); }
 
@@ -56,17 +57,17 @@ export class UserReAuthenticationPage {
 
   convertEmailToIdenticonHash(email: string) { return this.utilityService.convertEmailToHash(email); }
 
-  clearInputBox() { this.passwordControl.reset(); }
+  clearPasswordForm() { this.passwordControl.reset(); }
 
-  createSingleForm() { this.passwordControl = new FormControl('', [Validators.required, Validators.minLength(7)]); }
+  createPasswordForm() { this.passwordControl = new FormControl('', [Validators.required, Validators.minLength(7)]); }
 
   touchClearkey() { if (this.passwordControl.value === '') this.clearFormError(); }
 
   clearFormError() {
     this.formError = null;
     this.incorrectPasswd = false;
-    this.clearInputBox();
-    this.inputBox.setFocus();
+    this.clearPasswordForm();
+    this.passwordInput.setFocus();
   }
 
   setIncorrectPasswordError() {
@@ -96,6 +97,8 @@ export class UserReAuthenticationPage {
     this.removeInvalidIdenticonHash();
     this.hash = this.convertEmailToIdenticonHash(this.currentEmail);
     this.saveIdenticonHash(this.hash);
+
+    // TODO: Write a method to update identicon image to storage
   }
 
   changePassword({ value, valid }: { value: string, valid: boolean }) {

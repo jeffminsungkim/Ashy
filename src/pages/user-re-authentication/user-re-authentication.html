@@ -14,7 +14,14 @@
     <ion-row>
       <ion-col col-12>
         <div [ngClass]="formError">
-          <ion-input class="password-input" #inputBox [formControl]="passwordControl" type="password" placeholder="Password" (ionChange)="touchClearkey()"></ion-input>
+          <ion-input
+            class="password-input"
+            type="password"
+            #inputBox
+            placeholder="Password"
+            [formControl]="passwordControl"
+            (ionChange)="touchClearkey()">
+          </ion-input>
           <span item-content *ngIf="incorrectPasswd">
             <p>Oops! Your password is incorrect.</p>
           </span>
@@ -37,5 +44,4 @@
       </ion-col>
     </ion-row>
   </ion-list>
-
 </ion-content>
