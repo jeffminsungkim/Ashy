@@ -1,6 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { LowerCasePipe } from '@angular/common';
-import { IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController, Events } from 'ionic-angular';
 import { FormControl, Validators } from '@angular/forms';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 
@@ -10,55 +10,59 @@ import { UserServiceProvider } from '@ashy/services/user-service/user-service';
   selector: 'page-displayname',
   templateUrl: 'displayname.html',
 })
-export class DisplaynamePage {
-  @ViewChild('inputBox') inputBox;
-  title: string = 'Name';
-  smControl: FormControl;
+export class DisplaynamePage implements OnInit {
+  @ViewChild('inputBox') displayNameInput;
+  displayNameControl: FormControl;
+  title: string;
   pristineName: string;
-  newName: string;
+  newDisplayName: string;
   showCloseBtn: boolean;
 
   constructor(
-    public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
     private events: Events,
     private userService: UserServiceProvider) {
+
     this.showCloseBtn = navParams.get('showCloseBtn');
     this.pristineName = navParams.get('displayName');
-    this.newName = this.pristineName;
-    this.createSingleForm();
+    this.title = 'Name';
+    this.newDisplayName = '';
   }
 
-  ionViewDidLoad() {
+  ionViewDidLoad() { this.initInputForm(); }
+
+  ngOnInit() { this.createDisplaynameForm(); }
+
+  initInputForm() {
+    this.displayNameInput.value = this.pristineName;
     setTimeout(() => {
-      this.inputBox.setFocus();
+      this.displayNameInput.setFocus();
     }, 600);
   }
 
-  createSingleForm() {
-    this.smControl = new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(20)]);
+  createDisplaynameForm() {
+    this.displayNameControl = new FormControl('', [Validators.required, Validators.maxLength(20)]);
   }
 
   saveModification({ value, valid }: { value: string, valid: boolean}) {
     console.log('saveModification value:', value);
     console.log('saveModification valid:', valid);
     if (valid) {
+      // this.newDisplayName = value;
+
       // TODO: Write an HTTP call
+
       this.dismissModal();
     }
   }
 
-  updateTypedWord() {
-    this.newName = this.inputBox.value;
-  }
+  get displayName() { return this.displayNameControl; }
 
   ionViewWillLeave() {
-    this.events.publish('displayName', this.newName);
+    if (this.newDisplayName !== '') this.events.publish('displayName', this.newDisplayName);
   }
 
-  dismissModal() {
-    this.viewCtrl.dismiss();
-  }
+  dismissModal() { this.viewCtrl.dismiss(); }
 
 }

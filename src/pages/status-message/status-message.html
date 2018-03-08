@@ -7,7 +7,12 @@
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button ion-button class="save-button" [disabled]="smControl.invalid" color="dark" (click)="saveModification(smControl)">
+      <button
+        ion-button
+        class="save-button"
+        color="dark"
+        [disabled]="statusMessage.invalid"
+        (click)="saveModification(statusMessageControl)">
         Save
       </button>
     </ion-buttons>
@@ -17,7 +22,12 @@
   <ion-row>
     <ion-col col-12>
       <ion-item>
-        <ion-input #inputBox [formControl]="smControl" type="text" (keyup)="updateTypedWord()" placeholder="Type {{title | lowercase}}"></ion-input>
+        <ion-input
+        #inputBox
+        type="text"
+        placeholder="Type {{title | lowercase}}"
+        [formControl]="statusMessageControl">
+      </ion-input>
         <ion-note item-end>
           {{newSm | wordcounter:60}}
         </ion-note>
