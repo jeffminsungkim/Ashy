@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { EmailPage } from '@ashy/pages/email/email';
-import { SingleEmailFormModule } from '@ashy/components/single-email-form/single-email-form.module';
+
+
 
 @NgModule({
   declarations: [
@@ -9,7 +10,6 @@ import { SingleEmailFormModule } from '@ashy/components/single-email-form/single
   ],
   imports: [
     IonicPageModule.forChild(EmailPage),
-    SingleEmailFormModule
   ],
 })
 export class EmailPageModule {}
