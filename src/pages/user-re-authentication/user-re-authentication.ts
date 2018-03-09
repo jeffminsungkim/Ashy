@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams, Events, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
@@ -13,7 +13,7 @@ import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-s
   selector: 'page-user-re-authentication',
   templateUrl: 'user-re-authentication.html',
 })
-export class UserReAuthenticationPage implements OnInit {
+export class UserReAuthenticationPage {
   @ViewChild('inputBox') passwordInput;
   passwordControl: FormControl;
   title: string;
@@ -22,7 +22,7 @@ export class UserReAuthenticationPage implements OnInit {
   currentEmail: string;
   hash: string;
   formError: string;
-  incorrectPasswd: boolean = false;
+  incorrectPasswd: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -38,6 +38,7 @@ export class UserReAuthenticationPage implements OnInit {
     this.currentEmail = navParams.get('currentEmail');
     this.title = navParams.get('credential');
     this.emailOrPasswd = this.title.toLowerCase();
+    this.incorrectPasswd = false;
   }
 
   ionViewWillEnter() {
@@ -45,13 +46,7 @@ export class UserReAuthenticationPage implements OnInit {
     this.clearPasswordForm();
   }
 
-  // ionViewDidLoad() {
-  //   setTimeout(() => {
-  //     this.passwordInput.setFocus();
-  //   }, 1500);
-  // }
-
-  ngOnInit() { this.createPasswordForm(); }
+  ionViewWillLoad() { this.createPasswordForm(); }
 
   saveIdenticonHash(hash: string) { this.localStorage.storeIdenticonHash(hash); }
 
@@ -130,6 +125,7 @@ export class UserReAuthenticationPage implements OnInit {
       }
     })
     .catch((err) => {
+      loader.dismiss();
       this.setIncorrectPasswordError();
     });
   }
