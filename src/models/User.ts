@@ -3,6 +3,7 @@ export interface User {
   email: string;
   displayName: string;
   gender: string;
+  identiconURL: string;
   thumbnailURL: string;
   photoURL: string;
   username: string;
