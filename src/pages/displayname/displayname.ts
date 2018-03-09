@@ -35,14 +35,13 @@ export class DisplaynamePage implements OnInit {
   ngOnInit() { this.createDisplaynameForm(); }
 
   initInputForm() {
-    this.displayNameInput.value = this.pristineName;
     setTimeout(() => {
       this.displayNameInput.setFocus();
     }, 600);
   }
 
   createDisplaynameForm() {
-    this.displayNameControl = new FormControl('', [Validators.required, Validators.maxLength(20)]);
+    this.displayNameControl = new FormControl(this.pristineName, [Validators.required, Validators.maxLength(20)]);
   }
 
   saveModification({ value, valid }: { value: string, valid: boolean}) {
