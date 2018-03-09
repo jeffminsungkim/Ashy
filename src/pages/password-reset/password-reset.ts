@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 import { InterfaceOption } from '@ashy/services/interface-option/interface-option';
-import { CustomValidator } from '@ashy/shared/customvalidator';
+import { CustomValidator } from '@ashy/shared/custom-validator';
 
 
 @IonicPage()
@@ -42,7 +42,7 @@ export class PasswordResetPage {
       newPassword: ['', Validators.required],
       confirmPassword: ['', Validators.required]
     }, {
-      validator: CustomValidator.passwordInspector(this.currentPassword)
+      validator: CustomValidator.inspectPassword(this.currentPassword)
     })
   }
 
