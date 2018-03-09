@@ -16,6 +16,7 @@ export class SettingGroupPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     public viewCtrl: ViewController) {
+
     this.user = navParams.get('user');
     this.identicon = navParams.get('identicon');
   }
@@ -35,7 +36,7 @@ export class SettingGroupPage {
   }
 
   changeUsername() {
-    this.modalCtrl.create('UsernamePage', { user: this.user, showCloseBtn: true }).present();
+    this.modalCtrl.create('UsernamePage', { showCloseBtn: true, displayName: this.user.displayName, username: this.user.username }).present();
     this.dismissModal();
   }
 
