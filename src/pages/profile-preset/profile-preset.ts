@@ -19,12 +19,13 @@ import 'rxjs/add/operator/switchMap';
   templateUrl: 'profile-preset.html',
 })
 export class ProfilePresetPage {
+
   @ViewChild('avatarHolder') avatarHolder: ElementRef;
   displayName: string;
-  // defaultAvatar: string;
   photoURL: string;
   uid: string;
   identiconHash: string;
+  svgBlob: any;
 
   cameraOptions: CameraOptions = {
     quality: 100,
@@ -55,7 +56,7 @@ export class ProfilePresetPage {
   }
 
   ionViewWillEnter() {
-    this.setIdenticon();
+    this.svgBlob = this.setIdenticon();
   }
 
   retrieveHash() {
@@ -64,12 +65,19 @@ export class ProfilePresetPage {
 
   setIdenticon() {
     if (this.identiconHash) {
-      let width = 100;
-      let height = 100;
-      let svg = jdenticon.toSvg(this.identiconHash, Math.min(width, height));
+      let svg = jdenticon.toSvg(this.identiconHash, Math.min(110, 100));
       let encodeSvg = "data:image/svg+xml," + encodeURIComponent(svg);
       this.avatarHolder.nativeElement.src = encodeSvg;
+      return new Blob([svg], { type: 'image/svg+xml' });
     }
+  }
+
+  uploadIdenticon(blob: any, uid: string) {
+    this.uploadService.uploadIdenticon(blob, uid).then((snapshot: any) => {
+      console.log('downloadURL:', snapshot.downloadURL);
+      const url = snapshot.downloadURL;
+      this.userService.setIdenticon(url).then(() => console.log('Successfully set identicon url'));
+    });
   }
 
   uploadProfilePicture() {
@@ -77,7 +85,7 @@ export class ProfilePresetPage {
     this.camera.getPicture(this.cameraOptions).then((imagePath) => {
       loader.present();
       console.log("IMAGE PATH", imagePath);
-      return this.uploadService.convertImageIntoBlob(imagePath);
+      return this.uploadService.convertFileImageIntoBlob(imagePath);
     }).then((imageBlob) => {
       console.log("IMAGE BLOB", imageBlob);
       return this.uploadService.uploadImageToStorage(imageBlob, this.uid);
@@ -113,6 +121,7 @@ export class ProfilePresetPage {
   startApp() {
     let loader = this.loadingCtrl.create(this.interfaceOpt.makeWaitLoaderOpt());
     loader.present();
+    this.uploadIdenticon(this.svgBlob, this.uid);
     const data = {
       activityState: {
         currentActiveStatus: "online",
