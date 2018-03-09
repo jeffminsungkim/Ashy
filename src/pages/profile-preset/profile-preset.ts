@@ -8,9 +8,8 @@ import { InterfaceOption } from '@ashy/services/interface-option//interface-opti
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 import { UploadServiceProvider } from '@ashy/services/upload-service/upload-service';
 
+import { take, switchMap } from 'rxjs/operators';
 import * as jdenticon from 'jdenticon';
-import 'rxjs/add/operator/take'
-import 'rxjs/add/operator/switchMap';
 
 
 @IonicPage()
