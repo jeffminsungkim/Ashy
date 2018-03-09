@@ -10,15 +10,53 @@
 </ion-header>
 
 <ion-content padding>
-    <single-email-form
-      [infoMsg]="infoMessage"
-      [warningMsg]="warningMessage"
-      [verifiedMsg]="verifiedMessage"
-      [email]="currentEmail"
-      [pristineEmail]="pristineEmail"
-      [verifiedState]="verifiedState"
-      [buttonLabel]="labelName"
-      (emailLink)="sendVerificationLink($event)"
-      (onSubmit)="authenticateCredential($event)">
-    </single-email-form>
+  <ion-list>
+    <ion-row>
+      <ion-col>
+        <p>{{infoMessage}}</p>
+      </ion-col>
+      <ion-col col-12>
+        <div [ngClass]="renderClass()">
+          <ion-input
+            class="email-input"
+            #inputBox
+            type="email"
+            placeholder="Email"
+            [formControl]="emailControl">
+          </ion-input>
+          <span item-content *ngIf="newEmail.errors?.required || newEmail.errors?.patternInvalid">
+            <p>Please enter a valid email address.</p>
+          </span>
+          <span item-content *ngIf="newEmail.invalid && newEmail.dirty && !newEmail.errors?.required && !newEmail.errors?.patternInvalid && newEmail.value !== pristineEmail">
+            <p>Email address is already taken.</p>
+          </span>
+          <span item-content *ngIf="newEmail.pending && newEmail.value !== pristineEmail">
+            <p>Checking the address...🤔</p>
+          </span>
+          <span item-content *ngIf="newEmail.valid && newEmail.value !== pristineEmail">
+            <p>You are good to go!👌</p>
+          </span>
+          <div class="button-wrapper" *ngIf="newEmail.dirty && newEmail.value !== pristineEmail">
+            <button ion-button outline clear class="close-button" (click)="clearFormError()">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </ion-col>
+      <ion-col col-12 *ngIf="newEmail.valid && newEmail.value !== pristineEmail">
+        <button ion-button block (click)="authenticateCredential(emailControl)">
+          {{labelName}}
+        </button>
+      </ion-col>
+      <ion-col col-12 *ngIf="!verifiedState && newEmail.value === pristineEmail">
+        <button ion-button outline clear (click)="sendVerificationLink()">
+          Resend verification email
+        </button>
+      </ion-col>
+      <ion-col>
+        <p *ngIf="newEmail.value === pristineEmail">{{verifiedMessage}}</p>
+        <p *ngIf="newEmail.value !== pristineEmail">{{warningMessage}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-list>
 </ion-content>

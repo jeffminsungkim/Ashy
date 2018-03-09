@@ -26,19 +26,30 @@ page-email {
       }
     }
 
-    .form-error {
+    .notification {
       padding: 5px;
       border-radius: 4px;
       display: table;
       width:100%;
-      background: color($colors, warning, base);
       color: white;
       p {
         color: white;
+        font-weight: bold;
         font-size: 12px;
         margin: 0;
         float: left;
       }
+
+      &.is-danger {
+        background: color($colors, warning, base);
+      }
+      &.is-success {
+        background: color($colors, success, base);
+      }
+      &.is-info {
+        background: color($colors, info, base);
+      }
+
       .email-input {
         border-bottom: none;
       }
@@ -52,14 +63,15 @@ page-email {
     .button-wrapper {
       display: table-cell;
       vertical-align: middle;
+      padding: 0;
     }
 
-    .button-clear-md.clear-error {
+    .button-clear-md.close-button {
       color: white;
       font-size: 18px;
       padding: 0;
     }
-    .button-clear-ios.clear-error {
+    .button-clear-ios.close-button {
       color: white;
       font-size: 18px;
       padding: 0;
