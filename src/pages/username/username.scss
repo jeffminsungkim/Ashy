@@ -1,30 +1,87 @@
 page-username {
 
-  .scroll-content {
-    overflow: hidden;
+  .modal-button {
+    font-size: 25px;
+    -webkit-text-stroke: 3px white;
   }
 
+  .save-button {
+    font-size: 18px;
+  }
+
+  ::-webkit-scrollbar{
+    display:none;
+  }
+
+  .scroll-content {
+    overflow: hidden;
     align-content: center;
-    margin-bottom: 150px;
     display: block;
     justify-content: center;
     text-align: center;
 
     p {
-        font-weight: bold;
-        font-size: 1.7rem;
-        color: #000;
+      font-size: 1.7rem;
+      color: black;
     }
 
-    p.isAvailable {
-        font-weight: bold;
-        font-size: 1.7rem;
-        color: #1de9b6;
+    p.user-info {
+      padding: 3%;
+      text-align: center;
+      font-size: 1.2rem;
+      color: color($colors, ashygray, base);
     }
 
-    p.isNotAvailable {
-        font-weight: bold;
-        font-size: 1.7rem;
-        color: #f50057;
+    .searchbar-ios {
+      padding: 0 8px;
+      min-height: 44px;
+      border-top: 0.55px solid lightgray;
+      border-bottom: 0.55px solid lightgray;
+      background: transparent;
     }
+
+    .notification-wrapper {
+      height: 50%;
+      width: 100%;
+      text-align: center;
+    }
+
+    .notification {
+      display: block;
+      /* Safari 3-4, iOS 1-3.2, Android 1.6- */
+      -webkit-border-radius: 4px;
+      /* Firefox 1-3.6 */
+      -moz-border-radius: 4px;
+      /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
+      border-radius: 4px;
+      /* Prevent background color leak outs */
+      -webkit-background-clip: padding-box;
+      -moz-background-clip:    padding;
+      background-clip:         padding-box;
+
+      &.is-danger {
+        font-weight: bold;
+        font-size: 15px;
+        color: white;
+        border: 5px solid color($colors, warning, base);
+        background: color($colors, warning, base);
+      }
+
+      &.is-success {
+        font-weight: bold;
+        font-size: 15px;
+        color: white;
+        border: 5px solid color($colors, success, base);
+        background: color($colors, success, base);
+      }
+
+      &.is-info {
+        font-weight: bold;
+        font-size: 15px;
+        color: white;
+        border: 5px solid color($colors, info, base);
+        background: color($colors, info, base);
+      }
+    }
+  }
 }

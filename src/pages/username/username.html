@@ -1,43 +1,67 @@
-<!--
-  Generated template for the UsernamePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
-  <ion-navbar class="ios-header">
+<ion-header no-border>
+  <ion-navbar transparent>
     <ion-title>Username</ion-title>
-      <ion-buttons right>
-        <button ion-button color="dark" [disabled]="usernameNotValid" (click)="saveUsername()">
-            SAVE
-        </button>
+    <ion-buttons left>
+      <button ion-button class="modal-button" *ngIf="showCloseBtn" (click)="dismissModal()">
+        <i class="fa fa-times"></i>
+      </button>
+    </ion-buttons>
+    <ion-buttons right>
+      <button
+        ion-button
+        class="save-button"
+        color="dark"
+        [disabled]="usernameControl.invalid || usernameControl.pending"
+        (click)="saveUsername()">
+        Save
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
-
-    <ion-item>
-        <ion-label color="primary" stacked>Change username whenever I want</ion-label>
-        <ion-input name="username" #name="ngModel" type="text" maxlength="18" clearInput placeholder="Letters or numbers ONLY" [(ngModel)]="usernameText" (keyup)="checkUsername()"></ion-input>
-    </ion-item>
-
-
-    <p class="isAvailable" *ngIf="isUsernameAvailable && usernameText && !hasSetUsername && !usernameNotValid">
-        @{{usernameText}} is available
-    </p>
-    <p class="isNotAvailable" *ngIf="!isUsernameAvailable && usernameText && !hasSetUsername && !usernameNotValid">
-        @{{usernameText}} has already been taken
-    </p>
-
-    <p class="isNotAvailable" *ngIf="usernameNotValid && usernameText">
-        @{{usernameText}} is not valid
-    </p>
-
-    <p *ngIf="hasSetUsername">
-        Your username is @{{currentUsername}} from now on
-    </p>
-
+  <ion-row>
+    <ion-col col-12>
+      <ion-searchbar
+        type="search"
+        #inputBox
+        placeholder="Search"
+        [formControl]="usernameControl"
+        (ionClear)="clearSearchForm()">
+      </ion-searchbar>
+      <ion-item *ngIf="!usernameControl.value">
+        <p class="user-info">{{unNotice}}</p>
+        <p class="user-info">{{dnNotice}}</p>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <div class="notification-wrapper" *ngIf="newUsername.valid">
+        <span class="notification is-success">
+          {{newUsername.value.trim() | lowercase}} is available👌
+        </span>
+      </div>
+      <div class="notification-wrapper"
+          *ngIf="newUsername.invalid && newUsername.dirty && !newUsername.errors?.minlength && !newUsername.errors?.patternInvalid && newUsername.value">
+        <span class="notification is-danger">
+          {{newUsername.value | lowercase}} is already taken 😢
+        </span>
+      </div>
+      <div class="notification-wrapper"
+          *ngIf="newUsername.invalid && newUsername.dirty && newUsername.errors?.minlength && !newUsername.errors?.patternInvalid">
+        <span class="notification is-danger">
+          Username must contain at least 4 alphabetic letters and numbers
+        </span>
+      </div>
+      <div class="notification-wrapper" *ngIf="newUsername.invalid && newUsername.dirty && newUsername.errors?.patternInvalid">
+        <span class="notification is-danger">
+          Username should contain either alphabetic letters or combination of numbers next to its character
+        </span>
+      </div>
+      <div class="notification-wrapper" *ngIf="newUsername.pending">
+        <span class="notification is-info">
+          Hold tight...! Checking availability of {{newUsername.value | lowercase}} 🤔
+        </span>
+      </div>
+    </ion-col>
+  </ion-row>
 </ion-content>
