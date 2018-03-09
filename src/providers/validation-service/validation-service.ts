@@ -9,6 +9,15 @@ export class ValidationServiceProvider {
 
   constructor(private afs: AngularFirestore) {}
 
+  isEmailAvailableOrNot(email: string) {
+    return this.afs.collection('emails', ref => ref.where('email', '==', email))
+      .valueChanges().pipe(
+        debounceTime(500),
+        take(1),
+        map(arr => arr.length ? { emailAvailable: false } : null),
+      )
+  }
+
   isUsernameAvailableOrNot(username: string) {
     return this.afs.collection('usernames', ref => ref.where('username', '==', username))
     .valueChanges().pipe(

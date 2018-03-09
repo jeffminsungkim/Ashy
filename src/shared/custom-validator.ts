@@ -32,6 +32,13 @@ export class CustomValidator {
     }
   }
 
+  static checkEmailAvailability(validationService: ValidationServiceProvider): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      const email = control.value.toLowerCase();
+      return validationService.isEmailAvailableOrNot(email);
+    }
+  }
+
   static checkUsernameAvailability(validationService: ValidationServiceProvider): AsyncValidatorFn {
     return (control: AbstractControl) => {
       const username = control.value.toLowerCase();
