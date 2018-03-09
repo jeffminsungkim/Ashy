@@ -49,7 +49,7 @@ export class ProfileDetailPage {
   }
 
   goToEditUsername() {
-    this.navCtrl.push('UsernamePage');
+    this.navCtrl.push('UsernamePage', { showCloseBtn: false, displayName: this.user.displayName, username: this.user.username });
   }
 
   goToUserEmail() {
