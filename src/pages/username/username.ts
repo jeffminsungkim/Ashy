@@ -38,14 +38,13 @@ export class UsernamePage {
 
   ionViewDidLoad() {
     setTimeout(() => {
-      this.initInputForm();
       this.searchInput.setFocus();
     }, 600);
   }
 
   get newUsername() { return this.usernameControl; }
 
-  initInputForm() { this.searchInput.value = ''; }
+  initInputForm() { this.newUsername.reset(); }
 
   clearSearchForm() { this.initInputForm(); }
 
