@@ -1,7 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
 import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
-import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
 import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
 
 
@@ -18,7 +17,6 @@ export class SharedModule {
       providers: [
         LocalStorageServiceProvider,
         InterfaceOption,
-        ModalServiceProvider,
         UtilityServiceProvider
       ]
     };
