@@ -54,11 +54,13 @@ export class UserReAuthenticationPage {
 
   convertEmailToIdenticonHash(email: string) { return this.utilityService.convertEmailToHash(email); }
 
-  clearPasswordForm() { this.passwordControl.reset(); }
+  clearPasswordForm() { this.newPassword.reset(); }
+
+  touchClearkey() { if (this.newPassword.value === '') this.clearFormError(); }
 
   createPasswordForm() { this.passwordControl = new FormControl('', [Validators.required, Validators.minLength(7)]); }
 
-  touchClearkey() { if (this.passwordControl.value === '') this.clearFormError(); }
+  get newPassword() { return this.passwordControl; }
 
   clearFormError() {
     this.formError = null;

@@ -33,7 +33,7 @@
         </div>
       </ion-col>
       <ion-col col-12>
-        <button ion-button block [disabled]="passwordControl.invalid || incorrectPasswd" (click)="changePassword(passwordControl)">
+        <button ion-button block [disabled]="newPassword.invalid || incorrectPasswd" (click)="changePassword(passwordControl)">
           Continue
         </button>
       </ion-col>
