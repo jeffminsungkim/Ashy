@@ -1,10 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-import { UserServiceProvider } from '@ashy/services/user-service/user-service';
-
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/take';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { LowerCasePipe } from '@angular/common';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+import { FormControl, Validators } from '@angular/forms';
+import { CustomValidator } from '@ashy/shared/custom-validator';
+import { ValidationServiceProvider } from '@ashy/services/validation-service/validation-service';
 
 
 @IonicPage()
@@ -12,65 +11,57 @@ import 'rxjs/add/operator/take';
   selector: 'page-username',
   templateUrl: 'username.html',
 })
-export class UsernamePage implements OnDestroy {
-  subscription: Subscription;
-  currentUsername: string;
-  usernameText: string;
-  isUsernameAvailable: boolean;
-  usernameNotValid: boolean = true;
-  hasSetUsername: boolean = false;
+export class UsernamePage implements OnInit {
+  @ViewChild('inputBox') searchInput;
+  usernameControl: FormControl;
+  unNotice: string;
+  dnNotice: string;
+  username: string;
+  displayName: string;
+  showCloseBtn: boolean;
+  formValid: boolean;
 
   constructor(
-    public navCtrl: NavController,
     public navParams: NavParams,
-    public userService: UserServiceProvider) {
+    public viewCtrl: ViewController,
+    public validationService: ValidationServiceProvider) {
 
-    this.currentUsername = this.navParams.get('username');
+    this.formValid = false;
+    this.showCloseBtn = navParams.get('showCloseBtn');
+    this.username = navParams.get('username');
+    this.displayName = navParams.get('displayName');
+    this.unNotice = `${this.username} is your username`;
+    this.dnNotice = `${this.displayName} is how you appear on Ashy`;
   }
 
-  /*saveUsername() {
-    this.hasSetUsername = true;
-    this.userService.removeDeprecatedUsername(this.currentUsername);
-    this.userService.updateUsername(this.usernameText);
-    this.currentUsername = this.usernameText;
+  ionViewWillLoad() {
+    this.createUsernameForm();
   }
 
-  checkUsername() {
-    // let re = /^[a-z0-9]+$/i;
-    // let validUsername = this.usernameText.match(re);
-    // if (validUsername === null) {
-    //   this.usernameNotValid = true;
-    //   console.log("WRONG", this.usernameText);
-    // } else {
-    //   if (this.usernameText.length > 4 && this.usernameText.length !== 0) {
-    //     this.usernameNotValid = false;
-    //     console.log("GOOD", this.usernameText);
-    //   }
-    // }
+  ionViewDidLoad() {
+    setTimeout(() => {
+      this.initInputForm();
+      this.searchInput.setFocus();
+    }, 600);
+  }
 
-    if (this.usernameText.length < 5 || this.isUsernameAvailable == false) {
-      this.usernameNotValid = true;
-      console.log("WRONG", this.usernameText);
-    } else {
-      if (this.usernameText.length > 4 || this.usernameText.length !== 0 || !this.isUsernameAvailable) {
-        this.usernameNotValid = false;
-        console.log("GOOD", this.usernameText);
-      }
-    }
+  ngOnInit() { /*this.createUsernameForm();*/ }
 
-    this.subscription = this.userService.checkUsername(this.usernameText).take(1).subscribe(username => {
-      console.log("uid:", username);
-      if (username === null)
-        this.isUsernameAvailable = true;
-      else
-        this.isUsernameAvailable = false;
+  initInputForm() { this.searchInput.value = ''; }
+
+  clearSearchForm() { this.initInputForm(); }
+
+  createUsernameForm() {
+    const username = /^[a-zA-Z]+[a-zA-Z0-9]*$/;
+    this.usernameControl = new FormControl('',
+    {
+      validators: [Validators.required, Validators.minLength(4), CustomValidator.inspectPattern(username)],
+      asyncValidators: CustomValidator.checkUsernameAvailability(this.validationService)
     });
-  }*/
-
-  ngOnDestroy() {
-    if (this.subscription !== undefined) {
-      this.subscription.unsubscribe();
-      console.log("Username ngOnDestroy");
-    }
   }
+
+  get newUsername() { return this.usernameControl; }
+
+  dismissModal() { this.viewCtrl.dismiss(); }
+
 }
