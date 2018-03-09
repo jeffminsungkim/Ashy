@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { LowerCasePipe } from '@angular/common';
 import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 import { FormControl, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { ValidationServiceProvider } from '@ashy/services/validation-service/val
   selector: 'page-username',
   templateUrl: 'username.html',
 })
-export class UsernamePage implements OnInit {
+export class UsernamePage {
   @ViewChild('inputBox') searchInput;
   usernameControl: FormControl;
   unNotice: string;
@@ -34,9 +34,7 @@ export class UsernamePage implements OnInit {
     this.dnNotice = `${this.displayName} is how you appear on Ashy`;
   }
 
-  ionViewWillLoad() {
-    this.createUsernameForm();
-  }
+  ionViewWillLoad() { this.createUsernameForm(); }
 
   ionViewDidLoad() {
     setTimeout(() => {
@@ -45,7 +43,7 @@ export class UsernamePage implements OnInit {
     }, 600);
   }
 
-  ngOnInit() { /*this.createUsernameForm();*/ }
+  get newUsername() { return this.usernameControl; }
 
   initInputForm() { this.searchInput.value = ''; }
 
@@ -60,8 +58,5 @@ export class UsernamePage implements OnInit {
     });
   }
 
-  get newUsername() { return this.usernameControl; }
-
   dismissModal() { this.viewCtrl.dismiss(); }
-
 }
