@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
-import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
+import { InterfaceOption } from '@ashy/services/interface-option/interface-option';
 import { UtilityServiceProvider } from '@ashy/services/utility-service/utility-service';
 
 
