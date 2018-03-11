@@ -10,10 +10,9 @@ module.exports = ({ admin, cors, express, functions }) => {
   app.use(cors({ origin: true }));
 
   app.use((req, res, next) => {
-    console.log('HEADERS:', req.headers);
     if (!req.headers.authorization) return res.status(403).json({ message: 'Missing Authorization Header' });
 
-    let jwt = req.headers.authorization.trim();
+    const jwt = req.headers.authorization.trim();
 
     return admin.auth().verifyIdToken(jwt).then((claims) => {
       req.user = claims;
@@ -55,7 +54,7 @@ module.exports = ({ admin, cors, express, functions }) => {
     let rtDb = admin.database().ref(`status/${uid}`).update(activityState).then(() => console.log('RTDB update finished!'));
 
     return Promise.all([rtDb, dbfs]).then(() => {
-      res.status(201).send({ message: 'Successfully Initialize Default State' });
+      res.status(200).send({ message: 'Successfully Initialize Default State' });
     });
   });
 
