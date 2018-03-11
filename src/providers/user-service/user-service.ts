@@ -52,7 +52,7 @@ export class UserServiceProvider extends RestService {
       }).subscribe();
   }
 
-  set accessToken(token: string) { this.accessToken = token; }
+  set accessToken(token: string) { this.token = token; }
 
   get authenticated(): boolean {
     return this.authState !== null;
@@ -240,12 +240,6 @@ export class UserServiceProvider extends RestService {
   setIdenticon(identiconURL: string) {
     return this.usersRef.doc(this.currentUserId).update({identiconURL: identiconURL});
   }
-
-  /*updateGender(selectedGender: string) {
-    let gender = { gender: selectedGender }
-    console.log('selected gender', selectedGender);
-    this.afDB.object(`users/${this.currentUserId}`).update(gender).catch(error => console.error('Update Gender Fails', error));
-  }*/
 
   finalizeInitialUserState(data: any) {
     this.baseUrl = environment.cloudFuntionBaseUrl;

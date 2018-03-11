@@ -12,14 +12,14 @@ export abstract class RestService {
 
   protected set baseUrl(url: string) { this._baseUrl = url; }
 
-  protected set accessToken(token: string) { this._token = token; }
+  protected set token(token: string) { this._token = token; }
 
   protected get baseUrl(): string { return this._baseUrl; }
 
-  protected get accessToken(): string { return this._token; }
+  protected get token(): string { return this._token; }
 
   protected get headers(): HttpHeaders {
-     return new HttpHeaders({'Authorization': this.accessToken, 'Content-Type': 'application/json; charset=utf-8'});
+     return new HttpHeaders({'Authorization': this.token, 'Content-Type': 'application/json; charset=utf-8'});
   }
 
   protected post(relativeUrl: string, data: any): Observable<any> {
