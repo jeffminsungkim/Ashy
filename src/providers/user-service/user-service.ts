@@ -241,6 +241,11 @@ export class UserServiceProvider extends RestService {
     return this.usersRef.doc(this.currentUserId).update({identiconURL: identiconURL});
   }
 
+  updateGender(gender: string) {
+    const finalGender = { gender: gender }
+    this.usersRef.doc(this.currentUserId).update(finalGender).catch(error => console.error('Gender updates:', error));
+  }
+
   finalizeInitialUserState(data: any) {
     this.baseUrl = environment.cloudFuntionBaseUrl;
     const relativeUrl = 'initDefaultStateAuthUserStartapp/'
