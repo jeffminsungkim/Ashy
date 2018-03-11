@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { RestService } from '@ashy/services/http/rest-service';
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
-
 import { Ashy } from '@ashy/models/ashy';
 import { User } from '@ashy/models/user';
-
+import { environment } from '@ashy/env';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { debounceTime } from 'rxjs/operators/debounceTime';
-import { take } from 'rxjs/operators';
+import { take, map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import { firestore } from 'firebase/app';
 
 
 @Injectable()
-export class UserServiceProvider {
+export class UserServiceProvider extends RestService {
 
   private rtdb: firebase.database.Database;
   private fs: firebase.firestore.Firestore;
@@ -31,13 +30,13 @@ export class UserServiceProvider {
   user$: any;
   friendsListRef$: AngularFirestoreCollection<any>;
   friends$: Observable<any[]>;
-  validTokenExists: boolean;
 
   constructor(
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,
     protected http: HttpClient,
-    protected localStorageService: LocalStorageServiceProvider) {
+    protected localStorage: LocalStorageServiceProvider) {
+      super(http, localStorage);
       this.rtdb = firebase.database();
       this.fs = firebase.firestore();
       this.appRef = this.afs.collection<Ashy>('apps');
@@ -45,17 +44,15 @@ export class UserServiceProvider {
       this.usernamesRef = this.afs.collection('usernames');
       this.afAuth.authState.do(user => {
         this.authState = user;
+
         if (user) {
           this.updateOnConnect();
           this.updateOnDisconnect();
         }
       }).subscribe();
-
-      // this.localStorageService.getToken('accessToken').subscribe((user) => {
-      //   console.log('Access Token?', user);
-      //   (user !== null) ? this.validTokenExists = true : this.validTokenExists = false;
-      // });
   }
+
+  set accessToken(token: string) { this.accessToken = token; }
 
   get authenticated(): boolean {
     return this.authState !== null;
@@ -141,18 +138,6 @@ export class UserServiceProvider {
   getFriends(uid: string) {
     return this.getUsersRef(uid).valueChanges();
   }
-
-  /*updatePhotoUrlToPlaceholder() {
-     let endpoint = this.usersNode + this.currentUserId;
-     let photoURL = { photoURL: this.defaultProfileImgURL }
-     return this.afDB.object(endpoint).update(photoURL).catch(error => console.error("Update photoURL", error));
-  }
-
-  updatePhotoUrlFromPlaceholder(url: string) {
-    let endpoint = this.usersNode + this.currentUserId;
-    let photoURL = { photoURL: url }
-    return this.afDB.object(endpoint).update(photoURL).catch(error => console.error("Update photoURL", error));
-  }*/
 
   updateLastLoginTime() {
     let lastLogin = { lastLoginAt: firebase.firestore.FieldValue.serverTimestamp() };
@@ -261,6 +246,12 @@ export class UserServiceProvider {
     console.log('selected gender', selectedGender);
     this.afDB.object(`users/${this.currentUserId}`).update(gender).catch(error => console.error('Update Gender Fails', error));
   }*/
+
+  finalizeInitialUserState(data: any) {
+    this.baseUrl = environment.cloudFuntionBaseUrl;
+    const relativeUrl = 'initDefaultStateAuthUserStartapp/'
+    return this.post(relativeUrl, data);
+  }
 
   checkUsername(username: string) {
     username = username.toLowerCase();
