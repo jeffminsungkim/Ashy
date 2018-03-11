@@ -38,7 +38,6 @@ export class ProfilePresetPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public elementRef: ElementRef,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
     private http: HttpClient,
@@ -59,6 +58,7 @@ export class ProfilePresetPage {
   }
 
   retrieveHash() {
+    // TODO:Fix this to receive hash from navparm
     this.localStorageService.getIdenticonHash().subscribe(hash => this.identiconHash = hash);
   }
 
