@@ -24,4 +24,9 @@ export class UtilityServiceProvider {
     return MD5.hex(email);
   }
 
+  // If a string is not found, -1 + 1 = 0 will be falsy, 0.. + 1 = 1.. will be truthy
+  isStringStartsWith(str: string, searchStr: string) {
+    return (str.lastIndexOf(searchStr, 0) + 1) ? true : false;
+  }
+
 }
