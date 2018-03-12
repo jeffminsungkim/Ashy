@@ -6,7 +6,7 @@ module.exports = ({ admin, functions, firestore }) => {
     const uid = user.uid;
     const email = user.email;
     const displayName = user.displayName || null;
-    const username = 'user' + getRandomInt(0, 99999);
+    const username = 'user' + getRandomInt(0, 999999);
     const appsRef = firestore.doc(`apps/${uid}`);
     const newUserRef = firestore.doc(`users/${uid}`);
     const usernameRef = firestore.doc(`usernames/${username}`);
