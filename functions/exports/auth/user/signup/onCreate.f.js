@@ -24,7 +24,6 @@ module.exports = ({ admin, functions, firestore }) => {
     const userData = {
       uid: uid,
       email: email,
-      emailVerified: false,
       displayName: displayName,
       photoURL: null,
       thumbnailURL: null,
