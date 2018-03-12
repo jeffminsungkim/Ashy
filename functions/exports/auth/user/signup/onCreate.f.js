@@ -6,7 +6,7 @@ module.exports = ({ admin, functions, firestore }) => {
     const uid = user.uid;
     const email = user.email;
     const displayName = user.displayName || null;
-    const username = generateRandomUsername().toLowerCase();
+    const username = 'user' + getRandomInt(0, 99999);
     const appsRef = firestore.doc(`apps/${uid}`);
     const newUserRef = firestore.doc(`users/${uid}`);
     const usernameRef = firestore.doc(`usernames/${username}`);
@@ -47,6 +47,6 @@ module.exports = ({ admin, functions, firestore }) => {
   });
 };
 
-function generateRandomUsername() {
-  return Math.random().toString(36).substr(2, 8);
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
