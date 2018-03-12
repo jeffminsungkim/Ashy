@@ -53,16 +53,16 @@ export class ProfileDetailPage {
     this.navCtrl.push('StatusMessagePage', { showCloseBtn: false });
   }
 
-  goToEditUsername() {
-    this.navCtrl.push('UsernamePage', { showCloseBtn: false, displayName: this.user.displayName, username: this.user.username });
-  }
-
   goToUserEmail() {
     this.subscribeEvent('email', this.user);
     this.navCtrl.push('EmailPage', { showCloseBtn: false });
   }
 
   goToChangePassword() { this.navCtrl.push('UserReAuthenticationPage', { credential: 'Password' }); }
+
+  goToEditUsername() {
+    this.navCtrl.push('UsernamePage', { showCloseBtn: false, displayName: this.user.displayName, username: this.user.username });
+  }
 
   changeUsernameVisibility(visibility: boolean) { this.userService.updateUsernameVisibility(visibility); }
 
