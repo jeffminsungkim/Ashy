@@ -44,7 +44,7 @@
       <button ion-item (click)="goToEditUsername()">
         Username
         <ion-note item-end>
-          {{user.username}}
+          {{ (usernamesRef$ | async)?.username }}
         </ion-note>
       </button>
       <ion-item>
