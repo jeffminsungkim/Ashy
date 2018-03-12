@@ -12,6 +12,7 @@ import { User } from '@ashy/models/user';
 })
 export class ProfileDetailPage {
   user: User;
+  gender: string;
   pickedGender: boolean;
   hideUsername: boolean;
   emailVerified: boolean;
@@ -64,8 +65,9 @@ export class ProfileDetailPage {
   }
 
   chooseGender(gender: string) {
+    this.gender = gender;
     this.pickedGender = true;
-    console.log('Choose gender!', gender);
+    this.userService.updateGender(this.gender);
   }
 
   private subscribeEvent(topic: string, user: User) {
@@ -80,5 +82,5 @@ export class ProfileDetailPage {
     console.log(`Unsubscribe to ${topic}`);
   }
 
-  dismissModal() { this.modalWrapper.dismissModal(); }
+  dismissModal() { this.modalWrapper.dismissModal(this.gender); }
 }
