@@ -5,11 +5,13 @@ import { RestService } from '@ashy/services/http/rest-service';
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
 import { Ashy } from '@ashy/models/ashy';
 import { User } from '@ashy/models/user';
+import { Username } from '@ashy/models/username';
 import { environment } from '@ashy/env';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { take, map, filter } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators/debounceTime';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import { firestore } from 'firebase/app';
@@ -41,7 +43,7 @@ export class UserServiceProvider extends RestService {
       this.fs = firebase.firestore();
       this.appRef = this.afs.collection<Ashy>('apps');
       this.usersRef = this.afs.collection<User>('users');
-      this.usernamesRef = this.afs.collection('usernames');
+      this.usernamesRef = this.afs.collection<Username>('usernames');
       this.afAuth.authState.do(user => {
         this.authState = user;
 
@@ -107,8 +109,8 @@ export class UserServiceProvider extends RestService {
     return this.usersRef.doc<User>(uid);
   }
 
-  private getUsernamesRef(username: string) {
-    return this.usernamesRef.doc(username);
+  private getUsernamesRef() {
+    return this.usernamesRef.doc<Username>(this.currentUserId);
   }
 
   private getFriendRef(uid: string) {
@@ -137,6 +139,10 @@ export class UserServiceProvider extends RestService {
 
   getFriends(uid: string) {
     return this.getUsersRef(uid).valueChanges();
+  }
+
+  getUsernameVisibility() {
+    return this.getUsernamesRef().valueChanges();
   }
 
   updateLastLoginTime() {
@@ -246,6 +252,11 @@ export class UserServiceProvider extends RestService {
     this.usersRef.doc(this.currentUserId).update(finalGender).catch(error => console.error('Gender updates:', error));
   }
 
+  updateUsernameVisibility(blurriness: boolean) {
+    const visibleState = { invisibility: blurriness };
+    this.usernamesRef.doc(this.currentUserId).update(visibleState).catch(error => console.error('Username visibility updates:', error));
+  }
+
   finalizeInitialUserState(data: any) {
     this.baseUrl = environment.cloudFuntionBaseUrl;
     const relativeUrl = 'initDefaultStateAuthUserStartapp/'
@@ -254,8 +265,8 @@ export class UserServiceProvider extends RestService {
 
   checkUsername(username: string) {
     username = username.toLowerCase();
-    // return this.getUsernamesRef(username).valueChanges().pipe(debounceTime(500), take(1));
-    return this.getUsernamesRef(username).valueChanges();
+    return this.afs.collection('usernames', ref => ref.where('username', '==', username).where('invisibility', '==', false))
+      .valueChanges().pipe(debounceTime(500), take(1));
   }
 
   getMatchedUser(uid: string) {
