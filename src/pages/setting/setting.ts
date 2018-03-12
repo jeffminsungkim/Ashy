@@ -1,17 +1,24 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, LoadingController, ModalController, ViewController, ToastController, Platform } from 'ionic-angular';
+import {
+  IonicPage,
+  NavParams,
+  Events,
+  ActionSheetController,
+  LoadingController,
+  ModalController,
+  ViewController,
+  ToastController,
+  Platform
+ } from 'ionic-angular';
 import { AppVersion } from '@ionic-native/app-version';
+import * as jdenticon from 'jdenticon';
 
 import { AuthServiceProvider } from '@ashy/services/auth-service/auth-service';
 import { LocalStorageServiceProvider } from '@ashy/services/local-storage-service/local-storage-service';
 import { InterfaceOption } from '@ashy/services/interface-option//interface-option';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
-import { ModalServiceProvider } from '@ashy/services/modal-service/modal-service';
 import { UploadServiceProvider } from '@ashy/services/upload-service/upload-service';
 import { User } from '@ashy/models/user';
-import { Camera, CameraOptions } from '@ionic-native/camera';
-
-import * as jdenticon from 'jdenticon';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -30,20 +37,11 @@ export class SettingPage {
   avatar: string;
   identicon: string;
   identiconHash: string;
-
-  cameraOptions: CameraOptions = {
-    quality: 100,
-    correctOrientation: true,
-    sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-    destinationType: this.camera.DestinationType.FILE_URI,
-    encodingType: this.camera.EncodingType.JPEG,
-    mediaType: this.camera.MediaType.PICTURE
-  };
+  isVersionClicked: boolean;
 
   constructor(
-    public navCtrl: NavController,
     public navParams: NavParams,
-    public elementRef: ElementRef,
+    private events: Events,
     public actionSheetCtrl: ActionSheetController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
@@ -51,41 +49,70 @@ export class SettingPage {
     public toastCtrl: ToastController,
     private platform: Platform,
     private appVersion: AppVersion,
-    public camera: Camera,
     private interfaceOpt: InterfaceOption,
-    private localStorageService: LocalStorageServiceProvider,
+    private localStorage: LocalStorageServiceProvider,
     public authService: AuthServiceProvider,
     public userService: UserServiceProvider,
-    public modalService: ModalServiceProvider,
     public uploadService: UploadServiceProvider) {
+
     this.identicon = this.navParams.get('identicon');
     this.user = this.navParams.get('user');
     this.avatar = this.user.thumbnailURL;
+    this.isVersionClicked = false;
   }
 
   ionViewWillEnter() {
-    this.retrieveAppVersion();
     this.retrieveHash();
+    this.subscribeNewHash();
+    this.retrieveAppVersion();
   }
 
+  /*
+  Runs when the page has loaded. This event only happens once per page being created.
+  If a page leaves but is cached, then this event will not fire again on a subsequent viewing.
+  The ionViewDidLoad event is good place to put your setup code for the page.
+  */
   ionViewDidLoad() {
     this.setIdenticon(); // Put setIdenticon() in ionViewDidLoad lifecycle to prevent nativeElement undefined
   }
 
   retrieveAppVersion() {
-    if (this.platform.is('cordova')) this.appVersion.getVersionNumber().then(version => this.version = "Version " + version);
+    if (this.platform.is('cordova') && !this.isVersionClicked)
+      this.appVersion.getVersionNumber().then(version => this.version = "Version " + version);
+    else
+      this.version = "Latest Version 😊 ";
   }
 
-  retrieveHash() {
-    this.localStorageService.getIdenticonHash().subscribe(hash => this.identiconHash = hash);
+  checkVersionOfApp() {
+    this.isVersionClicked === false ? this.isVersionClicked = true : this.isVersionClicked = false;
+    this.retrieveAppVersion();
   }
 
-  setIdenticon() {
-    if (this.identicon && this.avatar === null) this.avatarHolder.nativeElement.src = this.identicon;
+  retrieveHash() { this.localStorage.getIdenticonHash().subscribe(hash => this.identiconHash = hash) }
+
+  setIdenticon() { if (this.identicon && this.avatar === null) this.avatarHolder.nativeElement.src = this.identicon; }
+
+  private subscribeNewHash() {
+    this.events.subscribe('new:identiconHash', (hash) => {
+      if (hash) this.setIdenticonFromEvents(hash);
+    });
+  }
+
+  setIdenticonFromEvents(hash: string) {
+    if (hash) {
+      let svg = jdenticon.toSvg(hash, Math.min(30, 30));
+      this.identicon = "data:image/svg+xml," + encodeURIComponent(svg);
+      this.avatarHolder.nativeElement.src = this.identicon;
+    }
   }
 
   goToProfileDetail() {
-    this.modalCtrl.create('ModalWrapperPage', { page: 'ProfileDetailPage', user: this.user}).present();
+    const param = { user: this.user, currentEmail: this.authService.currentUserEmail, showCloseBtn: false };
+    const modalWrapper = this.modalCtrl.create('ModalWrapperPage', { page: 'ProfileDetailPage', params: param });
+    modalWrapper.onDidDismiss(callback => {
+      if (callback !== undefined) this.user.gender = callback;
+    });
+    modalWrapper.present();
   }
 
   customizeProfilePhoto() {
@@ -133,44 +160,37 @@ export class SettingPage {
 
   uploadProfilePicture() {
     let loader = this.loadingCtrl.create(this.interfaceOpt.makeWaitLoaderOpt());
-    this.camera.getPicture(this.cameraOptions)
-    .then((imagePath) => {
+    this.uploadService.getDownloadUrlFromPhotoLibrary(this.user.uid).then((url: string) => {
       loader.present();
-      console.log("Image Path", imagePath);
-      return this.uploadService.convertImageIntoBlob(imagePath);
-    })
-    .then((imageBlob) => {
-      console.log("Blob", imageBlob);
-      return this.uploadService.uploadImageToStorage(imageBlob, this.user.uid);
-    })
-    .then((snapshot: any) => {
-      console.log('downloadURL:', snapshot.downloadURL);
-      this.avatar = snapshot.downloadURL;
-      console.log("Successfully uploaded!", snapshot.downloadURL);
+      console.log("Received Download URL", url);
+      this.avatar = url;
+      this.userService.updateUserProfile(this.user.displayName, this.avatar).then((accessToken) => {
+        console.log('AccessToken:', accessToken);
+        this.localStorage.storeToken('accessToken', { accessToken: accessToken });
+        loader.dismiss();
+      })
+    }).catch((err) => {
       loader.dismiss();
-    })
-    .then(() => {
-      return this.userService.updateUserProfile(this.user.displayName, this.avatar);
-    })
-    .then((accessToken) => {
-      console.log('AccessToken:', accessToken);
-      this.localStorageService.storeToken('accessToken', { accessToken: accessToken });
-    })
-    .catch(err => {
-      console.log('Error:', err);
-      loader.dismiss();
-    })
+      console.log('Upload Profile Picture Error:', err);
+    });
   }
 
   removeProfilePicture() {
+    let loader = this.loadingCtrl.create(this.interfaceOpt.makeWaitLoaderOpt());
     if (this.avatar) {
+      loader.present();
       this.avatar = null;
-      this.userService.useIdenticon().then(() => this.setIdenticon());
+      // this.uploadService.deleteFileStorage(this.user.uid);
+      // this.setIdenticon();
+      this.userService.useIdenticon().then(() => {
+        this.setIdenticon();
+        loader.dismiss();
+      });
     }
   }
 
   async logout() {
-    this.localStorageService.clearStorage();
+    this.localStorage.clearStorage();
     // TODO: Add a confirm button
     this.dismissModal();
     this.userService.updateCurrentUserActiveStatusTo('signout');
@@ -179,18 +199,18 @@ export class SettingPage {
     this.toastCtrl.create(this.interfaceOpt.makeShowToastOpt(`Signed out as ${user.email}`));
   }
 
-  checkVersionOfApp() {
-    console.log('clicked!!!!!');
+  async deleteAccount() {
+    try {
+      // TODO: Add a confirm button and require current password
+      const deleteAccount: any = this.authService.deleteAccount();
+      if (deleteAccount.status) {
+        this.localStorage.clearStorage();
+        this.dismissModal();
+      }
+    } catch(error) {
+      console.error('Deleting account error', error.message);
+    }
   }
 
-  deleteAccount() {
-    this.localStorageService.clearStorage();
-    // TODO: Add a confirm button
-    this.dismissModal();
-    this.authService.deleteAccount();
-  }
-
-  dismissModal() {
-    this.viewCtrl.dismiss();
-  }
+  dismissModal() { this.viewCtrl.dismiss(); }
 }
