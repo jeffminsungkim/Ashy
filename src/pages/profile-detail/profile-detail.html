@@ -48,12 +48,16 @@
         </ion-note>
       </button>
       <ion-item>
-        <ion-toggle color="radicalred" [(ngModel)]="hideUsername" (ionChange)="hideMyUsername()"></ion-toggle>
-        <ion-label *ngIf="!hideUsername">
+        <ion-toggle
+          color="radicalred"
+          [ngModel]="(usernamesRef$ | async)?.invisibility"
+          (ngModelChange)="changeUsernameVisibility($event)">
+        </ion-toggle>
+        <ion-label *ngIf="!(usernamesRef$ | async)?.invisibility">
           Make my username
           <span class="private-username">private</span>
         </ion-label>
-        <ion-label *ngIf="hideUsername">
+        <ion-label *ngIf="(usernamesRef$ | async)?.invisibility">
           Make username back to
           <span class="public-username">public</span>
         </ion-label>

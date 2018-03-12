@@ -3,6 +3,8 @@ import { IonicPage, NavController, Events } from 'ionic-angular';
 import { ModalWrapperPage } from '@ashy/pages/modal-wrapper/modal-wrapper';
 import { UserServiceProvider } from '@ashy/services/user-service/user-service';
 import { User } from '@ashy/models/user';
+import { Username } from '@ashy/models/username';
+import { Observable } from 'rxjs/Observable';
 
 
 @IonicPage()
@@ -11,10 +13,10 @@ import { User } from '@ashy/models/user';
   templateUrl: 'profile-detail.html',
 })
 export class ProfileDetailPage {
+  usernamesRef$: Observable<Username>;
   user: User;
   gender: string;
   pickedGender: boolean;
-  hideUsername: boolean;
   emailVerified: boolean;
 
   constructor(
@@ -24,16 +26,18 @@ export class ProfileDetailPage {
     public userService: UserServiceProvider) {
 
     this.pickedGender = false;
-    this.hideUsername = false;
     this.user = this.modalWrapper.modalParams.user;
   }
 
   ionViewWillEnter() {
+    this.getUsernameVisibility();
     this.checkEmailVerifiedState();
     console.log('Your account emailVerified:', this.emailVerified);
   }
 
   ionViewWillUnload() { this.unsubscribeEvent('email'); }
+
+  getUsernameVisibility() { this.usernamesRef$ = this.userService.getUsernameVisibility(); }
 
   checkEmailVerifiedState() {
     this.userService.currentUserEmailVerified ? this.emailVerified = true : this.emailVerified = false;
@@ -60,9 +64,7 @@ export class ProfileDetailPage {
 
   goToChangePassword() { this.navCtrl.push('UserReAuthenticationPage', { credential: 'Password' }); }
 
-  hideMyUsername() {
-    console.log('hide my username', this.hideUsername);
-  }
+  changeUsernameVisibility(visibility: boolean) { this.userService.updateUsernameVisibility(visibility); }
 
   chooseGender(gender: string) {
     this.gender = gender;
