@@ -28,11 +28,18 @@
       overflow: hidden;
     }
 
-    .require-verification {
+    .item-ios[detail-push] .item-inner, button.item-ios:not([detail-none])
+    .item-inner, a.item-ios:not([detail-none]) .item-inner {
+      padding-right: 25px;
+    }
+
+    .require {
       color: color($colors, warning, base);
-      .note.user-email {
-        font-size: 1.2rem;
-        color: color($colors, warning, base);
+      &.verification {
+        .note.unverified-email {
+          font-size: 1.2rem;
+          color: color($colors, warning, base);
+        }
       }
     }
 
