@@ -31,9 +31,9 @@
           {{user.signupAt | simpleRelativeTime}}
         </ion-note>
       </ion-item>
-      <button ion-item [ngClass]="{'require-verification': !emailVerified}" (click)="goToUserEmail()">
+      <button ion-item [ngClass]="{'require verification': !emailVerified}" (click)="goToUserEmail()">
         Email
-        <ion-note class="user-email" item-end>
+        <ion-note class="unverified-email" item-end>
           {{user.email}}
           <span *ngIf="!emailVerified">&nbsp;<i class="fa fa-exclamation fa-lg"></i></span>
         </ion-note>
